@@ -1,5 +1,5 @@
-package MenschAergerDichNicht;
+package GUI;
 
 public class SpielfeldView {
-
+	
 }
