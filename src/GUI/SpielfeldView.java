@@ -12,7 +12,7 @@ public class SpielfeldView extends Frame implements Observer{
 	private Canvas canvas;
 	
 	public SpielfeldView (ViewModel model, int h, int v) {
-		super("Mensch ärgere dich nicht");
+		super("Mensch aergere dich nicht");
 		this.model = model;
 		Panel panel = new Panel();
 		add("North", panel);
