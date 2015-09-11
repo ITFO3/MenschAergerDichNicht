@@ -1,13 +1,12 @@
 package GUI;
 
-import java.util.HashMap;
 
 
 public class ViewModel extends java.util.Observable{
 	
-	public HashMap<String, String> setPosition(HashMap<String, String> position) {
+	public void setPosition(String figureID, int fieldsToMove) {
 		
-		return null;
+		
 	}
 	
 }
