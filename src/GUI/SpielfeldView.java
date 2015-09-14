@@ -30,7 +30,7 @@ public class SpielfeldView extends Frame implements Observer{
 	
 	public void paint(Graphics g) {
 //		model.setPosition();
-		canvas.paint(g);
+		canvas.repaint();
 		super.paint(g);
 	}
 
