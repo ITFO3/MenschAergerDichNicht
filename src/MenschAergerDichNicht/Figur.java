@@ -14,10 +14,10 @@ public class Figur {
 	static private int tempCounter = 1;
 	
 	
-	public Figur(Color c) {
+	public Figur(String name, Color c) {
 		
 		eigeneFarbe = c;
-		id = c + "" + tempCounter++;
+		id = name + ":" + tempCounter++;
 	}
 	
 	public Color getColor() {

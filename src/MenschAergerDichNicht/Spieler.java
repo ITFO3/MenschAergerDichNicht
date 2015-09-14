@@ -6,14 +6,14 @@ public class Spieler {
 
 	private Color spielfigurenFarbe;
 	private Figur[] eigeneSpielfiguren = new Figur[4];
+	private String name;
 	
-	public Spieler(Color c) {
+	public Spieler(String name, Color c) {
 		spielfigurenFarbe = c;
+		this.name = name;
 		for (int i = 0; i < eigeneSpielfiguren.length; i++) {
-			eigeneSpielfiguren[i] = new Figur(c);
-		}
-		
-		
+			eigeneSpielfiguren[i] = new Figur(name, c);
+		}		
 		
 	}
 	
@@ -21,9 +21,6 @@ public class Spieler {
 		return Wuerfel.wuerfel();
 	}
 	
-	public static void main(String[] args) {
-		new Spieler(Color.red);
-	}
 }
 
 
