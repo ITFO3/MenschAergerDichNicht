@@ -1,7 +1,6 @@
 package GUI;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,8 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-import javax.swing.plaf.basic.BasicBorders.RadioButtonBorder;
 
 public class NetworkAdminView extends JFrame {
 
@@ -49,6 +46,15 @@ public class NetworkAdminView extends JFrame {
 
 		return networkModeButtonPanel;
 	}
+	
+	private JPanel createServerAdminPanel(){
+		JPanel serverAdminPanel = new JPanel();
+		
+		JButton startServerButton = new JButton("Start Server");
+		serverAdminPanel.add(startServerButton);
+		
+		return serverAdminPanel;
+	}
 
 	private JPanel createClientAdminPanel() {
 		JPanel serverIpPanel = new JPanel();
@@ -76,10 +82,6 @@ public class NetworkAdminView extends JFrame {
 		return clientAdminPanel;
 	}
 
-	private JPanel createServerAdminPanel() {
-		return null;
-	}
-
 	private void showClientAdmin() {
 		JPanel clientAdminPanel = createClientAdminPanel();
 		add(clientAdminPanel, BorderLayout.CENTER);
@@ -88,7 +90,10 @@ public class NetworkAdminView extends JFrame {
 	}
 
 	private void showServerAdmin() {
-
+		JPanel serverAdminPanel = createServerAdminPanel();
+		add(serverAdminPanel, BorderLayout.CENTER);
+		validate();
+		repaint();
 	}
 
 	private class NetworkModeListener implements ActionListener {
