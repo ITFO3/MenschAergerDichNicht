@@ -13,11 +13,15 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import network.NetworkService;
+
 public class NetworkAdminView extends JFrame {
 
 	JRadioButton clientButton;
 
 	JRadioButton serverButton;
+	
+	NetworkService networkService = NetworkService.getInstance();
 
 	public NetworkAdminView() {
 		JPanel networkModePanel = createNetworkModePanel();
