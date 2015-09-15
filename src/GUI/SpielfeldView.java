@@ -7,11 +7,13 @@ import java.awt.Panel;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JFrame;
+
 public class SpielfeldView extends Frame implements Observer{
 	private ViewModel model;
 	private Canvas canvas;
 	
-	public SpielfeldView (ViewModel model, int h, int v) {
+	public SpielfeldView  (int h, int v) {
 		super("Mensch aergere dich nicht");
 		this.model = model;
 		Panel panel = new Panel();
@@ -22,11 +24,12 @@ public class SpielfeldView extends Frame implements Observer{
 		setSize(600, 600);
 		setLocation(h, v);
 		setVisible(true);
-		model.addObserver(this);
+//		model.addObserver(this);
+//		panel.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 	}
 	
 	public void paint(Graphics g) {
-		model.setPosition(null);
+//		model.setPosition();
 		canvas.repaint();
 		super.paint(g);
 	}

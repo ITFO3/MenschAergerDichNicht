@@ -13,7 +13,7 @@ public class Spielfeld {
 		spielfiguren = new HashMap<String, Figur>();
 	}
 	
-	public void setzteAufsSpielfeld(Figur[] eigeneSpielfiguren, Spieler spieler) {
+	public void setzteAufsSpielfeld(HashMap<String, Figur> eigeneSpielfiguren, Spieler spieler) {
 		
 	}
 	
