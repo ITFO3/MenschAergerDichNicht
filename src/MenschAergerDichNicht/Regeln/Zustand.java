@@ -1,5 +1,6 @@
 package MenschAergerDichNicht.Regeln;
 
+import MenschAergerDichNicht.Figur;
 import MenschAergerDichNicht.Spielfeld;
 
 /**
@@ -9,6 +10,7 @@ import MenschAergerDichNicht.Spielfeld;
 public class Zustand {
 	private int wuerfelzahl;
 	private Spielfeld spielfeld;
+	private Figur figur;
 	
 	/**
 	 * Setter fuer die aktuell gewuerfelte Zahl
@@ -48,5 +50,24 @@ public class Zustand {
 	 */
 	public Spielfeld getSpielfeld() {
 		return this.spielfeld;
+	}
+
+	/**
+	 * Setter fuer die aktuelle Spielfigur
+	 * @param figur Die aktuelle Spielfigur
+	 * @return
+	 */
+	public Zustand setFigur(Figur figur) {
+		this.figur = figur;
+		
+		return this;
+	}
+	
+	/**
+	 * Getter fuer die aktuelle Spielfigur
+	 * @return
+	 */
+	public Figur getFigur() {
+		return figur;
 	}
 }

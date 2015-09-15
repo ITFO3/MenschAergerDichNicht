@@ -1,10 +1,26 @@
 package MenschAergerDichNicht.Regeln;
 
+import java.util.HashMap;
+
+import MenschAergerDichNicht.Figur;
+
 public class FeldFreiRegel extends Regel {
 
 	@Override
 	public boolean check() {
-		return false;
+		// Alle Figuren holen
+		HashMap<Integer, Figur> figuren = this.zustand.getSpielfeld().getSpielfiguren();
+		Integer position = 0;
+		
+		// Die aktuelle Figur holen
+		for (Integer key : figuren.keySet()) {
+			if (figuren.get(key).equals(this.zustand.getFigur())) {
+				position = key;
+				break;
+			}
+		}
+		
+		return (figuren.get(position + this.zustand.getWuerfelzahl()) == null);
 	}
 
 	@Override
