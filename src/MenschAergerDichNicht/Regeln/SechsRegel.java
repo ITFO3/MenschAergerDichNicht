@@ -17,6 +17,9 @@ public class SechsRegel extends Regel {
 	@Override
 	public void execute() {
 		if (this.check()) {
+			// Figur muss raus gesetzt werden
+			
+			
 			// Benutzer darf nochmal wuerfeln
 		}
 		
