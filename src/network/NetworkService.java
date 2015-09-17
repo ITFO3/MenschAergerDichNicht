@@ -1,7 +1,5 @@
 package network;
 
-import com.sun.servicetag.Installer;
-
 public class NetworkService {
 	
 	private static NetworkService instance;
