@@ -9,23 +9,26 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
-public class SpielfeldView extends Frame implements Observer{
+public class SpielfeldView extends JFrame implements Observer{
 	private ViewModel model;
 	private Canvas canvas;
 	
 	public SpielfeldView  (int h, int v) {
-		super("Mensch aergere dich nicht");
+		super("Mensch aerger dich nicht");
 		this.model = model;
 		Panel panel = new Panel();
 		add("North", panel);
 		canvas = new SpielfeldCanvas();
-		canvas.setSize(500, 500);
-		add("Center", canvas);
-		setSize(600, 600);
+		canvas.setSize(100, 100);
+		getContentPane().add(canvas);
+//		add("Center", canvas);
+		setSize(800, 800);
 		setLocation(h, v);
 		setVisible(true);
+		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 //		model.addObserver(this);
-//		panel.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+
+		
 	}
 	
 	public void paint(Graphics g) {
