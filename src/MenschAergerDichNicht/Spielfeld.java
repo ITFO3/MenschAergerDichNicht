@@ -26,8 +26,19 @@ public class Spielfeld {
 		return this.spielfiguren;
 	}
 	
-	public void setzteAufsSpielfeld(HashMap<Integer, Figur> eigeneSpielfiguren, Spieler spieler) {
+	/**
+	 * Setzt eine neue Spielfigur auf das Spielfeld
+	 * 
+	 * @param figur
+	 * @param position
+	 * @return False, falls die angegebene Position schon besetzt ist. Ansonsten True
+	 */
+	public boolean setSpielfigur(Figur figur, int position) {
+		if (spielfiguren.get(position) == null) {
+			spielfiguren.put(position, figur);
+			return true;
+		}
 		
+		return false;
 	}
-	
 }
