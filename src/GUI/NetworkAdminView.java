@@ -21,7 +21,15 @@ public class NetworkAdminView extends JFrame {
 
 	JRadioButton serverButton;
 	
+	JPanel clientAdminPanel;
+	
+	JPanel serverAdminPanel;
+	
 	NetworkService networkService = NetworkService.getInstance();
+	
+	public static void main(String[] args) {
+		new NetworkAdminView();
+	}
 
 	public NetworkAdminView() {
 		JPanel networkModePanel = createNetworkModePanel();
@@ -54,9 +62,19 @@ public class NetworkAdminView extends JFrame {
 	private JPanel createServerAdminPanel(){
 		JPanel serverAdminPanel = new JPanel();
 		
+		JPanel serverPortPanel = new JPanel();
+		JLabel serverPortLabel = new JLabel("Port:");
+		JTextField serverPortTextField = new JTextField(5);
+		serverPortPanel.add(serverPortLabel);
+		serverPortPanel.add(serverPortTextField);
+		serverAdminPanel.add(serverPortPanel);
+		
 		JButton startServerButton = new JButton("Start Server");
 		serverAdminPanel.add(startServerButton);
 		
+		serverAdminPanel.setLayout(new BoxLayout(serverAdminPanel,
+				BoxLayout.Y_AXIS));
+		this.serverAdminPanel = serverAdminPanel;
 		return serverAdminPanel;
 	}
 
@@ -82,11 +100,15 @@ public class NetworkAdminView extends JFrame {
 		clientAdminPanel.add(serverIpPanel);
 		clientAdminPanel.add(serverPortPanel);
 		clientAdminPanel.add(connectButton);
-
+		
+		this.clientAdminPanel = clientAdminPanel;
 		return clientAdminPanel;
 	}
 
 	private void showClientAdmin() {
+		if(serverAdminPanel != null){
+			serverAdminPanel.setVisible(false);
+		}
 		JPanel clientAdminPanel = createClientAdminPanel();
 		add(clientAdminPanel, BorderLayout.CENTER);
 		validate();
@@ -94,6 +116,9 @@ public class NetworkAdminView extends JFrame {
 	}
 
 	private void showServerAdmin() {
+		if(clientAdminPanel != null){
+			clientAdminPanel.setVisible(false);
+		}
 		JPanel serverAdminPanel = createServerAdminPanel();
 		add(serverAdminPanel, BorderLayout.CENTER);
 		validate();
