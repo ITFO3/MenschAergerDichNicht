@@ -7,6 +7,7 @@ public class Spieler {
 	private Color farbe;
 	private Figur[] figuren;
 	private String name;
+	private int ziel;
 	
 	/**
 	 * Erstellt einen neuen Spieler inklusive der Spielfiguren
@@ -14,9 +15,10 @@ public class Spieler {
 	 * @param name  Der Spielername
 	 * @param c 	Die Farbe des Spielers
 	 */
-	public Spieler(String name, Color c) {
+	public Spieler(String name, Color c, int ziel) {
 		this.farbe = c;
 		this.name = name;
+		this.ziel = ziel;
 		this.figuren = new Figur[4];
 		
 		for (int i = 0; i < figuren.length; i++) {
