@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -36,7 +37,7 @@ public class NetworkAdminView extends JFrame {
 
 		setLayout(new BorderLayout());
 		add(networkModePanel, BorderLayout.NORTH);
-		setSize(400, 400);
+		setSize(400, 200);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 
@@ -61,7 +62,7 @@ public class NetworkAdminView extends JFrame {
 	
 	private JPanel createServerAdminPanel(){
 		JPanel serverAdminPanel = new JPanel();
-		
+
 		JPanel serverPortPanel = new JPanel();
 		JLabel serverPortLabel = new JLabel("Port:");
 		JTextField serverPortTextField = new JTextField(5);
@@ -94,7 +95,7 @@ public class NetworkAdminView extends JFrame {
 		JButton connectButton = new JButton("Connect");
 
 		JPanel clientAdminPanel = new JPanel();
-		clientAdminPanel.setSize(400, 200);
+		clientAdminPanel.setSize(400, 100);
 		clientAdminPanel.setLayout(new BoxLayout(clientAdminPanel,
 				BoxLayout.Y_AXIS));
 		clientAdminPanel.add(serverIpPanel);
