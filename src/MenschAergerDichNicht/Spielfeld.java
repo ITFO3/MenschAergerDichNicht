@@ -2,8 +2,10 @@ package MenschAergerDichNicht;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Spielfeld {
+public class Spielfeld implements Observer {
 	/**
 	 * Die Instanz des Spielfeldes
 	 */
@@ -44,27 +46,23 @@ public class Spielfeld {
 	public HashMap<Integer, Figur> getSpielfiguren() {
 		return this.spielfiguren;
 	}
-	
-	/**
-	 * Setzt oder bewegt eine Spielfigur auf dem Spielfeld
-	 * 
-	 * @param figur		Die Spielfigur
-	 * @param position	Die neue Position der Spielfigur
-	 * @return False, falls die angegebene Position schon besetzt ist. Ansonsten True
-	 */
-	public boolean setSpielfigur(Figur figur, int position) {
-		// Ueberpruefen, ob die gewaehlte Position frei ist
-		if (spielfiguren.get(position) == null) {
-			// Gegebenenfalls die vorherige Position loeschen
-			if (spielfiguren.get(figur.getPosition()) != null) {
-				spielfiguren.remove(figur.getPosition());
+
+	@Override
+	public void update(Observable o, Object arg) {
+		Figur figur = (Figur) arg;
+		
+		int altePosition = 0;
+		// Alte Position ermitteln
+		for (int i : spielfiguren.keySet()) {
+			if (spielfiguren.get(i).getId() == figur.getId()) {
+				altePosition = i;
+				break;
 			}
-			
-			// Figur auf neue Position setzen
-			spielfiguren.put(position, figur);
-			return true;
 		}
 		
-		return false;
+		// Alte Position entfernen
+		spielfiguren.remove(altePosition);
+		// Neue Position besetzen
+		spielfiguren.put(figur.getPosition(), figur);
 	}
 }
