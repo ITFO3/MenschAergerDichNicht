@@ -69,9 +69,9 @@ public class Controller {
 	
 	
 	/**
-	 * Überprüft ob das Spielende erreicht wurde
-	 * Äußere Schleife: Überprüft jeden Spieler
-	 * Innere Schleife: Überprüft ob alle Figuren vom aktuellen Spieler im Ziel sind
+	 * Ueberprueft ob das Spielende erreicht wurde
+	 * Aeussere Schleife: Ueberprueft jeden Spieler
+	 * Innere Schleife: Ueberprueft ob alle Figuren vom aktuellen Spieler im Ziel sind
 	 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
 	 */
 	public boolean ueberpruefeSpielende() {
@@ -96,7 +96,7 @@ public class Controller {
 	
 	
 	/**
-	 * Sucht zunächst die ausgewählte Figur aus und bewegt sie um die angegebene Anzahl vor
+	 * Sucht zunaechst die ausgewaehlte Figur aus und bewegt sie um die angegebene Anzahl vor
 	 * @param figur
 	 * @param anzahl
 	 */
