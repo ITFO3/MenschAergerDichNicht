@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+import javax.swing.ImageIcon;
+
 public class SpielfeldCanvas extends Canvas{
 	/**
 	 * 
@@ -17,7 +19,7 @@ public class SpielfeldCanvas extends Canvas{
 	private static final int width = 600;
 	
 	public void paint(Graphics g) {
-		Image image = Toolkit.getDefaultToolkit().getImage("J:/pachisi-4er-blanco.jpg");
+		Image image = new ImageIcon(this.getClass().getResource("pachisi-4er-blanco.jpg")).getImage();
 		g.drawImage(image, 0, 0,height,width, this);
 		g.finalize();
 //		g.drawOval(10, 10, 30, 30);
