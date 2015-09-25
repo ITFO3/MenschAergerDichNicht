@@ -1,17 +1,19 @@
 package MenschAergerDichNicht;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Spielfeld implements Observer {
+/**
+ * Das Spielfeld, auf dem sich die Figuren befinden
+ * @author Dominik Bittner
+ */
+public class Spielfeld extends Observable implements Observer {
 	/**
 	 * Die Instanz des Spielfeldes
 	 */
 	private static Spielfeld instanz;
-	
-	private ArrayList<Spieler> spieler;
+
 	/**
 	 * HashMap mit den Spielfiguren
 	 * Key: Position auf dem Feld
@@ -23,7 +25,6 @@ public class Spielfeld implements Observer {
 	 * Erstellt ein neues Spielfeld
 	 */
 	private Spielfeld() {
-		spieler = new ArrayList<Spieler>();
 		spielfiguren = new HashMap<Integer, Figur>();
 	}
 	
@@ -40,13 +41,21 @@ public class Spielfeld implements Observer {
 	}
 	
 	/**
+	 * Fuegt einen Observer diesem Model hinzu
+	 * @param observer Ein Observer, zum Beispiel die SpielfeldView
+	 */
+	public void setObserver(Observer observer) {
+		addObserver(observer);
+	}
+	
+	/**
 	 * Gibt die HashMap mit den Spielfiguren zurueck
 	 * @return
 	 */
 	public HashMap<Integer, Figur> getSpielfiguren() {
 		return this.spielfiguren;
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		Figur figur = (Figur) arg;
@@ -60,9 +69,16 @@ public class Spielfeld implements Observer {
 			}
 		}
 		
-		// Alte Position entfernen
-		spielfiguren.remove(altePosition);
+		// Nur eine Figur entfernen, wenn diese auch schon auf dem Spielfeld ist 
+		if (altePosition != 0) {
+			// Alte Position entfernen
+			spielfiguren.remove(altePosition);
+		}
+		
 		// Neue Position besetzen
 		spielfiguren.put(figur.getPosition(), figur);
+		
+		// View benachrichtigen
+		notifyObservers(this);
 	}
 }
