@@ -19,7 +19,7 @@ public class ServerService {
 	public void startServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
 		ClientAcceptor clientAcceptor = new ClientAcceptor(serverSocket, clients);
-		clientAcceptor.run();
+		clientAcceptor.start();
 	}
 
 	public static ServerService getInstance() {

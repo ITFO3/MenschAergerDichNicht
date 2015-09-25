@@ -31,7 +31,7 @@ public class NetworkService {
 		try {
 			networkMode = NetworkMode.CLIENT;
 			client = new Client(host, port);
-			client.run();
+			client.start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
