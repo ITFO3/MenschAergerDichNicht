@@ -41,14 +41,6 @@ public class Spielfeld extends Observable implements Observer {
 	}
 	
 	/**
-	 * Fuegt einen Observer diesem Model hinzu
-	 * @param observer Ein Observer, zum Beispiel die SpielfeldView
-	 */
-	public void setObserver(Observer observer) {
-		addObserver(observer);
-	}
-	
-	/**
 	 * Gibt die HashMap mit den Spielfiguren zurueck
 	 * @return
 	 */
