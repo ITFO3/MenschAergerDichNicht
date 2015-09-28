@@ -22,6 +22,12 @@ public class NetworkAdminView extends JFrame {
 
 	JRadioButton serverButton;
 	
+	JTextField clientServerIpTextfield;
+	
+	JTextField clientServerPortTextField;
+	
+	JTextField serverServerPortTextField;
+	
 	JPanel clientAdminPanel;
 	
 	JPanel serverAdminPanel;
@@ -65,12 +71,13 @@ public class NetworkAdminView extends JFrame {
 
 		JPanel serverPortPanel = new JPanel();
 		JLabel serverPortLabel = new JLabel("Port:");
-		JTextField serverPortTextField = new JTextField(5);
+		serverServerPortTextField = new JTextField(5);
 		serverPortPanel.add(serverPortLabel);
-		serverPortPanel.add(serverPortTextField);
+		serverPortPanel.add(serverServerPortTextField);
 		serverAdminPanel.add(serverPortPanel);
 		
 		JButton startServerButton = new JButton("Start Server");
+		startServerButton.addActionListener(new StartServerButtonListener());
 		serverAdminPanel.add(startServerButton);
 		
 		serverAdminPanel.setLayout(new BoxLayout(serverAdminPanel,
@@ -82,17 +89,18 @@ public class NetworkAdminView extends JFrame {
 	private JPanel createClientAdminPanel() {
 		JPanel serverIpPanel = new JPanel();
 		JLabel serverIpLabel = new JLabel("Server IP:");
-		JTextField serverIpTextfield = new JTextField(20);
+		clientServerIpTextfield = new JTextField(20);
 		serverIpPanel.add(serverIpLabel);
-		serverIpPanel.add(serverIpTextfield);
+		serverIpPanel.add(clientServerIpTextfield);
 
 		JPanel serverPortPanel = new JPanel();
 		JLabel serverPortLabel = new JLabel("Server Port");
-		JTextField serverPortTextField = new JTextField(5);
+		clientServerPortTextField = new JTextField(5);
 		serverPortPanel.add(serverPortLabel);
-		serverPortPanel.add(serverPortTextField);
+		serverPortPanel.add(clientServerPortTextField);
 
 		JButton connectButton = new JButton("Connect");
+		connectButton.addActionListener(new ConnectButtonListener());
 
 		JPanel clientAdminPanel = new JPanel();
 		clientAdminPanel.setSize(400, 100);
@@ -138,7 +146,22 @@ public class NetworkAdminView extends JFrame {
 			}
 
 		}
-
 	}
 
+	private class StartServerButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			networkService.startServer(Integer.valueOf(serverServerPortTextField.getText()));
+		}
+	}
+	
+	private class ConnectButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			networkService.connectToServer(clientServerIpTextfield.getText(), Integer.valueOf(clientServerPortTextField.getText()));
+		}
+
+	}
+	
 }

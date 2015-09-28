@@ -16,10 +16,10 @@ public class ServerService {
 		clients = new ArrayList<ClientHandler>();
 	}
 
-	public void startServer() throws IOException {
-		serverSocket = new ServerSocket(8080);
+	public void startServer(int port) throws IOException {
+		serverSocket = new ServerSocket(port);
 		ClientAcceptor clientAcceptor = new ClientAcceptor(serverSocket, clients);
-		clientAcceptor.run();
+		clientAcceptor.start();
 	}
 
 	public static ServerService getInstance() {
