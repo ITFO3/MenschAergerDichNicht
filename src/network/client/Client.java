@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Client implements Runnable {
+public class Client extends Thread implements Runnable {
 
 	private static Socket clientSocket;
 	private static PrintStream os;
