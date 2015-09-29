@@ -14,9 +14,16 @@ public class TestRun {
 		view.show();
 		
 		Figur figur = new Figur("Test", Color.red);
-		figur.setPosition(-16);
 		figur.addObserver(model);
-		figur.setPosition(-15);
+		
+		for (int i = -16; i <= 40; i++) {
+			try {
+				figur.setPosition(i);
+				Thread.sleep(1000);
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 
 }

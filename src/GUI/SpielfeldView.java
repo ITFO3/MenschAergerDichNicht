@@ -24,7 +24,7 @@ public class SpielfeldView extends JFrame implements Observer {
 		
 		Panel panel = new Panel();
 		add("North", panel);
-		canvas = new SpielfeldCanvas();
+		canvas = new SpielfeldCanvas(model);
 		canvas.setSize(100, 100);
 		getContentPane().add(canvas);
 		
@@ -33,16 +33,11 @@ public class SpielfeldView extends JFrame implements Observer {
 		setVisible(true);
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		
-		model.addObserver(this);
+		this.model.addObserver(this);
 	}
 	
 	public void paint(Graphics g) {
 		canvas.repaint();
-		
-		for (Figur figur : model.getSpielfiguren().values()) {
-			canvas.DrawSpielfigur(g, figur);
-		}
-		
 		super.paint(g);
 	}
 
