@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import network.client.Client;
+import network.server.ServerService;
 
 public class NetworkService {
 	Client client;
+	
+	ServerService serverService = ServerService.getInstance();
 	
 	public enum NetworkMode {
 		CLIENT,
@@ -28,7 +31,7 @@ public class NetworkService {
 		try {
 			networkMode = NetworkMode.CLIENT;
 			client = new Client(host, port);
-			client.run();
+			client.start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -44,7 +47,13 @@ public class NetworkService {
 		this.networkMode = networkMode;
 	}
 	
-	public void startServer() {
+	public void startServer(int port) {
 		networkMode = NetworkMode.SERVER;
+		try {
+			serverService.startServer(port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

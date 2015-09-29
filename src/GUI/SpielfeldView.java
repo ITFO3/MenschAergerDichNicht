@@ -1,7 +1,5 @@
 package GUI;
 
-import java.awt.Canvas;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Panel;
 import java.util.Observable;
@@ -9,36 +7,39 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
-public class SpielfeldView extends JFrame implements Observer{
-	private ViewModel model;
-	private Canvas canvas;
+import MenschAergerDichNicht.Spielfeld;
+
+public class SpielfeldView extends JFrame {
 	
-	public SpielfeldView  (int h, int v) {
+	private Spielfeld model;
+	private SpielfeldCanvas canvas;
+	
+	/**
+	 * Das Hauptfenster des Spiels
+	 * 
+	 * @param model	Das Model von dem Spielfeld
+	 * @param h		Die X-Startposition
+	 * @param v		Die Y-Startposition
+	 */
+	public SpielfeldView  (Spielfeld model, int h, int v) {
+		// Titel setzen
 		super("Mensch aerger dich nicht");
+		
+		// Model speichern
 		this.model = model;
-		Panel panel = new Panel();
-		add("North", panel);
-		canvas = new SpielfeldCanvas();
+		
+		canvas = new SpielfeldCanvas(model);
 		canvas.setSize(100, 100);
 		getContentPane().add(canvas);
-//		add("Center", canvas);
+		
 		setSize(800, 800);
 		setLocation(h, v);
 		setVisible(true);
-		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-//		model.addObserver(this);
-
-		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void paint(Graphics g) {
-//		model.setPosition();
 		canvas.repaint();
 		super.paint(g);
-	}
-
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		repaint();
 	}
 }
