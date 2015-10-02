@@ -5,40 +5,28 @@ import java.util.ArrayList;
 
 public class Controller {
 
-	private Spieler[] spieler = new Spieler[4];
+	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
 	ArrayList<Color> farben = new ArrayList<Color>();
-	int[] zielFelder = new int[4];
-	int[][] startFelder = new int[4][4];
+	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
+	ArrayList<int[]> startFelder = new ArrayList<int[]>();
 	private static int spielerZaehler = 0;
-	private static int spielerStartfeldZaehler = 0;
+	
 
-	public Controller(String name) {
+	private Controller(String name, String ip) {
 		initialisiereFarben();
 		initialisiereStartfelder();
 		initialisiereZielfelder();
-		initialisiereSpieler(name);
+		initialisiereSpieler(name, ip);
 		// view.setzteAufsSpielfeld(eigeneSpielfiguren, this);
 	}
 
-	// Verschachteltes Array
+	
 	private void initialisiereStartfelder() {
 		
-		startFelder[0][0] = -1;
-		startFelder[0][1] = -2;
-		startFelder[0][2] = -3;
-		startFelder[0][3] = -4;
-		startFelder[0][0] = -5;
-		startFelder[0][1] = -6;
-		startFelder[0][2] = -7;
-		startFelder[0][3] = -8;
-		startFelder[0][0] = -9;
-		startFelder[0][1] = -10;
-		startFelder[0][2] = -11;
-		startFelder[0][3] = -12;
-		startFelder[0][0] = -13;
-		startFelder[0][1] = -14;
-		startFelder[0][2] = -15;
-		startFelder[0][3] = -16;
+		startFelder.add(new int[]{-1,-2,-3,-4});
+		startFelder.add(new int[]{-5,-6,-7,-8});
+		startFelder.add(new int[]{-9,-10,-11,-12});
+		startFelder.add(new int[]{-13,-14,-15,-16});
 	}
 
 	private void initialisiereFarben() {
@@ -54,10 +42,10 @@ public class Controller {
 
 	private void initialisiereZielfelder() {
 
-		zielFelder[0] = 40;
-		zielFelder[1] = 10;
-		zielFelder[2] = 20;
-		zielFelder[3] = 30;
+		zielFelder.add(40);
+		zielFelder.add(10);
+		zielFelder.add(20);
+		zielFelder.add(30);
 	}
 
 	public void beendeSpiel() {
@@ -65,25 +53,37 @@ public class Controller {
 		spielerZaehler = 0;
 	}
 	
-	public void initialisiereSpieler(String name) {
+	public void initialisiereSpieler(String name, String ip) {
 
 		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
 		Color c = farben.get(zufallsZahl);
 		farben.remove(zufallsZahl);
 
-		spieler[0] = new Spieler(name, c, zielFelder[spielerZaehler++], startFelder[spielerStartfeldZaehler++]);
+		int zielfeld = zielFelder.get(spielerZaehler);
+		
+		int[] startfelder = startFelder.get(spielerZaehler);
+		
+		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
+		spielerZaehler++;
 	}
 
-	public void ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
+	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
 
+		ArrayList<Figur> figuren = spieler.getFiguren();
+		ArrayList<Figur> bewegbareFiguren = new ArrayList<Figur>();
+		
+		for (Figur figur : figuren) {
+			
+			//überprüfe Figur
+			bewegbareFiguren.add(figur);
+		} 
+		
+		
+		return bewegbareFiguren;
 	}
 
-	public void sendeMoeglichkeitenAnClienten(ArrayList<Figur> figuren) {
-
-	}
-
-	public void platziereSpielerAufStartfeld(Spieler spieler) {
-
+	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
+		String ip = s.getIp();
 	}
 
 	/**
@@ -93,24 +93,23 @@ public class Controller {
 	 * 
 	 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
 	 */
-	public boolean ueberpruefeSpielende() {
+	public Spieler ueberpruefeSpielende() {
 		boolean ende = true;
 		
-		for (int i = 0; i < spieler.length; i++) {
-			Spieler s = spieler[i];
+		for (int i = 0; i < spieler.size(); i++) {
+			Spieler s = spieler.get(i);
 			ArrayList<Figur> figuren = s.getFiguren();
 
 			for (int j = 0; j < figuren.size(); j++) {
-				if (figuren.get(j).getPosition() <= zielFelder[i]) {
+				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
 					ende = false;
 					break;
 				}
 			}
-			if (ende){
-				return true;
-			}
+			
+			if (ende) return s;
 		}
-		return false;
+		return null;
 	}
 
 	/**
@@ -122,17 +121,23 @@ public class Controller {
 	 */
 	public void bewegeFigur(Figur figur, int anzahl) {
 
-		
-		
-		int newPosition = figur.getPosition() + anzahl;
-		figur.setPosition(newPosition);
-		
-		Figur betroffenePositionFigur = testePosition(newPosition);
-		if(betroffenePositionFigur != null) {
-			betroffenePositionFigur.setPosition(newPosition);
+	
+		//Die Regeln wurden einen Schritt vorhere überprüft. Es wird nur eine Figur übergeben, die bewegt werden kann.
+		//Jetzt muss nur noch die Figur gesetzt werden
+		if(figur.getPosition() == figur.getHausFeld()) {
+			
+			figur.setPosition(figur.getStartFeld());
 		}
-		
-		
+		else {
+			
+			int newPosition = figur.getPosition() + anzahl;
+			figur.setPosition(newPosition);
+			
+			Figur betroffenePositionFigur = testePosition(newPosition);
+			if(betroffenePositionFigur != null) {
+				betroffenePositionFigur.setPosition(betroffenePositionFigur.getHausFeld());
+			}
+		}	
 	}
 
 	
@@ -140,29 +145,51 @@ public class Controller {
 		
 		Figur returnObject = null;;
 		
-		for (int i = 0; i < spieler.length; i++) {
+		for (int i = 0; i < spieler.size(); i++) {
 
 			for (int j = 0; j < 4; j++) {
 
-				if (spieler[i].getFiguren().get(j).getPosition() == position) {
-					returnObject = spieler[i].getFiguren().get(j);
+				if (spieler.get(i).getFiguren().get(j).getPosition() == position) {
+					returnObject = spieler.get(i).getFiguren().get(j);
+					break;
 				}
 			}
+			if(returnObject != null) break;
 		}
 		
 		return returnObject;
 	}
 	
 	public void starteSpiel() {
-
+		
+		int beginner = Wuerfel.ermittleBeginner(spieler.size());
+		
+		
+		while(ueberpruefeSpielende() == null) {
+			
+			int wurfAnzahl = Wuerfel.wuerfel();
+			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
+			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
+			
+			
+			
+			if(beginner > spieler.size()) beginner -=  spieler.size();
+		}
+		
+		
 	}
 
 	public void erstelleSpiel(int anzahl, String name) {
-
+		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen dürfen noch einrichten
+		Controller c = new Controller(name, null);
 	}
 
-	public boolean treteSpielBei(String ip, String name) {
-		return false;
+	public boolean treteSpielBei(String name, String ip) {
+		
+		if(spieler.size() < 4) initialisiereSpieler(name, ip);
+		else return false;
+		
+		return true;
 	}
 
 }
