@@ -19,29 +19,29 @@ public class TestRun {
 		view.setVisible(true);
 		
 		// Erstellen von neuen Figuren
-		Figur figur = new Figur("Test", Color.red);
-		figur.addObserver(model);
+		//Figur figur = new Figur("Test", Color.red, 40);
+		//figur.addObserver(model);
 		
-		Figur figur2 = new Figur("Test2", Color.blue);
-		figur2.addObserver(model);
+		//Figur figur2 = new Figur("Test2", Color.blue, 10);
+		//figur2.addObserver(model);
 		
 		// Positionen verschieben
-		int j = 10;
-		for (int i = 0; i <= 40; i++) {
-			try {
-				figur.setPosition(i);
-				figur2.setPosition(j);
-				j++;
-				
-				if (j > 40) {
-					j = 1;
-				}
-				
-				Thread.sleep(1000);
-			} catch(InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-		}
+//		int j = 10;
+//		for (int i = 0; i <= 40; i++) {
+//			try {
+//				figur.setPosition(i);
+//				figur2.setPosition(j);
+//				j++;
+//				
+//				if (j > 40) {
+//					j = 1;
+//				}
+//				
+//				Thread.sleep(1000);
+//			} catch(InterruptedException ex) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
 	}
 
 }
