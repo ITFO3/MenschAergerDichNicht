@@ -5,6 +5,12 @@ import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stellt die Grundlegenden Funktionalitäten zum erstellen eines Servers bereit.
+ * 
+ * @author ChrisWun
+ * 
+ */
 public class ServerService {
 	private static ServerService instance;
 
@@ -18,7 +24,8 @@ public class ServerService {
 
 	public void startServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
-		ClientAcceptor clientAcceptor = new ClientAcceptor(serverSocket, clients);
+		ClientAcceptor clientAcceptor = new ClientAcceptor(serverSocket,
+				clients);
 		clientAcceptor.start();
 	}
 

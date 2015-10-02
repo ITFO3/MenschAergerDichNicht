@@ -6,6 +6,13 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * Ein Thread der Clientseitig läuft, und auf Daten wartet welche vom Server an
+ * den Client versendet werden.
+ * 
+ * @author ChrisWun
+ * 
+ */
 public class Client extends Thread implements Runnable {
 
 	private static Socket clientSocket;
