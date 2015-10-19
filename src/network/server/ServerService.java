@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Stellt die Grundlegenden Funktionalitäten zum erstellen eines Servers bereit.
+ * Stellt die Grundlegenden Funktionalitaeten zum erstellen eines Servers bereit.
  * 
  * @author ChrisWun
  * 

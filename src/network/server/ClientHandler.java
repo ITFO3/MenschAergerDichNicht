@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 /**
- * Ein Thread der für jeden Client erstellt wird. Dieser Thread wartet auf Daten
+ * Ein Thread der fuer jeden Client erstellt wird. Dieser Thread wartet auf Daten
  * die vom Client an den Server gesendet werden.
  * 
  * @author ChrisWun

@@ -1,4 +1,4 @@
-package GUI.admin.network;
+package gui.admin.network;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -73,7 +73,7 @@ public class ClientAdminPanel extends JPanel{
 		}
 		
 		/**
-		 * Erstellt und fügt ein Label zur Anzeige hinzu, ob der Server erfolgreich oder nicht erfolgreich gestartet wurde.
+		 * Erstellt und fuegt ein Label zur Anzeige hinzu, ob der Server erfolgreich oder nicht erfolgreich gestartet wurde.
 		 */
 		private void createAndAddConnectionStatusLabel(boolean result) {
 			if(connectionStatusLabel == null){

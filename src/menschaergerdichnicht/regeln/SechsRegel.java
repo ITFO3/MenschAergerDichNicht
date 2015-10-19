@@ -1,4 +1,4 @@
-package MenschAergerDichNicht.Regeln;
+package menschaergerdichnicht.regeln;
 
 /**
  * Diese Regel wird angewendet, wenn eine Sechs gewuerfelt wurde
