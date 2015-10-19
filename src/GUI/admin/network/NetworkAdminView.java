@@ -17,7 +17,7 @@ import javax.swing.JTextField;
 import network.NetworkService;
 
 /**
- * JFrame für die Administration eines Servers oder Clients.
+ * JFrame fuer die Administration eines Servers oder Clients.
  * 
  * @author ChrisWun
  * 

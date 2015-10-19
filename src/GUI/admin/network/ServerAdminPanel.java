@@ -59,7 +59,7 @@ public class ServerAdminPanel extends JPanel {
 
 		/**
 		 * 
-		 * Erstellt und fügt ein Label zur Anzeige hinzu, ob die Verbindung zu
+		 * Erstellt und fuegt ein Label zur Anzeige hinzu, ob die Verbindung zu
 		 * einem Server erfolgreich oder nicht erfolgreich war.
 		 */
 		private void createAndAddConnectionStatusLabel(boolean result) {

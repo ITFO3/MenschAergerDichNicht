@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * Ein Thread der Clientseitig läuft, und auf Daten wartet welche vom Server an
+ * Ein Thread der Clientseitig laeuft, und auf Daten wartet welche vom Server an
  * den Client versendet werden.
  * 
  * @author ChrisWun
