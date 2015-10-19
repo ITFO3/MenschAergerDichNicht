@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 import java.util.HashMap;
 import java.util.Observable;

@@ -1,8 +1,8 @@
-package MenschAergerDichNicht.Regeln;
+package menschaergerdichnicht.regeln;
 
 import java.util.HashMap;
 
-import MenschAergerDichNicht.Figur;
+import menschaergerdichnicht.Figur;
 
 public class FeldFreiRegel extends Regel {
 

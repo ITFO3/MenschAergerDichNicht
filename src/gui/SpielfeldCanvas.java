@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -8,8 +8,8 @@ import java.util.Observer;
 
 import javax.swing.ImageIcon;
 
-import MenschAergerDichNicht.Figur;
-import MenschAergerDichNicht.Spielfeld;
+import menschaergerdichnicht.Figur;
+import menschaergerdichnicht.Spielfeld;
 
 /**
  * Das Canvas auf dem JFrame

@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 import java.awt.Color;
 import java.util.ArrayList;

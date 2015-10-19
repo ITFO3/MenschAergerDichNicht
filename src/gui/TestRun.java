@@ -1,9 +1,9 @@
-package GUI;
+package gui;
 
 import java.awt.Color;
 
-import MenschAergerDichNicht.Figur;
-import MenschAergerDichNicht.Spielfeld;
+import menschaergerdichnicht.Figur;
+import menschaergerdichnicht.Spielfeld;
 
 /**
  * Test-Start-Klasse fuer die GUI

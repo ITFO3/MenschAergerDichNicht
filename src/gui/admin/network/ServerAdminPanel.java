@@ -1,4 +1,4 @@
-package GUI.admin.network;
+package gui.admin.network;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
