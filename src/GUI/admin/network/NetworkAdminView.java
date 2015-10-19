@@ -1,4 +1,4 @@
-package GUI;
+package GUI.admin.network;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -16,24 +16,24 @@ import javax.swing.JTextField;
 
 import network.NetworkService;
 
+/**
+ * JFrame für die Administration eines Servers oder Clients.
+ * 
+ * @author ChrisWun
+ * 
+ */
 public class NetworkAdminView extends JFrame {
 
 	JRadioButton clientButton;
 
 	JRadioButton serverButton;
-	
-	JTextField clientServerIpTextfield;
-	
-	JTextField clientServerPortTextField;
-	
-	JTextField serverServerPortTextField;
-	
+
 	JPanel clientAdminPanel;
-	
+
 	JPanel serverAdminPanel;
-	
+
 	NetworkService networkService = NetworkService.getInstance();
-	
+
 	public static void main(String[] args) {
 		new NetworkAdminView();
 	}
@@ -65,57 +65,19 @@ public class NetworkAdminView extends JFrame {
 
 		return networkModeButtonPanel;
 	}
-	
-	private JPanel createServerAdminPanel(){
-		JPanel serverAdminPanel = new JPanel();
 
-		JPanel serverPortPanel = new JPanel();
-		JLabel serverPortLabel = new JLabel("Port:");
-		serverServerPortTextField = new JTextField(5);
-		serverPortPanel.add(serverPortLabel);
-		serverPortPanel.add(serverServerPortTextField);
-		serverAdminPanel.add(serverPortPanel);
-		
-		JButton startServerButton = new JButton("Start Server");
-		startServerButton.addActionListener(new StartServerButtonListener());
-		serverAdminPanel.add(startServerButton);
-		
-		serverAdminPanel.setLayout(new BoxLayout(serverAdminPanel,
-				BoxLayout.Y_AXIS));
-		this.serverAdminPanel = serverAdminPanel;
+	private JPanel createServerAdminPanel() {
+		serverAdminPanel = new ServerAdminPanel();
 		return serverAdminPanel;
 	}
 
 	private JPanel createClientAdminPanel() {
-		JPanel serverIpPanel = new JPanel();
-		JLabel serverIpLabel = new JLabel("Server IP:");
-		clientServerIpTextfield = new JTextField(20);
-		serverIpPanel.add(serverIpLabel);
-		serverIpPanel.add(clientServerIpTextfield);
-
-		JPanel serverPortPanel = new JPanel();
-		JLabel serverPortLabel = new JLabel("Server Port");
-		clientServerPortTextField = new JTextField(5);
-		serverPortPanel.add(serverPortLabel);
-		serverPortPanel.add(clientServerPortTextField);
-
-		JButton connectButton = new JButton("Connect");
-		connectButton.addActionListener(new ConnectButtonListener());
-
-		JPanel clientAdminPanel = new JPanel();
-		clientAdminPanel.setSize(400, 100);
-		clientAdminPanel.setLayout(new BoxLayout(clientAdminPanel,
-				BoxLayout.Y_AXIS));
-		clientAdminPanel.add(serverIpPanel);
-		clientAdminPanel.add(serverPortPanel);
-		clientAdminPanel.add(connectButton);
-		
-		this.clientAdminPanel = clientAdminPanel;
+		clientAdminPanel = new ClientAdminPanel();
 		return clientAdminPanel;
 	}
 
 	private void showClientAdmin() {
-		if(serverAdminPanel != null){
+		if (serverAdminPanel != null) {
 			serverAdminPanel.setVisible(false);
 		}
 		JPanel clientAdminPanel = createClientAdminPanel();
@@ -125,7 +87,7 @@ public class NetworkAdminView extends JFrame {
 	}
 
 	private void showServerAdmin() {
-		if(clientAdminPanel != null){
+		if (clientAdminPanel != null) {
 			clientAdminPanel.setVisible(false);
 		}
 		JPanel serverAdminPanel = createServerAdminPanel();
@@ -147,21 +109,4 @@ public class NetworkAdminView extends JFrame {
 
 		}
 	}
-
-	private class StartServerButtonListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			networkService.startServer(Integer.valueOf(serverServerPortTextField.getText()));
-		}
-	}
-	
-	private class ConnectButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			networkService.connectToServer(clientServerIpTextfield.getText(), Integer.valueOf(clientServerPortTextField.getText()));
-		}
-
-	}
-	
 }
