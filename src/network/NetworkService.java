@@ -4,19 +4,28 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import network.client.Client;
+import network.server.ServerService;
 
+/**
+ * Stellt die Elementaren Funktionen zum starten eines Servers, sowie zum
+ * Verbinden zu einem Server bereit.
+ * 
+ * @author ChrisWun
+ * 
+ */
 public class NetworkService {
 	Client client;
-	
+
+	ServerService serverService = ServerService.getInstance();
+
 	public enum NetworkMode {
-		CLIENT,
-		SERVER;
+		CLIENT, SERVER;
 	}
-	
+
 	private static NetworkService instance;
-	
+
 	public static NetworkService getInstance() {
-		if(NetworkService.instance == null){
+		if (NetworkService.instance == null) {
 			NetworkService.instance = new NetworkService();
 		}
 		return NetworkService.instance;
@@ -24,27 +33,37 @@ public class NetworkService {
 
 	private NetworkMode networkMode;
 
-	public void connectToServer(String host, int port) {
+	public boolean connectToServer(String host, int port) {
 		try {
-			networkMode = NetworkMode.CLIENT;
 			client = new Client(host, port);
-			client.run();
+			client.start();
+			networkMode = NetworkMode.CLIENT;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
+			return false;
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
-	
+
 	public NetworkMode getNetworkMode() {
 		return networkMode;
 	}
-	
+
 	public void setNetworkMode(NetworkMode networkMode) {
 		this.networkMode = networkMode;
 	}
-	
-	public void startServer() {
-		networkMode = NetworkMode.SERVER;
+
+	public boolean startServer(int port) {
+		try {
+			serverService.startServer(port);
+			networkMode = NetworkMode.SERVER;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

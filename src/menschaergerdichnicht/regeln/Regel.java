@@ -1,4 +1,4 @@
-package MenschAergerDichNicht.Regeln;
+package menschaergerdichnicht.regeln;
 
 public abstract class Regel implements IRegel {
 	/**
