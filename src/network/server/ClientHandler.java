@@ -5,7 +5,14 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-public class ClientHandler extends Thread{
+/**
+ * Ein Thread der fuer jeden Client erstellt wird. Dieser Thread wartet auf Daten
+ * die vom Client an den Server gesendet werden.
+ * 
+ * @author ChrisWun
+ * 
+ */
+public class ClientHandler extends Thread {
 
 	private DataInputStream is;
 	private PrintStream os;
@@ -20,10 +27,10 @@ public class ClientHandler extends Thread{
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void run() {
-		while(true){
+		while (true) {
 			try {
 				is.readUTF();
 			} catch (IOException e) {

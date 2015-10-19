@@ -1,4 +1,4 @@
-package MenschAergerDichNicht.Regeln;
+package menschaergerdichnicht.regeln;
 
 /**
  * Interface fuer die Regeln
