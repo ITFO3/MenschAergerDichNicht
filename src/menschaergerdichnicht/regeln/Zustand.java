@@ -1,7 +1,7 @@
-package MenschAergerDichNicht.Regeln;
+package menschaergerdichnicht.regeln;
 
-import MenschAergerDichNicht.Figur;
-import MenschAergerDichNicht.Spielfeld;
+import menschaergerdichnicht.Figur;
+import menschaergerdichnicht.Spielfeld;
 
 /**
  * Zustandsklasse

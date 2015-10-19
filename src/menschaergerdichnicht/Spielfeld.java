@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 import java.util.HashMap;
 import java.util.Observable;
@@ -50,6 +50,7 @@ public class Spielfeld extends Observable implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
+		setChanged();
 		Figur figur = (Figur) arg;
 		
 		int altePosition = 0;

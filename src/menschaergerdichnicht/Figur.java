@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 import java.awt.Color;
 import java.util.Observable;
@@ -15,13 +15,9 @@ public class Figur extends Observable {
 	private int hausFeld;
 	private Spieler s;
 
-	
 	static private int tempCounter = 1;
 	
-	
-	
 	public Figur(String name, Color c, Spieler s, int hausFeld) {
-		
 		position = 0;
 		eigeneFarbe = c;
 		id = name + ":" + tempCounter++;

@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -74,7 +74,7 @@ public class Controller {
 		
 		for (Figur figur : figuren) {
 			
-			//überprüfe Figur
+			//ueberpruefe Figur
 			bewegbareFiguren.add(figur);
 		} 
 		
@@ -122,7 +122,7 @@ public class Controller {
 	public void bewegeFigur(Figur figur, int anzahl) {
 
 	
-		//Die Regeln wurden einen Schritt vorhere überprüft. Es wird nur eine Figur übergeben, die bewegt werden kann.
+		//Die Regeln wurden einen Schritt vorhere ï¿½berprï¿½ft. Es wird nur eine Figur ï¿½bergeben, die bewegt werden kann.
 		//Jetzt muss nur noch die Figur gesetzt werden
 		if(figur.getPosition() == figur.getHausFeld()) {
 			
@@ -180,7 +180,7 @@ public class Controller {
 	}
 
 	public void erstelleSpiel(int anzahl, String name) {
-		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen dürfen noch einrichten
+		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
 		Controller c = new Controller(name, null);
 	}
 

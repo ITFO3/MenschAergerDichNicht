@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 /**
  * Der Wuerfel
