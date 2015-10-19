@@ -1,4 +1,4 @@
-package GUI;
+package gui;
 
 import java.awt.Graphics;
 import java.awt.Panel;
@@ -7,7 +7,7 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
-import MenschAergerDichNicht.Spielfeld;
+import menschaergerdichnicht.Spielfeld;
 
 public class SpielfeldView extends JFrame {
 	

@@ -1,4 +1,4 @@
-package MenschAergerDichNicht;
+package menschaergerdichnicht;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -7,25 +7,39 @@ public class Spieler {
 	private Color farbe;
 	private Figur[] figuren;
 	private String name;
-	private int[] start;
+	private int startFeld;
+	private ArrayList<Integer> freieHausfelder = new ArrayList<Integer>();
 	private int ziel;
+	private String ip;
 	
 	/**
 	 * Erstellt einen neuen Spieler inklusive der Spielfiguren
 	 * 
 	 * @param name  Der Spielername
 	 * @param c 	Die Farbe des Spielers
+	 * @param ip 
 	 */
-	public Spieler(String name, Color c, int ziel, int[] start) {
+	public Spieler(String name, Color c, int ziel, int[] start, String ip) {
+		this.ip = ip;
 		this.farbe = c;
 		this.name = name;
-		this.start = start;
 		this.ziel = ziel;
+		this.startFeld = ziel + 1 > 40 ? ziel + 1 - 40 : ziel + 1;  
 		this.figuren = new Figur[4];
 		
 		for (int i = 0; i < figuren.length; i++) {
-			figuren[i] = new Figur(name, c);
+			
+			figuren[i] = new Figur(name, c, this, start[i]);
 		}
+	}
+	
+	public int gibStartFeld() {
+		
+		return this.startFeld;
+	}
+
+	public String getIp(){
+		return this.ip;
 	}
 	
 	/**
