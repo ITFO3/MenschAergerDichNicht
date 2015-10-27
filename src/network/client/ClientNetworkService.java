@@ -9,6 +9,8 @@ public class ClientNetworkService {
 	
 	private NetworkService networkService;
 	
+	private static ClientNetworkService clientNetworkService;
+	
 	public ClientNetworkService() {
 		this.networkService = NetworkService.getInstance();
 	}
@@ -18,5 +20,13 @@ public class ClientNetworkService {
 		PrintStream os = client.getOutputStream();
 		os.print("FIGURGEANDERT;"+figur.getId() + ";");
 	}
+	
+	public static ClientNetworkService getInstance(){
+		if(clientNetworkService == null){
+			clientNetworkService = new ClientNetworkService();
+		}
+		return clientNetworkService;
+	}
+	
 
 }
