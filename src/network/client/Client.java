@@ -18,9 +18,12 @@ public class Client extends Thread implements Runnable {
 	private static Socket clientSocket;
 	private static PrintStream os;
 	private static DataInputStream is;
+	
+	private ClientNetworkService clientNetworkService;
 
 	public Client(String host, int port) throws UnknownHostException,
 			IOException {
+		clientNetworkService = ClientNetworkService.getInstance();
 		clientSocket = new Socket(host, port);
 		os = new PrintStream(clientSocket.getOutputStream());
 		is = new DataInputStream(clientSocket.getInputStream());
@@ -30,7 +33,8 @@ public class Client extends Thread implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				is.readUTF();
+				String data = is.readUTF();
+				clientNetworkService.empfangeDaten(data);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
