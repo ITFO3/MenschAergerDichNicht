@@ -37,5 +37,9 @@ public class Client extends Thread implements Runnable {
 			}
 		}
 	}
+	
+	public PrintStream getOutputStream() {
+		return os;
+	}
 
 }
