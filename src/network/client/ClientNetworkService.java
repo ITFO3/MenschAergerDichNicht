@@ -5,6 +5,9 @@ import java.io.PrintStream;
 import network.NetworkService;
 import menschaergerdichnicht.Figur;
 
+/**
+ * @author ChrisWun
+ */
 public class ClientNetworkService {
 	
 	private NetworkService networkService;
