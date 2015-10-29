@@ -11,14 +11,14 @@ import java.util.List;
  * @author ChrisWun
  * 
  */
-public class ServerService {
-	private static ServerService instance;
+public class ServerNetworkService {
+	private static ServerNetworkService instance;
 
 	ServerSocket serverSocket;
 
 	List<ClientHandler> clients;
 
-	public ServerService() {
+	public ServerNetworkService() {
 		clients = new ArrayList<ClientHandler>();
 	}
 
@@ -29,10 +29,10 @@ public class ServerService {
 		clientAcceptor.start();
 	}
 
-	public static ServerService getInstance() {
-		if (ServerService.instance == null) {
-			ServerService.instance = new ServerService();
+	public static ServerNetworkService getInstance() {
+		if (ServerNetworkService.instance == null) {
+			ServerNetworkService.instance = new ServerNetworkService();
 		}
-		return ServerService.instance;
+		return ServerNetworkService.instance;
 	}
 }
