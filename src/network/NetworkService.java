@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import network.client.Client;
-import network.server.ServerService;
+import network.server.ServerNetworkService;
 
 /**
  * Stellt die Elementaren Funktionen zum starten eines Servers, sowie zum
@@ -16,7 +16,11 @@ import network.server.ServerService;
 public class NetworkService {
 	Client client;
 
-	ServerService serverService = ServerService.getInstance();
+	public Client getClient() {
+		return client;
+	}
+
+	ServerNetworkService serverService = ServerNetworkService.getInstance();
 
 	public enum NetworkMode {
 		CLIENT, SERVER;
