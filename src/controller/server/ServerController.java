@@ -3,50 +3,32 @@ package menschaergerdichnicht;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Controller {
+public class ServerController {
 
 	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
-	ArrayList<Color> farben = new ArrayList<Color>();
-	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
-	ArrayList<int[]> startFelder = new ArrayList<int[]>();
+
 	private static int spielerZaehler = 0;
 	
 
-	private Controller(String name, String ip) {
-		initialisiereFarben();
-		initialisiereStartfelder();
-		initialisiereZielfelder();
-		initialisiereSpieler(name, ip);
-		// view.setzteAufsSpielfeld(eigeneSpielfiguren, this);
+	private ServerController(List<Spieler> spieler) {
+		
+		Spielfeld model = Spielfeld.getInstanz();
+
+		for(Spieler s : spieler) {
+			
+			s.setHomefelder(model.gibHomefelder());
+			s.setZielfelder(model.gibZielfelder());
+			//todo setze ziellinie
+		}
+		
 	}
 
 	
-	private void initialisiereStartfelder() {
-		
-		startFelder.add(new int[]{-1,-2,-3,-4});
-		startFelder.add(new int[]{-5,-6,-7,-8});
-		startFelder.add(new int[]{-9,-10,-11,-12});
-		startFelder.add(new int[]{-13,-14,-15,-16});
-	}
+	
 
-	private void initialisiereFarben() {
-		farben.add(Color.red);
-		farben.add(Color.green);
-		farben.add(Color.black);
-		farben.add(Color.blue);
-		farben.add(Color.CYAN);
-		farben.add(Color.MAGENTA);
-		farben.add(Color.PINK);
-		farben.add(Color.YELLOW);
-	}
 
-	private void initialisiereZielfelder() {
 
-		zielFelder.add(40);
-		zielFelder.add(10);
-		zielFelder.add(20);
-		zielFelder.add(30);
-	}
+	
 
 	public void beendeSpiel() {
 		
