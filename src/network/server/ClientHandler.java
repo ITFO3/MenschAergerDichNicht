@@ -17,6 +17,7 @@ public class ClientHandler extends Thread {
 	private DataInputStream is;
 	private PrintStream os;
 	private Socket clientSocket;
+	private ServerNetworkService serverService;
 
 	public ClientHandler(Socket clientSocket) {
 		try {
@@ -26,13 +27,17 @@ public class ClientHandler extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		serverService = ServerNetworkService.getInstance();
+		start();
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				is.readUTF();
+				String input = is.readUTF();
+				serverService.processInputData(input);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

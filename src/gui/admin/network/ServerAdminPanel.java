@@ -3,13 +3,18 @@ package gui.admin.network;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import menschaergerdichnicht.Spieler;
 import network.NetworkService;
+import network.server.ServerNetworkService;
 
 /**
  * JPanel zur Serveradministration
@@ -22,8 +27,12 @@ public class ServerAdminPanel extends JPanel {
 	JTextField serverServerPortTextField;
 
 	NetworkService networkService = NetworkService.getInstance();
+	
+	ServerNetworkService serverService = ServerNetworkService.getInstance();
 
 	JLabel connectionStatusLabel;
+	
+	JList<String> connectedSpielerList;
 
 	public ServerAdminPanel() {
 		/*
@@ -52,9 +61,8 @@ public class ServerAdminPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			boolean result = networkService.startServer(Integer
-					.valueOf(serverServerPortTextField.getText()));
+					.valueOf(serverServerPortTextField.getText()), ServerAdminPanel.this);
 			createAndAddConnectionStatusLabel(result);
-
 		}
 
 		/**
@@ -79,5 +87,16 @@ public class ServerAdminPanel extends JPanel {
 			revalidate();
 			repaint();
 		}
+	}
+	
+ 	public void updateConnectedSpielerAndStartServerPanel(List<Spieler> spieler){
+ 		List<String> spielernamen = new ArrayList<String>();
+ 		for (Spieler tempSpieler : spieler) {
+			spielernamen.add(tempSpieler.getName());
+		}
+ 		
+ 		
+ 		connectedSpielerList = new JList(spielernamen.toArray());
+ 		connectedSpielerList.setBounds(125, 100, 200, 20);
 	}
 }
