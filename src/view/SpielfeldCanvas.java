@@ -98,6 +98,19 @@ public class SpielfeldCanvas extends Canvas implements Observer {
 		g.setColor(figur.getColor());
 		g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 	}
+	
+	public void highlightSpielfiguren(List<Figur> figuren) {
+		
+		for(Figur f : figuren) {
+			int position = figur.getPosition() + 16;
+			g.setColor(Color.red);
+			g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
+			g.setColor(Color.black);
+			g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
+			g.setColor(figur.getColor());
+			g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+		}
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {

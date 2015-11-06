@@ -7,10 +7,10 @@ public class Spieler {
 	private Color farbe;
 	private Figur[] figuren;
 	private String name;
-	private int startFeld;
+	private int[] startFeld;
 	private ArrayList<Integer> freieHausfelder = new ArrayList<Integer>();
 	private int ziel;
-	private String ip;
+
 	
 	/**
 	 * Erstellt einen neuen Spieler inklusive der Spielfiguren
@@ -19,12 +19,9 @@ public class Spieler {
 	 * @param c 	Die Farbe des Spielers
 	 * @param ip 
 	 */
-	public Spieler(String name, Color c, int ziel, int[] start, String ip) {
-		this.ip = ip;
+	public Spieler(String name, Color c) {
 		this.farbe = c;
 		this.name = name;
-		this.ziel = ziel;
-		this.startFeld = ziel + 1 > 40 ? ziel + 1 - 40 : ziel + 1;  
 		this.figuren = new Figur[4];
 		
 		for (int i = 0; i < figuren.length; i++) {
@@ -33,15 +30,24 @@ public class Spieler {
 		}
 	}
 	
+	public void setHomefelder(int[] startFeld) {
+		
+		this.startFeld = startFeld;
+	}
+	
+	
+	
+	
+	public void setZielfelder(int[] zielFelder) {
+		
+		this.zielFeld = zielFelder;
+		
+	}
 	public int gibStartFeld() {
 		
 		return this.startFeld;
 	}
 
-	public String getIp(){
-		return this.ip;
-	}
-	
 	/**
 	 * Gibt die Spielerfarbe zurueck
 	 * 
