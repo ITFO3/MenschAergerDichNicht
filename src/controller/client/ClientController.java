@@ -9,39 +9,54 @@ import model.Spielfeld;
 import controller.server.ServerController;
 
 public class ClientController {
-
 	
 	private List<Spieler> spieler;
-	private Spielfeld spielfeld;
-	//muss noch initialisiert werden
+	// muss noch initialisiert werden
 	private ServerController server;
 	
-	void aktualisiereSpielfeld(String ausgewaehlteFigurId, String geschlageneFigurId, int neuePosition) {
-		
+	/**
+	 * 
+	 * @param ausgewaehlteFigurId	
+	 * @param geschlageneFigurId 	optional
+	 * @param neuePosition
+	 */
+	public void aktualisiereSpielfeld(String ausgewaehlteFigurId, String geschlageneFigurId, int neuePosition) 
+	{
 		Figur ausgewaehltFigur = sucheFigur(ausgewaehlteFigurId);
-		Figur geschlageneFigur = null;
-		if(geschlageneFigurId != null) geschlageneFigur = sucheFigur(geschlageneFigurId);
 		
+		Figur geschlageneFigur = null;
+		if(geschlageneFigurId != null) {
+			geschlageneFigur = sucheFigur(geschlageneFigurId);
+		}
 		
 		ausgewaehltFigur.setPosition(neuePosition);
-		if(geschlageneFigur != null)
-			geschlageneFigur.setPosition(geschlageneFigur.getHausFeld());	
+		if(geschlageneFigur != null) {
+			geschlageneFigur.setPosition(geschlageneFigur.getHausFeld());
+		}
 	}
 	
-	void zeigeMoeglichkeiten(List<String> moeglichkeiten, int wurfAnzahl) {
-		
+	/**
+	 * 
+	 * @param moeglichkeiten
+	 * @param wurfAnzahl
+	 */
+	public void zeigeMoeglichkeiten(List<String> moeglichkeiten, int wurfAnzahl) {
 		ArrayList<Figur> figuren = new ArrayList<Figur>(4);
 		
-		for(String figurId : moeglichkeiten) {
-			
+		for(String figurId : moeglichkeiten) {	
 			figuren.add(sucheFigur(figurId));
 		}
 		
-		
+		// Spielfeld Canvas -> highlightSpielfiguren
 	}
 	
+	/**
+	 * Sucht eine Figur auf dem Spielfeld
+	 * @param id
+	 * @return
+	 */
 	private Figur sucheFigur(String id) {
-		for(Figur f : spielfeld.getSpielfiguren().values()) {
+		for(Figur f : Spielfeld.getInstanz().getSpielfiguren().values()) {
 			if(f.getId().equals(id)) 
 				return f;
 		}
