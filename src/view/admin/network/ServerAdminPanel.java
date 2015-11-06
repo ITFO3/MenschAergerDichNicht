@@ -1,4 +1,4 @@
-package gui.admin.network;
+package view.admin.network;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -12,9 +12,9 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import menschaergerdichnicht.Spieler;
-import network.NetworkService;
-import network.server.ServerNetworkService;
+import model.Spieler;
+import controller.NetworkService;
+import controller.server.network.ServerNetworkService;
 
 /**
  * JPanel zur Serveradministration
@@ -60,9 +60,9 @@ public class ServerAdminPanel extends JPanel {
 	private class StartServerButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			boolean result = networkService.startServer(Integer
-					.valueOf(serverServerPortTextField.getText()), ServerAdminPanel.this);
-			createAndAddConnectionStatusLabel(result);
+//			boolean result = networkService.startServer(Integer
+//					.valueOf(serverServerPortTextField.getText()), ServerAdminPanel.this);
+//			createAndAddConnectionStatusLabel(result);
 		}
 
 		/**

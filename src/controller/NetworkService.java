@@ -1,12 +1,11 @@
-package network;
-
-import gui.admin.network.ServerAdminPanel;
+package controller;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import network.client.Client;
-import network.server.ServerNetworkService;
+import controller.client.network.Client;
+import controller.server.network.ServerNetworkService;
+import view.admin.network.ServerAdminPanel;
 
 /**
  * Stellt die Elementaren Funktionen zum starten eines Servers, sowie zum

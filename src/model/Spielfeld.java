@@ -1,4 +1,4 @@
-package menschaergerdichnicht;
+package model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class Spielfeld extends Observable implements Observer {
 	 */
 	private Spielfeld() {
 		spielfiguren = new HashMap<Integer, Figur>();
-		initialisiereHomeFelder();
+		initialisiereHomefelder();
 		initialisiereZielfelder();
 	}
 	

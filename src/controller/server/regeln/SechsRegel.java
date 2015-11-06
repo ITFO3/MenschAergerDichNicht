@@ -1,4 +1,4 @@
-package menschaergerdichnicht.regeln;
+package controller.server.regeln;
 
 /**
  * Diese Regel wird angewendet, wenn eine Sechs gewuerfelt wurde

@@ -1,9 +1,9 @@
-package network.client;
+package controller.client.network;
 
 import java.io.PrintStream;
 
-import network.NetworkService;
-import menschaergerdichnicht.Figur;
+import model.Figur;
+import controller.NetworkService;
 
 /**
  * @author ChrisWun
@@ -43,10 +43,10 @@ public class ClientNetworkService {
 	}
 
 	public void sendeSpielerName(String text) {
-		Client client = networkService.getClient();
-		PrintStream os = client.getOutputStream();
-		os.println("Spielername=" + text + ";");
-		os.flush();
+		//Client client = networkService.getClient();
+		//PrintStream os = client.getOutputStream();
+		//os.println("Spielername=" + text + ";");
+		//os.flush();
 	}
 
 }

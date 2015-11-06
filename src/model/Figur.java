@@ -1,4 +1,4 @@
-package menschaergerdichnicht;
+package model;
 
 import java.awt.Color;
 import java.util.Observable;
@@ -11,18 +11,23 @@ public class Figur extends Observable {
 
 	private Color eigeneFarbe;
 	private String id;
+	
 	private int position;
 	private int hausFeld;
-	private Spieler s;
+	private int startFeld;
+	private int endFeld;
 
 	static private int tempCounter = 1;
 	
-	public Figur(String name, Color c, Spieler s, int hausFeld) {
-		position = 0;
+	public Figur(String name, Color c, int hausFeld, int startFeld, int endFeld) {
 		eigeneFarbe = c;
 		id = name + ":" + tempCounter++;
-		this.s = s;
+		
 		this.hausFeld = hausFeld;
+		this.startFeld = startFeld;
+		this.endFeld = endFeld;
+		
+		// Startet im Haus
 		this.setPosition(hausFeld);
 	}
 	
@@ -42,9 +47,13 @@ public class Figur extends Observable {
 		return position;
 	}
 	
-	public int getStartFeld() {
-		
-		return s.gibStartFeld();
+	public int getStartFeld() 
+	{
+		return this.startFeld;
+	}
+	
+	public int getEndFeld() {
+		return this.endFeld;
 	}
 	
 	public void setPosition(int newPosition) {
