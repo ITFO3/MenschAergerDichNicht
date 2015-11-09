@@ -9,7 +9,6 @@ public class Controller {
 	ArrayList<Color> farben = new ArrayList<Color>();
 	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
 	ArrayList<int[]> startFelder = new ArrayList<int[]>();
-	ArrayList<String> namen = new ArrayList<String>();
 	private static int spielerZaehler = 0;
 	
 
@@ -47,14 +46,6 @@ public class Controller {
 		zielFelder.add(10);
 		zielFelder.add(20);
 		zielFelder.add(30);
-	}
-	
-	private void initialisiereNamen() {
-
-		namen.add("Spieler 1");
-		namen.add("Spieler 2");
-		namen.add("Spieler 3");
-		namen.add("Spieler 4");
 	}
 
 	public void beendeSpiel() {
@@ -121,9 +112,6 @@ public class Controller {
 		return null;
 	}
 
-	
-	
-	
 	/**
 	 * Sucht zunaechst die ausgewaehlte Figur aus und bewegt sie um die
 	 * angegebene Anzahl vor
