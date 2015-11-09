@@ -1,4 +1,4 @@
-package network.server;
+package controller.server.network;
 
 import java.io.DataInputStream;
 import java.io.IOException;

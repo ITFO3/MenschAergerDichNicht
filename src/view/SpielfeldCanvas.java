@@ -1,15 +1,17 @@
-package gui;
+package view;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.ImageIcon;
 
-import menschaergerdichnicht.Figur;
-import menschaergerdichnicht.Spielfeld;
+import model.Figur;
+import model.Spielfeld;
 
 /**
  * Das Canvas auf dem JFrame
@@ -97,6 +99,19 @@ public class SpielfeldCanvas extends Canvas implements Observer {
 		int position = figur.getPosition() + 16;
 		g.setColor(figur.getColor());
 		g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+	}
+	
+	public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
+		
+		for(Figur figur : figuren) {
+			int position = figur.getPosition() + 16;
+			g.setColor(Color.red);
+			g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
+			g.setColor(Color.black);
+			g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
+			g.setColor(figur.getColor());
+			g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+		}
 	}
 
 	@Override

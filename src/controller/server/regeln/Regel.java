@@ -1,4 +1,4 @@
-package menschaergerdichnicht.regeln;
+package controller.server.regeln;
 
 public abstract class Regel implements IRegel {
 	/**

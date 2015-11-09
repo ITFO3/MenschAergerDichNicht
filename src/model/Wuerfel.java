@@ -1,4 +1,4 @@
-package menschaergerdichnicht;
+package model;
 
 /**
  * Der Wuerfel

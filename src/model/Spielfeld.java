@@ -1,5 +1,6 @@
-package menschaergerdichnicht;
+package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,6 +14,9 @@ public class Spielfeld extends Observable implements Observer {
 	 * Die Instanz des Spielfeldes
 	 */
 	private static Spielfeld instanz;
+	
+	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
+	ArrayList<int[]> homeFelder = new ArrayList<int[]>();
 
 	/**
 	 * HashMap mit den Spielfiguren
@@ -26,6 +30,40 @@ public class Spielfeld extends Observable implements Observer {
 	 */
 	private Spielfeld() {
 		spielfiguren = new HashMap<Integer, Figur>();
+		initialisiereHomefelder();
+		initialisiereZielfelder();
+	}
+	
+	
+	private void initialisiereHomefelder() {
+		
+		homeFelder.add(new int[]{-1,-2,-3,-4});
+		homeFelder.add(new int[]{-5,-6,-7,-8});
+		homeFelder.add(new int[]{-9,-10,-11,-12});
+		homeFelder.add(new int[]{-13,-14,-15,-16});
+	}
+	
+	private void initialisiereZielfelder() {
+
+		//Wie Homefelder aufbauen und einen besseren Namen finden
+		zielFelder.add(40);
+		zielFelder.add(10);
+		zielFelder.add(20);
+		zielFelder.add(30);
+	}
+	
+	public int[] gibHomefelder(){
+		
+		int[] homefeld = homeFelder.get(0);
+		homeFelder.remove(0);
+		return homefeld;
+	}
+	
+	public int gibZielfeld(){
+		
+		int zielfeld = zielFelder.get(0);
+		zielFelder.remove(0);
+		return zielfeld;
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package gui.admin.network;
+package view.admin.network;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,8 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import network.NetworkService;
-import network.client.ClientNetworkService;
+import controller.NetworkService;
+import controller.client.network.ClientNetworkService;
 /**
  * JPanel zur Clientadministration
  * 
