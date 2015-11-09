@@ -1,7 +1,7 @@
-package menschaergerdichnicht.regeln;
+package controller.server.regeln;
 
-import menschaergerdichnicht.Figur;
-import menschaergerdichnicht.Spielfeld;
+import model.Figur;
+import model.Spielfeld;
 
 /**
  * Zustandsklasse

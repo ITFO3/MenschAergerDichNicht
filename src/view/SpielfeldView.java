@@ -1,13 +1,10 @@
-package gui;
+package view;
 
 import java.awt.Graphics;
-import java.awt.Panel;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JFrame;
 
-import menschaergerdichnicht.Spielfeld;
+import model.Spielfeld;
 
 public class SpielfeldView extends JFrame {
 	

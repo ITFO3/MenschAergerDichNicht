@@ -1,9 +1,6 @@
-package gui;
+package view;
 
-import java.awt.Color;
-
-import menschaergerdichnicht.Figur;
-import menschaergerdichnicht.Spielfeld;
+import model.Spielfeld;
 
 /**
  * Test-Start-Klasse fuer die GUI

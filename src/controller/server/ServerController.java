@@ -1,51 +1,27 @@
-package menschaergerdichnicht;
+package controller.server;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Controller {
+import model.Figur;
+import model.Spieler;
+import model.Spielfeld;
+import model.Wuerfel;
+
+public class ServerController {
 
 	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
-	ArrayList<Color> farben = new ArrayList<Color>();
-	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
-	ArrayList<int[]> startFelder = new ArrayList<int[]>();
+
 	private static int spielerZaehler = 0;
 	
-
-	private Controller(String name, String ip) {
-		initialisiereFarben();
-		initialisiereStartfelder();
-		initialisiereZielfelder();
-		initialisiereSpieler(name, ip);
-		// view.setzteAufsSpielfeld(eigeneSpielfiguren, this);
-	}
-
-	
-	private void initialisiereStartfelder() {
+	private ServerController(List<Spieler> spieler) {
 		
-		startFelder.add(new int[]{-1,-2,-3,-4});
-		startFelder.add(new int[]{-5,-6,-7,-8});
-		startFelder.add(new int[]{-9,-10,-11,-12});
-		startFelder.add(new int[]{-13,-14,-15,-16});
-	}
+		Spielfeld model = Spielfeld.getInstanz();
 
-	private void initialisiereFarben() {
-		farben.add(Color.red);
-		farben.add(Color.green);
-		farben.add(Color.black);
-		farben.add(Color.blue);
-		farben.add(Color.CYAN);
-		farben.add(Color.MAGENTA);
-		farben.add(Color.PINK);
-		farben.add(Color.YELLOW);
-	}
-
-	private void initialisiereZielfelder() {
-
-		zielFelder.add(40);
-		zielFelder.add(10);
-		zielFelder.add(20);
-		zielFelder.add(30);
+		for(Spieler s : spieler) {
+		}
+		
 	}
 
 	public void beendeSpiel() {
@@ -53,18 +29,18 @@ public class Controller {
 		spielerZaehler = 0;
 	}
 	
-	public void initialisiereSpieler(String name, String ip) {
-
-		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
-		Color c = farben.get(zufallsZahl);
-		farben.remove(zufallsZahl);
-
-		int zielfeld = zielFelder.get(spielerZaehler);
-		
-		int[] startfelder = startFelder.get(spielerZaehler);
-		
-		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
-		spielerZaehler++;
+	public void initialisiereSpieler(String name) 
+	{
+//		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
+//		Color c = farben.get(zufallsZahl);
+//		farben.remove(zufallsZahl);
+//
+//		int zielfeld = zielFelder.get(spielerZaehler);
+//		
+//		int[] startfelder = startFelder.get(spielerZaehler);
+//		
+//		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
+//		spielerZaehler++;
 	}
 
 	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
@@ -78,12 +54,11 @@ public class Controller {
 			bewegbareFiguren.add(figur);
 		} 
 		
-		
 		return bewegbareFiguren;
 	}
 
 	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
-		String ip = s.getIp();
+		// TODO
 	}
 
 	/**
@@ -101,10 +76,10 @@ public class Controller {
 			ArrayList<Figur> figuren = s.getFiguren();
 
 			for (int j = 0; j < figuren.size(); j++) {
-				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
-					ende = false;
-					break;
-				}
+//				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
+//					ende = false;
+//					break;
+//				}
 			}
 			
 			if (ende) return s;
@@ -179,17 +154,17 @@ public class Controller {
 		
 	}
 
-	public void erstelleSpiel(int anzahl, String name) {
-		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
-		Controller c = new Controller(name, null);
-	}
-
-	public boolean treteSpielBei(String name, String ip) {
-		
-		if(spieler.size() < 4) initialisiereSpieler(name, ip);
-		else return false;
-		
-		return true;
-	}
+//	public void erstelleSpiel(int anzahl, String name) {
+//		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
+//		Controller c = new Controller(name, null);
+//	}
+//
+//	public boolean treteSpielBei(String name, String ip) {
+//		
+//		if(spieler.size() < 4) initialisiereSpieler(name, ip);
+//		else return false;
+//		
+//		return true;
+//	}
 
 }
