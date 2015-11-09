@@ -1,51 +1,34 @@
-package menschaergerdichnicht;
+package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class Spieler {
+public class Spieler 
+{
+	private String name;
 	private Color farbe;
 	private Figur[] figuren;
-	private String name;
-	private int[] startFeld;
-	private ArrayList<Integer> freieHausfelder = new ArrayList<Integer>();
-	private int ziel;
+	private int[] zielFelder;
 
-	
 	/**
 	 * Erstellt einen neuen Spieler inklusive der Spielfiguren
 	 * 
-	 * @param name  Der Spielername
-	 * @param c 	Die Farbe des Spielers
-	 * @param ip 
+	 * @param name  		Der Spielername
+	 * @param c 			Die Farbe des Spielers
+	 * @param hausFeld
+	 * @param startFeld
+	 * @param endFeld
+	 * @param zielFelder
 	 */
-	public Spieler(String name, Color c) {
+	public Spieler(String name, Color c, int hausFeld, int startFeld, int endFeld, int[] zielFelder) {
 		this.farbe = c;
 		this.name = name;
 		this.figuren = new Figur[4];
+		this.zielFelder = zielFelder;
 		
 		for (int i = 0; i < figuren.length; i++) {
-			
-			figuren[i] = new Figur(name, c, this, start[i]);
+			figuren[i] = new Figur(name, c, hausFeld, startFeld, endFeld);
 		}
-	}
-	
-	public void setHomefelder(int[] startFeld) {
-		
-		this.startFeld = startFeld;
-	}
-	
-	
-	
-	
-	public void setZielfelder(int[] zielFelder) {
-		
-		this.zielFeld = zielFelder;
-		
-	}
-	public int gibStartFeld() {
-		
-		return this.startFeld;
 	}
 
 	/**

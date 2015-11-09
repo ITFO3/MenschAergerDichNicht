@@ -1,8 +1,8 @@
-package menschaergerdichnicht.regeln;
+package controller.server.regeln;
 
 import java.util.HashMap;
 
-import menschaergerdichnicht.Figur;
+import model.Figur;
 
 public class FeldFreiRegel extends Regel {
 

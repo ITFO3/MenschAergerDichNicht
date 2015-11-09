@@ -1,10 +1,11 @@
-package network;
+package controller;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import network.client.Client;
-import network.server.ServerNetworkService;
+import controller.client.network.Client;
+import controller.server.network.ServerNetworkService;
+import view.admin.network.ServerAdminPanel;
 
 /**
  * Stellt die Elementaren Funktionen zum starten eines Servers, sowie zum
@@ -15,6 +16,8 @@ import network.server.ServerNetworkService;
  */
 public class NetworkService {
 	Client client;
+	
+	ServerAdminPanel adminPanel;
 
 	public Client getClient() {
 		return client;
@@ -60,7 +63,8 @@ public class NetworkService {
 		this.networkMode = networkMode;
 	}
 
-	public boolean startServer(int port) {
+	public boolean startServer(int port, ServerAdminPanel serverAdminPanel) {
+		adminPanel = serverAdminPanel;
 		try {
 			serverService.startServer(port);
 			networkMode = NetworkMode.SERVER;

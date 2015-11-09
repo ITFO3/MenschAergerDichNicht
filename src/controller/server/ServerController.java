@@ -1,7 +1,13 @@
-package menschaergerdichnicht;
+package controller.server;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
+import model.Figur;
+import model.Spieler;
+import model.Spielfeld;
+import model.Wuerfel;
 
 public class ServerController {
 
@@ -9,44 +15,32 @@ public class ServerController {
 
 	private static int spielerZaehler = 0;
 	
-
 	private ServerController(List<Spieler> spieler) {
 		
 		Spielfeld model = Spielfeld.getInstanz();
 
 		for(Spieler s : spieler) {
-			
-			s.setHomefelder(model.gibHomefelder());
-			s.setZielfelder(model.gibZielfelder());
-			//todo setze ziellinie
 		}
 		
 	}
-
-	
-	
-
-
-
-	
 
 	public void beendeSpiel() {
 		
 		spielerZaehler = 0;
 	}
 	
-	public void initialisiereSpieler(String name, String ip) {
-
-		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
-		Color c = farben.get(zufallsZahl);
-		farben.remove(zufallsZahl);
-
-		int zielfeld = zielFelder.get(spielerZaehler);
-		
-		int[] startfelder = startFelder.get(spielerZaehler);
-		
-		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
-		spielerZaehler++;
+	public void initialisiereSpieler(String name) 
+	{
+//		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
+//		Color c = farben.get(zufallsZahl);
+//		farben.remove(zufallsZahl);
+//
+//		int zielfeld = zielFelder.get(spielerZaehler);
+//		
+//		int[] startfelder = startFelder.get(spielerZaehler);
+//		
+//		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
+//		spielerZaehler++;
 	}
 
 	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
@@ -60,12 +54,11 @@ public class ServerController {
 			bewegbareFiguren.add(figur);
 		} 
 		
-		
 		return bewegbareFiguren;
 	}
 
 	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
-		String ip = s.getIp();
+		// TODO
 	}
 
 	/**
@@ -83,10 +76,10 @@ public class ServerController {
 			ArrayList<Figur> figuren = s.getFiguren();
 
 			for (int j = 0; j < figuren.size(); j++) {
-				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
-					ende = false;
-					break;
-				}
+//				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
+//					ende = false;
+//					break;
+//				}
 			}
 			
 			if (ende) return s;
@@ -161,17 +154,17 @@ public class ServerController {
 		
 	}
 
-	public void erstelleSpiel(int anzahl, String name) {
-		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
-		Controller c = new Controller(name, null);
-	}
-
-	public boolean treteSpielBei(String name, String ip) {
-		
-		if(spieler.size() < 4) initialisiereSpieler(name, ip);
-		else return false;
-		
-		return true;
-	}
+//	public void erstelleSpiel(int anzahl, String name) {
+//		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
+//		Controller c = new Controller(name, null);
+//	}
+//
+//	public boolean treteSpielBei(String name, String ip) {
+//		
+//		if(spieler.size() < 4) initialisiereSpieler(name, ip);
+//		else return false;
+//		
+//		return true;
+//	}
 
 }

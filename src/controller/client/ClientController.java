@@ -1,5 +1,12 @@
-import java.util.ArrayList;
+package controller.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Figur;
+import model.Spieler;
+import model.Spielfeld;
+import controller.server.ServerController;
 
 public class ClientController {
 
@@ -9,7 +16,7 @@ public class ClientController {
 	//muss noch initialisiert werden
 	private ServerController server;
 	
-	aktualisiereSpielfeld(String ausgewaehlteFigurId, String geschlageneFigurId, int neuePosition) {
+	void aktualisiereSpielfeld(String ausgewaehlteFigurId, String geschlageneFigurId, int neuePosition) {
 		
 		Figur ausgewaehltFigur = sucheFigur(ausgewaehlteFigurId);
 		Figur geschlageneFigur = null;
@@ -17,10 +24,11 @@ public class ClientController {
 		
 		
 		ausgewaehltFigur.setPosition(neuePosition);
-		if(geschlageneFigur != null) geschlageneFigur.setPosition(geschlageneFigur.getHausfeld());	
+		if(geschlageneFigur != null)
+			geschlageneFigur.setPosition(geschlageneFigur.getHausFeld());	
 	}
 	
-	zeigeMoeglichkeiten(List<String> moeglichkeiten, int wurfAnzahl) {
+	void zeigeMoeglichkeiten(List<String> moeglichkeiten, int wurfAnzahl) {
 		
 		ArrayList<Figur> figuren = new ArrayList<Figur>(4);
 		
@@ -32,12 +40,13 @@ public class ClientController {
 		
 	}
 	
-	
 	private Figur sucheFigur(String id) {
-		for(Figur f : spielfeld.getFiguren()) {
-			if(f.getId().equals(figurId)) 
+		for(Figur f : spielfeld.getSpielfiguren().values()) {
+			if(f.getId().equals(id)) 
 				return f;
 		}
+		
+		return null;
 	}
 	
 }
