@@ -62,6 +62,3 @@ public class Spieler
 		return figuren;
 	}
 }
-
-
-
