@@ -51,8 +51,17 @@ public class TestRun {
 //			}
 //		}
 		
+		Figur figur2 = new Figur("Test2", Color.BLUE, -2 , 0, 39);
+		figur2.addObserver(model);
+		figur2.setPosition(-2);
+		Figur figur3 = new Figur("Test3", Color.YELLOW, -3 , 0, 39);
+		figur3.addObserver(model);
+		figur3.setPosition(-3);
+		
 		ArrayList<String> moeglichkeiten = new ArrayList<String>();
 		moeglichkeiten.add(figurId);
+		moeglichkeiten.add(figur2.getId());
+		moeglichkeiten.add(figur3.getId());
 		
 		controller.zeigeMoeglichkeiten(moeglichkeiten, 4);
 	}
