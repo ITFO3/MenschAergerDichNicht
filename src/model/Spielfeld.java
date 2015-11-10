@@ -17,6 +17,18 @@ public class Spielfeld extends Observable implements Observer {
 	
 	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
 	ArrayList<int[]> homeFelder = new ArrayList<int[]>();
+	
+	ArrayList<Figur> moeglichkeiten = new ArrayList<Figur>();
+
+	public ArrayList<Figur> getMoeglichkeiten() {
+		return moeglichkeiten;
+	}
+
+
+	public void setMoeglichkeiten(ArrayList<Figur> moeglichkeiten) {
+		this.moeglichkeiten = moeglichkeiten;
+	}
+
 
 	/**
 	 * HashMap mit den Spielfiguren
@@ -112,4 +124,7 @@ public class Spielfeld extends Observable implements Observer {
 		// View benachrichtigen
 		notifyObservers(this);
 	}
+
+
+
 }
