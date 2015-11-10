@@ -1,5 +1,7 @@
 package network;
 
+import gui.admin.network.ServerAdminPanel;
+
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -15,6 +17,8 @@ import network.server.ServerNetworkService;
  */
 public class NetworkService {
 	Client client;
+	
+	ServerAdminPanel adminPanel;
 
 	public Client getClient() {
 		return client;
@@ -60,7 +64,8 @@ public class NetworkService {
 		this.networkMode = networkMode;
 	}
 
-	public boolean startServer(int port) {
+	public boolean startServer(int port, ServerAdminPanel serverAdminPanel) {
+		adminPanel = serverAdminPanel;
 		try {
 			serverService.startServer(port);
 			networkMode = NetworkMode.SERVER;

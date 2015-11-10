@@ -1,15 +1,21 @@
 package gui.admin.network;
 
 import java.awt.Color;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import menschaergerdichnicht.Spieler;
 import network.NetworkService;
+import network.server.ServerNetworkService;
 
 /**
  * JPanel zur Serveradministration
@@ -22,8 +28,16 @@ public class ServerAdminPanel extends JPanel {
 	JTextField serverServerPortTextField;
 
 	NetworkService networkService = NetworkService.getInstance();
+	
+	ServerNetworkService serverService = ServerNetworkService.getInstance();
 
 	JLabel connectionStatusLabel;
+	
+	JList<String> connectedSpielerList;
+	
+	JButton startGameButton;
+	
+	public static ServerAdminPanel instance;
 
 	public ServerAdminPanel() {
 		/*
@@ -46,15 +60,16 @@ public class ServerAdminPanel extends JPanel {
 		startServerButton.setBounds(125, 40, 150, 30);
 
 		setLayout(null);
+		
+		instance = this;
 	}
 
 	private class StartServerButtonListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			boolean result = networkService.startServer(Integer
-					.valueOf(serverServerPortTextField.getText()));
+					.valueOf(serverServerPortTextField.getText()), ServerAdminPanel.this);
 			createAndAddConnectionStatusLabel(result);
-
 		}
 
 		/**
@@ -75,9 +90,45 @@ public class ServerAdminPanel extends JPanel {
 			}
 			connectionStatusLabel.setBounds(125, 80, 200, 20);
 			connectionStatusLabel.setVisible(true);
+			
+			if(result){
+				startGameButton = new JButton("Spiel starten");
+				startGameButton.addActionListener(new StartGameButtonListener());
+				startGameButton.setBounds(125, 100, 150, 30);
+				startGameButton.setVisible(true);
+			}
+
 			add(connectionStatusLabel);
+			add(startGameButton);
 			revalidate();
 			repaint();
 		}
+	}
+	
+	private class StartGameButtonListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// Do stuff here.
+		}
+		
+	}
+	
+ 	public void updateConnectedSpielerAndStartServerPanel(List<Spieler> spieler){
+ 		List<String> spielernamen = new ArrayList<String>();
+ 		for (Spieler tempSpieler : spieler) {
+			spielernamen.add(tempSpieler.getName());
+		}
+ 		JLabel connectedSpielerListLabel = new JLabel("Verbundene Spieler:");
+ 		connectedSpielerListLabel.setBounds(125, 125, 200, 20);
+ 		connectedSpielerList = connectedSpielerList == null ? new JList(spielernamen.toArray()) : connectedSpielerList;
+ 		connectedSpielerList.setBounds(125, 145, 200, 20);
+ 		
+ 		this.add(connectedSpielerListLabel);
+ 		this.add(connectedSpielerList);
+ 		connectedSpielerList.revalidate();
+ 		connectedSpielerList.repaint();
+ 		revalidate();
+		repaint();
 	}
 }

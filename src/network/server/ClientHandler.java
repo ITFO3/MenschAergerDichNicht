@@ -1,7 +1,9 @@
 package network.server;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -14,25 +16,30 @@ import java.net.Socket;
  */
 public class ClientHandler extends Thread {
 
-	private DataInputStream is;
+	private BufferedReader is;
 	private PrintStream os;
 	private Socket clientSocket;
+	private ServerNetworkService serverService;
 
 	public ClientHandler(Socket clientSocket) {
 		try {
 			this.clientSocket = clientSocket;
-			is = new DataInputStream(clientSocket.getInputStream());
+			is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			os = new PrintStream(clientSocket.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		serverService = ServerNetworkService.getInstance();
+		start();
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				is.readUTF();
+				String input = is.readLine();
+				serverService.processInputData(input);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

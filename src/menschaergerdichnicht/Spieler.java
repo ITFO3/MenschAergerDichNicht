@@ -27,10 +27,10 @@ public class Spieler {
 		this.startFeld = ziel + 1 > 40 ? ziel + 1 - 40 : ziel + 1;  
 		this.figuren = new Figur[4];
 		
-		for (int i = 0; i < figuren.length; i++) {
-			
-			figuren[i] = new Figur(name, c, this, start[i]);
-		}
+//		for (int i = 0; i < figuren.length; i++) {
+//			
+//			figuren[i] = new Figur(name, c, this, start[i]);
+//		}
 	}
 	
 	public int gibStartFeld() {

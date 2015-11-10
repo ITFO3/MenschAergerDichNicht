@@ -1,7 +1,9 @@
 package network.client;
 
+import java.io.IOException;
 import java.io.PrintStream;
 
+import network.DataObjectEnum;
 import network.NetworkService;
 import menschaergerdichnicht.Figur;
 
@@ -19,9 +21,9 @@ public class ClientNetworkService {
 	}
 
 	public void sendeFigur(Figur figur) {
-		Client client = networkService.getClient();
-		PrintStream os = client.getOutputStream();
-		os.print("FIGURGEANDERT;" + figur.getId() + ";");
+//		Client client = networkService.getClient();
+//		PrintStream os = client.getOutputStream();
+//		os.print("FIGURGEANDERT;" + figur.getId() + ";");
 	}
 
 	public static ClientNetworkService getInstance() {
@@ -40,6 +42,13 @@ public class ClientNetworkService {
 		} else if (aenderungsTyp.equals("ZUGMOEGLICHKEITEN")) {
 			// ClientController zeigeMoeglichkeiten
 		}
+	}
+
+	public void sendeSpielerName(String text) {
+		Client client = networkService.getClient();
+		PrintStream os = client.getOutputStream();
+		os.println(DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";");
+		os.flush();
 	}
 
 }
