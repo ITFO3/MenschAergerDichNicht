@@ -12,22 +12,23 @@ import javax.swing.JTextField;
 
 import controller.NetworkService;
 import controller.client.network.ClientNetworkService;
+
 /**
  * JPanel zur Clientadministration
  * 
  * @author ChrisWun
- *
+ * 
  */
-public class ClientAdminPanel extends JPanel{
+public class ClientAdminPanel extends JPanel {
 
 	JTextField clientServerIpTextfield;
 
 	JTextField clientServerPortTextField;
-	
+
 	JTextField clientSpielernameTextField;
-	
+
 	NetworkService networkService = NetworkService.getInstance();
-	
+
 	JLabel connectionStatusLabel;
 
 	public ClientAdminPanel() {
@@ -36,7 +37,7 @@ public class ClientAdminPanel extends JPanel{
 		 */
 		JPanel serverIpPanel = new JPanel();
 		JLabel serverIpLabel = new JLabel("Server IP:");
-		serverIpLabel.setPreferredSize(new Dimension(70,30));
+		serverIpLabel.setPreferredSize(new Dimension(70, 30));
 		clientServerIpTextfield = new JTextField(10);
 		serverIpPanel.add(serverIpLabel);
 		serverIpPanel.add(clientServerIpTextfield);
@@ -47,7 +48,7 @@ public class ClientAdminPanel extends JPanel{
 		 */
 		JPanel serverPortPanel = new JPanel();
 		JLabel serverPortLabel = new JLabel("Server Port:");
-		serverPortLabel.setPreferredSize(new Dimension(70,30));
+		serverPortLabel.setPreferredSize(new Dimension(70, 30));
 		clientServerPortTextField = new JTextField(5);
 		serverPortPanel.add(serverPortLabel);
 		serverPortPanel.add(clientServerPortTextField);
@@ -58,18 +59,19 @@ public class ClientAdminPanel extends JPanel{
 		 */
 		JPanel spielerNamePanel = new JPanel();
 		JLabel spielerNameLabel = new JLabel("Spielername:");
-		spielerNameLabel.setPreferredSize(new Dimension(70,30));
+		spielerNameLabel.setPreferredSize(new Dimension(70, 30));
 		clientSpielernameTextField = new JTextField(10);
 		spielerNamePanel.add(spielerNameLabel);
 		spielerNamePanel.add(clientSpielernameTextField);
 		spielerNamePanel.setBounds(72, 60, 200, 30);
-		
+
 		/*
 		 * Connection Button
 		 */
 		JButton connectButton = new JButton("Connect");
 		connectButton.addActionListener(new ConnectButtonListener());
-		connectButton.setBounds(130,95,155,30);
+
+		connectButton.setBounds(130, 95, 155, 30);
 
 		setSize(400, 100);
 		setLayout(null);
@@ -78,28 +80,34 @@ public class ClientAdminPanel extends JPanel{
 		add(spielerNamePanel);
 		add(connectButton);
 	}
-	
+
 	private class ConnectButtonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			boolean result = networkService.connectToServer(clientServerIpTextfield.getText(), Integer.valueOf(clientServerPortTextField.getText()));
-			ClientNetworkService.getInstance().sendeSpielerName(clientSpielernameTextField.getText());
+			boolean result = networkService.connectToServer(
+					clientServerIpTextfield.getText(),
+					Integer.valueOf(clientServerPortTextField.getText()));
+			ClientNetworkService.getInstance().sendeSpielerName(
+					clientSpielernameTextField.getText());
 			createAndAddConnectionStatusLabel(result);
 		}
-		
+
 		/**
-		 * Erstellt und fuegt ein Label zur Anzeige hinzu, ob der Server erfolgreich oder nicht erfolgreich gestartet wurde.
+		 * Erstellt und fuegt ein Label zur Anzeige hinzu, ob der Server
+		 * erfolgreich oder nicht erfolgreich gestartet wurde.
 		 */
 		private void createAndAddConnectionStatusLabel(boolean result) {
-			if(connectionStatusLabel == null){
+			if (connectionStatusLabel == null) {
 				connectionStatusLabel = new JLabel();
 			}
 			if (result) {
-				connectionStatusLabel.setText("Verbindung zum Server erfolgreich");
+				connectionStatusLabel
+						.setText("Verbindung zum Server erfolgreich");
 				connectionStatusLabel.setForeground(Color.GREEN);
 			} else {
-				connectionStatusLabel.setText("Verbindung zum Server fehlgeschlagen");
+				connectionStatusLabel
+						.setText("Verbindung zum Server fehlgeschlagen");
 				connectionStatusLabel.setForeground(Color.RED);
 			}
 			connectionStatusLabel.setBounds(110, 130, 230, 20);
