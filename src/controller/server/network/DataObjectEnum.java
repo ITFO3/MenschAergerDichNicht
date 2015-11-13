@@ -24,6 +24,11 @@ public enum DataObjectEnum {
 	 * Beinhaltet auch die gewuerfelte Zahl.
 	 * 
 	 * Bsp.: MOEGLICHKEITEN={Test:1,Test:3},4
+	 * 
+	 * Aufruf im Clienten:
+	 * 
+	 * figurenIds = new ArrayList<String>();
+	 * ClientController.zeigeMoeglichkeiten(figurenIds, wurfanzahl);
 	 */
 	MOEGLICHKEITEN,
 	/*
@@ -39,6 +44,9 @@ public enum DataObjectEnum {
 	 * Beinhaltet die Id der Figur und die neue Position.
 	 * 
 	 * Bsp.: FIGURGEAENDERT=Test:3,19
+	 * 
+	 * Aufruf im Clienten:
+	 * ClientController.aktualisiereSpielfeld(figurId, null, neuePosition);
 	 */
 	FIGURGEAENDERT;
 }
