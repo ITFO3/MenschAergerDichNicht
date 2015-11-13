@@ -69,21 +69,28 @@ public class ServerController {
 	 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
 	 */
 	public Spieler ueberpruefeSpielende() {
-		boolean ende = true;
-		
-		for (int i = 0; i < spieler.size(); i++) {
-			Spieler s = spieler.get(i);
-			ArrayList<Figur> figuren = s.getFiguren();
-
-			for (int j = 0; j < figuren.size(); j++) {
-//				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
-//					ende = false;
+//		boolean ende = true;
+//		boolean gewonnen = true;
+//		
+//		
+//		for (int i = 0; i < spieler.size(); i++) {
+//			Spieler s = spieler.get(i);
+//			ArrayList<Figur> figuren = s.getFiguren();
+//			gewonnen = true;
+//			
+//			for (int j = 0; j < figuren.size(); j++) {
+//				if(figuren.get(j).getPosition() < f.getEndFeld()) {
+//					gewonnen = false;
 //					break;
 //				}
-			}
-			
-			if (ende) return s;
-		}
+////				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
+////					ende = false;
+////					break;
+////				}
+//			}
+//			
+//			if (gewonnen) return s;
+//		}
 		return null;
 	}
 
