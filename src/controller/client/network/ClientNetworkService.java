@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import model.Figur;
 import controller.NetworkService;
+import controller.server.network.DataObjectEnum;
 
 /**
  * @author ChrisWun
@@ -43,10 +44,10 @@ public class ClientNetworkService {
 	}
 
 	public void sendeSpielerName(String text) {
-		//Client client = networkService.getClient();
-		//PrintStream os = client.getOutputStream();
-		//os.println("Spielername=" + text + ";");
-		//os.flush();
+		Client client = networkService.getClient();
+		PrintStream os = client.getOutputStream();
+		os.println(DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";");
+		os.flush();
 	}
 
 }
