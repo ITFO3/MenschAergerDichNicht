@@ -45,4 +45,8 @@ public class ClientHandler extends Thread {
 			}
 		}
 	}
+	
+	public PrintStream getOutputStream() {
+		return os;
+	}
 }
