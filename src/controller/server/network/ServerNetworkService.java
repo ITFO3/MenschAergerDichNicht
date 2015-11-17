@@ -1,20 +1,29 @@
 package controller.server.network;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import model.Spieler;
+import view.admin.network.ServerAdminPanel;
 
 /**
- * Stellt die Grundlegenden Funktionalitaeten zum erstellen eines Servers bereit.
+ * Stellt die Grundlegenden Funktionalitaeten zum erstellen eines Servers
+ * bereit.
  * 
  * @author ChrisWun
  * 
  */
 public class ServerNetworkService {
-	public enum ServerStatus{
+
+	List<Spieler> connectedPlayer = new ArrayList<Spieler>();
+
+	public enum ServerStatus {
 		NOT_RUNNING, RUNNING;
 	}
 
@@ -26,9 +35,9 @@ public class ServerNetworkService {
 		}
 		return ServerNetworkService.instance;
 	}
-	
+
 	List<ClientHandler> clients;
-	
+
 	ServerSocket serverSocket;
 
 	ServerStatus serverStatus;
@@ -57,16 +66,36 @@ public class ServerNetworkService {
 	public void processInputData(String input) {
 		String keyValuePairs[] = input.split(";");
 		Map<String, String> orderedKeyValues = new HashMap<String, String>();
-		
-		for(String keyValuePair : keyValuePairs){
+
+		for (String keyValuePair : keyValuePairs) {
 			String keyValuePairSeperated[] = keyValuePair.split("=");
-			orderedKeyValues.put(keyValuePairSeperated[0], keyValuePairSeperated[1]);
+			orderedKeyValues.put(keyValuePairSeperated[0],
+					keyValuePairSeperated[1]);
 		}
-		
+
 		processInput(orderedKeyValues);
 	}
 
 	private void processInput(Map<String, String> orderedKeyValues) {
-		
+		Set<String> keySet = orderedKeyValues.keySet();
+
+		for (String key : keySet) {
+			DataObjectEnum dataObject = DataObjectEnum.valueOf(key);
+			switch (dataObject) {
+			case SPIELERNAME:
+				processSpielernameInput(orderedKeyValues.get(key));
+				break;
+			default:
+				// Sollte nicht auftreten
+				break;
+			}
+		}
+	}
+
+	private void processSpielernameInput(String spielerName) {
+		//Spieler spieler = new Spieler(spielerName, Color.red, -1, 0, 40, {1, 2});
+		//connectedPlayer.add(spieler);
+		//ServerAdminPanel.instance
+		//		.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
 	}
 }

@@ -62,11 +62,7 @@ public class Spieler
 		return figuren;
 	}
 	
-	
 	public int[] getZielfelder() {
 		return this.zielFelder;
 	}
 }
-
-
-
