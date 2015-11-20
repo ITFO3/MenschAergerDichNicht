@@ -31,32 +31,12 @@ public class ServerNetworkServiceTest {
 		figur.addObserver(model);
 		figur.setPosition(-1);
 
-		networkService.startServer(8181, null);
 		Thread.sleep(1000);
-		networkService.connectToServer("localhost", 8181);
+		networkService.connectToServer("10.0.10.15", 8181);
 		Thread.sleep(1000);
-		ClientHandler client = serverNetworkService.clients.get(0);
-		PrintStream os = client.getOutputStream();
-
-		// Positionen verschieben
-		int j = 10;
-		for (int i = 0; i <= 40; i++) {
-			try {
-				String data = DataObjectEnum.FIGURGEAENDERT.toString() + "="
-						+ figur.getId() + "," + i;
-
-				os.println(data);
-				os.flush();
-				j++;
-
-				if (j > 40) {
-					j = 1;
-				}
-
-				Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
+		
+		while(true) {
+			
 		}
 	}
 }
