@@ -1,7 +1,9 @@
 package controller.client.network;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -17,7 +19,7 @@ public class Client extends Thread implements Runnable {
 
 	private static Socket clientSocket;
 	private static PrintStream os;
-	private static DataInputStream is;
+	private static BufferedReader is;
 	
 	private ClientNetworkService clientNetworkService;
 
@@ -26,14 +28,14 @@ public class Client extends Thread implements Runnable {
 		clientNetworkService = ClientNetworkService.getInstance();
 		clientSocket = new Socket(host, port);
 		os = new PrintStream(clientSocket.getOutputStream());
-		is = new DataInputStream(clientSocket.getInputStream());
+		is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				String data = is.readUTF();
+				String data = is.readLine();
 				clientNetworkService.empfangeDaten(data);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

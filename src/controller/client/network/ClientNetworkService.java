@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import model.Figur;
 import controller.NetworkService;
+import controller.client.ClientController;
 import controller.server.network.DataObjectEnum;
 
 /**
@@ -32,14 +33,20 @@ public class ClientNetworkService {
 		return clientNetworkService;
 	}
 
+	// FIGURGEAENDERT=1,2;FIGUR
+	
 	public void empfangeDaten(String data) {
 		String[] seperated = data.split(";");
-		String aenderungsTyp = seperated[0];
-
-		if (aenderungsTyp.equals("FIGURGEANDERT")) {
-			// ClientController aktualisiereSpielfeld
-		} else if (aenderungsTyp.equals("ZUGMOEGLICHKEITEN")) {
-			// ClientController zeigeMoeglichkeiten
+		
+		for (String seperat : seperated) {
+			String[] value = seperat.split("=");
+			String aenderungsTyp = value[0];
+			
+			if (aenderungsTyp.equals("FIGURGEAENDERT")) {
+				figurGeaendert(value[1]);
+			} else if (aenderungsTyp.equals("ZUGMOEGLICHKEITEN")) {
+				// ClientController zeigeMoeglichkeiten
+			}
 		}
 	}
 
@@ -50,4 +57,14 @@ public class ClientNetworkService {
 		os.flush();
 	}
 
+	private void figurGeaendert(String daten) {
+		// Bsp: Test:3,19
+		
+		String[] seperated = daten.split(",");
+		String id = seperated[0];
+		Integer neuePosition = Integer.valueOf(seperated[1]);
+		
+		ClientController.getInstance().aktualisiereSpielfeld(id, null, neuePosition);
+	}
+	
 }
