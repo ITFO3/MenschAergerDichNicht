@@ -4,6 +4,10 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -16,10 +20,12 @@ import model.Spielfeld;
 /**
  * Das Canvas auf dem JFrame
  */
-public class SpielfeldCanvas extends Canvas implements Observer {
+public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	private static final int height = 600;
 	private static final int width = 600;
-
+	int click_X_Position = 0;
+	int click_Y_Position = 0;
+	List<Figur> moeglichkeiten;
 	static Spielfeld model;
 	private static SpielfeldCanvas instanz;
 
@@ -32,6 +38,7 @@ public class SpielfeldCanvas extends Canvas implements Observer {
 	public SpielfeldCanvas(Spielfeld model) {
 		this.model = model;
 		this.model.addObserver(this);
+		addMouseListener(this);
 	}
 
 	/**
@@ -93,6 +100,7 @@ public class SpielfeldCanvas extends Canvas implements Observer {
 		}
 		highlightSpielfiguren(g, model.getMoeglichkeiten());
 		g.finalize();
+		getSelectedFigur();
 	}
 
 	/**
@@ -108,17 +116,29 @@ public class SpielfeldCanvas extends Canvas implements Observer {
 	}
 
 	public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
-
+		moeglichkeiten = new ArrayList<Figur>();
+		moeglichkeiten.addAll(figuren);
 		for (Figur figur : figuren) {
 			int position = figur.getPosition() + 16;
-			g.setColor(Color.red);
-			g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
-			g.setColor(Color.black);
-			g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
-			g.setColor(figur.getColor());
-			g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+			g.setColor(Color.GREEN);
+			g.fillOval(xPositionen[position]+8, yPositionen[position]+8, 25, 25);
+//			g.setColor(Color.red);
+//			g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
+//			g.setColor(Color.black);
+//			g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
+//			g.setColor(figur.getColor());
+//			g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 		}
 	}
+	
+	public void getSelectedFigur() {
+		for(Figur f : moeglichkeiten) {
+			int position = f.getPosition();
+		int figPosition = yPositionen[position];
+		
+		}
+	}
+	
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -136,6 +156,39 @@ public class SpielfeldCanvas extends Canvas implements Observer {
 		}
 
 		return instanz;
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		System.out.println("X: "+arg0.getX()+ " Y: "+arg0.getY());
+		System.out.println("Obj: "+arg0.getComponent());
+		click_X_Position = arg0.getX();
+		click_Y_Position = arg0.getY();
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
