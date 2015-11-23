@@ -1,18 +1,8 @@
 package controller.client;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.image.ImageObserver;
-import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.SpielfeldCanvas;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
@@ -24,7 +14,15 @@ public class ClientController {
 	// muss noch initialisiert werden
 	private ServerController server;
 
-
+	private static ClientController instance;
+	
+	public static ClientController getInstance() {
+		if (instance == null) {
+			instance = new ClientController();
+		}
+		
+		return instance;
+	}
 	
 	/**
 	 * 
