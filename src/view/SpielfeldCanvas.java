@@ -3,8 +3,9 @@ package view;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
+import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -111,8 +112,14 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	 */
 	public void DrawSpielfigur(Graphics g, Figur figur) {
 		int position = figur.getPosition() + 16;
+		Spielfigur oberflaechenFigur = new Spielfigur(figur, xPositionen[position], yPositionen[position]);
+		
+		Graphics2D g2d = (Graphics2D) g;
 		g.setColor(figur.getColor());
-		g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+		g2d.fill(oberflaechenFigur.getGrafischeSpielfigur());
+		
+		
+		//g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 	}
 
 	public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
@@ -130,6 +137,8 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 //			g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 		}
 	}
+	
+	
 	
 	public void getSelectedFigur() {
 		for(Figur f : moeglichkeiten) {
