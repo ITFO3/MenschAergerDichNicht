@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.SpielfeldCanvas;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
@@ -12,16 +13,14 @@ import model.Wuerfel;
 public class ServerController {
 
 	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
-
 	private static int spielerZaehler = 0;
+	private static ServerController instanz;
+	private int wurfAnzahl;
 	
-	private ServerController(List<Spieler> spieler) {
+	private ServerController() {
 		
 		Spielfeld model = Spielfeld.getInstanz();
-
-		for(Spieler s : spieler) {
-		}
-		
+		instanz = this;
 	}
 
 	public void beendeSpiel() {
@@ -29,6 +28,9 @@ public class ServerController {
 		spielerZaehler = 0;
 	}
 	
+	public void setSpieler(ArrayList<Spieler> spieler){
+		this.spieler = spieler;
+	}
 	public void initialisiereSpieler(String name) 
 	{
 //		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
@@ -149,7 +151,7 @@ public class ServerController {
 		
 		while(ueberpruefeSpielende() == null) {
 			
-			int wurfAnzahl = Wuerfel.wuerfel();
+			wurfAnzahl = Wuerfel.wuerfel();
 			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
 			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
 			
@@ -161,17 +163,16 @@ public class ServerController {
 		
 	}
 
-//	public void erstelleSpiel(int anzahl, String name) {
-//		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
-//		Controller c = new Controller(name, null);
-//	}
-//
-//	public boolean treteSpielBei(String name, String ip) {
-//		
-//		if(spieler.size() < 4) initialisiereSpieler(name, ip);
-//		else return false;
-//		
-//		return true;
-//	}
+	/**
+	 * Gibt die aktuelle Instanz des Spielfeldes zurueck
+	 * 
+	 * @return
+	 */
+	public static ServerController getInstanz() {
+		if (instanz == null) {
+			instanz = new ServerController();
+		}
 
+		return instanz;
+	}
 }

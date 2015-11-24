@@ -14,6 +14,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 import model.Figur;
 import model.Spielfeld;
@@ -21,7 +22,7 @@ import model.Spielfeld;
 /**
  * Das Canvas auf dem JFrame
  */
-public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
+public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 	private static final int height = 600;
 	private static final int width = 600;
 	int click_X_Position = 0;
@@ -39,7 +40,6 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	public SpielfeldCanvas(Spielfeld model) {
 		this.model = model;
 		this.model.addObserver(this);
-		addMouseListener(this);
 	}
 
 	/**
@@ -97,11 +97,11 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 
 		// Spielfiguren zeichnen
 		for (Figur figur : model.getSpielfiguren().values()) {
-			DrawSpielfigur(g, figur);
+			drawSpielfigur(g, figur);
 		}
-		highlightSpielfiguren(g, model.getMoeglichkeiten());
+//		highlightSpielfiguren(g, model.getMoeglichkeiten());
 		g.finalize();
-		getSelectedFigur();
+
 	}
 
 	/**
@@ -109,17 +109,12 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	 * 
 	 * @param g
 	 * @param figur
-	 */
-	public void DrawSpielfigur(Graphics g, Figur figur) {
+	 */	
+	public void drawSpielfigur(Graphics g, Figur figur) {
+		
 		int position = figur.getPosition() + 16;
-		Spielfigur oberflaechenFigur = new Spielfigur(figur, xPositionen[position], yPositionen[position]);
-		
-		Graphics2D g2d = (Graphics2D) g;
 		g.setColor(figur.getColor());
-		g2d.fill(oberflaechenFigur.getGrafischeSpielfigur());
-		
-		
-		//g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+		g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 	}
 
 	public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
@@ -128,26 +123,16 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 		for (Figur figur : figuren) {
 			int position = figur.getPosition() + 16;
 			g.setColor(Color.GREEN);
-			g.fillOval(xPositionen[position]+8, yPositionen[position]+8, 25, 25);
-//			g.setColor(Color.red);
-//			g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
-//			g.setColor(Color.black);
-//			g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
-//			g.setColor(figur.getColor());
-//			g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+			g.fillOval(xPositionen[position] + 8, yPositionen[position] + 8,
+					25, 25);
+			// g.setColor(Color.red);
+			// g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
+			// g.setColor(Color.black);
+			// g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
+			// g.setColor(figur.getColor());
+			// g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 		}
 	}
-	
-	
-	
-	public void getSelectedFigur() {
-		for(Figur f : moeglichkeiten) {
-			int position = f.getPosition();
-		int figPosition = yPositionen[position];
-		
-		}
-	}
-	
 
 	@Override
 	public void update(Observable o, Object arg) {
@@ -166,36 +151,49 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 
 		return instanz;
 	}
-	
+
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		System.out.println("X: "+arg0.getX()+ " Y: "+arg0.getY());
-		System.out.println("Obj: "+arg0.getComponent());
-		click_X_Position = arg0.getX();
-		click_Y_Position = arg0.getY();
+	public void mouseClicked(MouseEvent e) {
+
+		int[] koordinate = new int[2];
+		
+		for(int x : xPositionen) {
+			if(e.getX() >= x || e.getX() <= x + 40) {
+				koordinate[0] = x;
+				break;
+			}
+		}
+		
+		for(int y : yPositionen) {
+			if(e.getY() >= y || e.getY() <= y + 40) {
+				koordinate[1] = y;
+				break;
+			}
+		}
+		
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
