@@ -54,6 +54,10 @@ public class ServerNetworkService {
 	public void setServerStatus(ServerStatus serverStatus) {
 		this.serverStatus = serverStatus;
 	}
+	
+	public List<ClientHandler> getClients() {
+		return this.clients;
+	}
 
 	public void startServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
@@ -93,9 +97,11 @@ public class ServerNetworkService {
 	}
 
 	private void processSpielernameInput(String spielerName) {
-		//Spieler spieler = new Spieler(spielerName, Color.red, -1, 0, 40, {1, 2});
-		//connectedPlayer.add(spieler);
-		//ServerAdminPanel.instance
-		//		.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
+		int[] zielFelder = new int[] { 41, 42, 43, 44 };
+		
+		Spieler spieler = new Spieler(spielerName, Color.RED, -1, 1, 40, zielFelder);
+		connectedPlayer.add(spieler);
+		ServerAdminPanel.instance
+				.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
 	}
 }

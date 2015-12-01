@@ -49,4 +49,10 @@ public class ClientHandler extends Thread {
 	public PrintStream getOutputStream() {
 		return os;
 	}
+
+	public void sendeDaten(String data) {
+		this.os.println(data);
+		this.os.flush();
+	}
+
 }

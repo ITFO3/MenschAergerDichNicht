@@ -1,10 +1,14 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.UnknownHostException;
 
+import model.Figur;
 import view.admin.network.ServerAdminPanel;
 import controller.client.network.Client;
+import controller.server.network.ClientHandler;
+import controller.server.network.DataObjectEnum;
 import controller.server.network.ServerNetworkService;
 
 /**
@@ -73,5 +77,16 @@ public class NetworkService {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean sendeFigurenAnClients(Figur figur) {
+		String data = DataObjectEnum.FIGURGEAENDERT.toString() + "="
+				+ figur.getId() + "," + figur.getPosition();
+		
+		for (ClientHandler client : serverService.getClients()) {
+			client.sendeDaten(data);
+		}
+		
+		return false;
 	}
 }
