@@ -89,16 +89,16 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 
 	public void paint(Graphics g) {
 		// Hintergrund laden
-		Image image = new ImageIcon(this.getClass().getResource(
-				"pachisi-4er-blanco.jpg")).getImage();
-		// Image image = new
-		// ImageIcon("J:/Workspace/MenschAergerDichNicht/src/view/pachisi-4er-blanco.jpg").getImage();
+//		Image image = new ImageIcon(this.getClass().getResource(
+//				"pachisi-4er-blanco.jpg")).getImage();
+		Image image = new ImageIcon("J:/Workspace/MenschAergerDichNicht/src/view/pachisi-4er-blanco.jpg").getImage();
 		g.drawImage(image, 0, 0, height, width, this);
 
 		// Spielfiguren zeichnen
 		for (Figur figur : model.getSpielfiguren().values()) {
 			DrawSpielfigur(g, figur);
 		}
+		
 		highlightSpielfiguren(g, model.getMoeglichkeiten());
 		g.finalize();
 		getSelectedFigur();

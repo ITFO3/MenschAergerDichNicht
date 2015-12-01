@@ -1,6 +1,8 @@
 package controller.client.network;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Figur;
 import controller.NetworkService;
@@ -42,10 +44,10 @@ public class ClientNetworkService {
 			String[] value = seperat.split("=");
 			String aenderungsTyp = value[0];
 			
-			if (aenderungsTyp.equals("FIGURGEAENDERT")) {
+			if (aenderungsTyp.equals(DataObjectEnum.FIGURGEAENDERT.toString())) {
 				figurGeaendert(value[1]);
-			} else if (aenderungsTyp.equals("ZUGMOEGLICHKEITEN")) {
-				// ClientController zeigeMoeglichkeiten
+			} else if (aenderungsTyp.equals(DataObjectEnum.MOEGLICHKEITEN.toString())) {
+				zeigeMoeglichkeiten(value[1]);
 			}
 		}
 	}
@@ -65,6 +67,24 @@ public class ClientNetworkService {
 		Integer neuePosition = Integer.valueOf(seperated[1]);
 		
 		ClientController.getInstance().aktualisiereSpielfeld(id, null, neuePosition);
+	}
+	
+	private void zeigeMoeglichkeiten(String daten) {
+		// {Test:3,Test:4},2
+		
+		String[] seperated = daten.split("}");
+		String figuren = seperated[0].substring(1);
+		int wuerfelAnzahl = Integer.valueOf(seperated[1]);
+		
+		List<String> figurenListe = new ArrayList<String>();
+		
+		String[] figurenArray = figuren.split(",");
+		
+		for (String figur : figurenArray) {
+			figurenListe.add(figur);
+		}
+		
+		ClientController.getInstance().zeigeMoeglichkeiten(figurenListe, wuerfelAnzahl);
 	}
 	
 }

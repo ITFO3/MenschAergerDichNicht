@@ -3,8 +3,10 @@ package controller;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import model.Figur;
+import model.Spieler;
 import view.admin.network.ServerAdminPanel;
 import controller.client.network.Client;
 import controller.server.network.ClientHandler;
@@ -85,6 +87,25 @@ public class NetworkService {
 		
 		for (ClientHandler client : serverService.getClients()) {
 			client.sendeDaten(data);
+		}
+		
+		return true;
+	}
+	
+	public boolean sendeMoeglichkeitenAnClient(ClientHandler client, List<Figur> figuren, int wurfanzahl) {
+		if (client != null) {
+			String data = DataObjectEnum.MOEGLICHKEITEN.toString() + "={";
+			
+			for (Figur figur : figuren) {
+				data += figur.getId() + ",";
+			}
+			
+			data = data.substring(0, -1);
+			data += "}," + wurfanzahl;
+			
+			client.sendeDaten(data);
+	
+			return true;
 		}
 		
 		return false;

@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import model.Spieler;
 import controller.NetworkService;
+import controller.server.ServerController;
 import controller.server.network.ServerNetworkService;
 
 /**
@@ -112,6 +113,7 @@ public class ServerAdminPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// Do stuff here.
+			ServerController.getInstance().starteSpiel(serverService.getConnectedPlayers());
 		}
 
 	}
