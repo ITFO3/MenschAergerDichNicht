@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -25,7 +26,7 @@ import model.Spielfeld;
 /**
  * Das Canvas auf dem JFrame
  */
-public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
+public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
 	private static final int height = 600;
 	private static final int width = 600;
 	int click_X_Position = 0;
@@ -47,6 +48,7 @@ public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 		this.model.addObserver(this);
 		this.initializeFZK();
 		this.initializeKZF();
+		this.addMouseListener(this);
 	}
 
 	private void initializeFZK(){
@@ -217,12 +219,6 @@ public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 			g.setColor(Color.GREEN);
 			g.fillOval(feldZuKoordinate.get(position)[0] + 8, feldZuKoordinate.get(position)[1] + 8,
 					25, 25);
-			// g.setColor(Color.red);
-			// g.fillOval(xPositionen[position], yPositionen[position], 55, 55);
-			// g.setColor(Color.black);
-			// g.fillOval(xPositionen[position], yPositionen[position], 50, 50);
-			// g.setColor(figur.getColor());
-			// g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 		}
 	}
 
@@ -246,7 +242,6 @@ public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 		int feld = -100;
 		
 		Iterator it = feldZuKoordinate.entrySet().iterator();
@@ -256,6 +251,7 @@ public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 	        if(e.getX() >= currentValue[0] && e.getY() >= currentValue[1] &&
 	        		e.getX() <= currentValue[0]+40 && e.getY() >= currentValue[1] +40) {
 	        	feld = (int)pair.getKey();
+
 	        	
 	        }
 	        it.remove(); // avoids a ConcurrentModificationException
@@ -263,7 +259,11 @@ public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 	    
 	    		
 		Figur f = Spielfeld.getInstanz().sucheFigur(feld);
-		ServerController.getInstanz().bewegeFigur(f);
+		if(f != null) {
+			ServerController.getInstanz().bewegeFigur(f);
+		
+		System.out.println(f.getPosition());
+		}
 		
 	}
 
@@ -276,19 +276,16 @@ public class SpielfeldCanvas extends JPanel implements Observer, MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

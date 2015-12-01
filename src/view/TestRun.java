@@ -27,17 +27,19 @@ public class TestRun {
 		figur.setPosition(-1);
 		ClientController controller = new ClientController();
 		String figurId = figur.getId();
-		for (int i = 1; i < 41; i++) {
-			controller.aktualisiereSpielfeld(figurId, null, i);
-			figur.setPosition(i);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		
+		
+//		for (int i = 1; i < 41; i++) {
+//			controller.aktualisiereSpielfeld(figurId, null, i);
+//			figur.setPosition(i);
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 //			ServerController.getInstanz().bewegeFigur(figur, 1);
-		}
+//		}
 		
 		
 //		String figurId = figur.getId();
