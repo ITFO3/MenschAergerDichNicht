@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import model.Figur;
 import model.Spielfeld;
 import controller.client.ClientController;
-//import controller.client;
 
 /**
  * Test-Start-Klasse fuer die GUI
@@ -28,28 +27,28 @@ public class TestRun {
 		
 		String figurId = figur.getId();
 		
-		ClientController controller = new ClientController();
+		ClientController controller = ClientController.getInstance();
 		
 		//Figur figur2 = new Figur("Test2", Color.blue, 10);
 		//figur2.addObserver(model);
 		
 		// Positionen verschieben
-//		int j = 10;
-//		for (int i = 0; i <= 40; i++) {
-//			try {
-//				controller.aktualisiereSpielfeld(figurId, null, i);
-////				figur2.setPosition(j);
-//				j++;
-//				
-//				if (j > 40) {
-//					j = 1;
-//				}
-//				
-//				Thread.sleep(1000);
-//			} catch(InterruptedException ex) {
-//				Thread.currentThread().interrupt();
-//			}
-//		}
+		int j = 10;
+		for (int i = 0; i <= 56; i++) {
+			try {
+				controller.aktualisiereSpielfeld(figurId, null, i);
+//				figur2.setPosition(j);
+				j++;
+				
+				if (j > 56) {
+					j = 1;
+				}
+				
+				Thread.sleep(1000);
+			} catch(InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
 		
 		Figur figur2 = new Figur("Test2", Color.BLUE, -2 , 0, 39);
 		figur2.addObserver(model);

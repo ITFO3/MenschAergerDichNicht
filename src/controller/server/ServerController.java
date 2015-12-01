@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.NetworkService;
+import controller.server.network.ClientHandler;
+import controller.server.network.ServerNetworkService;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
@@ -11,36 +14,25 @@ import model.Wuerfel;
 
 public class ServerController {
 
-	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
-
+	private static ServerController instance;
 	private static int spielerZaehler = 0;
 	
-	private ServerController(List<Spieler> spieler) {
-		
-		Spielfeld model = Spielfeld.getInstanz();
-
-		for(Spieler s : spieler) {
+	private List<Spieler> spieler;
+	
+	public static ServerController getInstance() {
+		if (instance == null) {
+			instance = new ServerController();
 		}
+		
+		return instance;
+	}
+	
+	private ServerController() {
 		
 	}
 
 	public void beendeSpiel() {
-		
 		spielerZaehler = 0;
-	}
-	
-	public void initialisiereSpieler(String name) 
-	{
-//		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
-//		Color c = farben.get(zufallsZahl);
-//		farben.remove(zufallsZahl);
-//
-//		int zielfeld = zielFelder.get(spielerZaehler);
-//		
-//		int[] startfelder = startFelder.get(spielerZaehler);
-//		
-//		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
-//		spielerZaehler++;
 	}
 
 	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
@@ -57,8 +49,17 @@ public class ServerController {
 		return bewegbareFiguren;
 	}
 
-	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
-		// TODO
+	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren, int wurfanzahl) {
+		List<ClientHandler> clients = ServerNetworkService.getInstance().getClients();
+		ClientHandler client = null;
+		
+		for (ClientHandler c : clients) {
+			if (c.getSpielerName().equals(s.getName())) {
+				client = c;
+			}
+		}
+		
+		NetworkService.getInstance().sendeMoeglichkeitenAnClient(client, figuren, wurfanzahl);
 	}
 
 	/**
@@ -142,23 +143,21 @@ public class ServerController {
 		return returnObject;
 	}
 	
-	public void starteSpiel() {
+	public void starteSpiel(List<Spieler> spieler) {
+		this.spieler = spieler;
 		
-		int beginner = Wuerfel.ermittleBeginner(spieler.size());
-		
+		int beginner = Wuerfel.ermittleBeginner(spieler.size()) -1;
 		
 		while(ueberpruefeSpielende() == null) {
-			
 			int wurfAnzahl = Wuerfel.wuerfel();
 			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
-			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
+			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten, wurfAnzahl);
 			
-			
-			
-			if(beginner > spieler.size()) beginner -=  spieler.size();
+			if (beginner < spieler.size())
+				beginner++;
+			else
+				beginner = 0;
 		}
-		
-		
 	}
 
 //	public void erstelleSpiel(int anzahl, String name) {

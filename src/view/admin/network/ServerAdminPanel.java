@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import model.Spieler;
 import controller.NetworkService;
+import controller.server.ServerController;
 import controller.server.network.ServerNetworkService;
 
 /**
@@ -112,29 +113,37 @@ public class ServerAdminPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// Do stuff here.
+			ServerController.getInstance().starteSpiel(serverService.getConnectedPlayers());
 		}
 
 	}
 
 	public void updateConnectedSpielerAndStartServerPanel(List<Spieler> spieler) {
-		List<String> spielernamen = new ArrayList<String>();
+		String[] spielernamen = new String[spieler.size()];
+		
+		int i = 0;
+		
 		for (Spieler tempSpieler : spieler) {
-			spielernamen.add(tempSpieler.getName());
+			spielernamen[i] = tempSpieler.getName();
+			i++;
 		}
 
-		connectedSpielerList = new JList(spielernamen.toArray());
-		connectedSpielerList.setBounds(125, 100, 200, 20);
+		if (connectedSpielerList == null) {
+			connectedSpielerList = new JList();
+		}
+
+		connectedSpielerList.setBounds(125, 100, 200, 80);
 		JLabel connectedSpielerListLabel = new JLabel("Verbundene Spieler:");
 		connectedSpielerListLabel.setBounds(125, 125, 200, 20);
-		connectedSpielerList = connectedSpielerList == null ? new JList(
-				spielernamen.toArray()) : connectedSpielerList;
-		connectedSpielerList.setBounds(125, 145, 200, 20);
+		
+		connectedSpielerList.setListData(spielernamen);
+		connectedSpielerList.setBounds(125, 145, 200, 80);
 
 		this.add(connectedSpielerListLabel);
 		this.add(connectedSpielerList);
 		connectedSpielerList.revalidate();
 		connectedSpielerList.repaint();
-		revalidate();
-		repaint();
+		ServerAdminPanel.this.revalidate();
+		ServerAdminPanel.this.repaint();
 	}
 }
