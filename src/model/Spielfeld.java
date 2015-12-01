@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import view.SpielfeldCanvas;
+
 /**
  * Das Spielfeld, auf dem sich die Figuren befinden
  * @author Dominik Bittner
@@ -78,6 +80,10 @@ public class Spielfeld extends Observable implements Observer {
 		return zielfeld;
 	}
 	
+	public Figur sucheFigur(int position) {
+		return spielfiguren.get(position);
+	}
+	
 	/**
 	 * Gibt die aktuelle Instanz des Spielfeldes zurueck
 	 * @return
@@ -103,7 +109,7 @@ public class Spielfeld extends Observable implements Observer {
 		setChanged();
 		Figur figur = (Figur) arg;
 		
-		int altePosition = 0;
+		int altePosition = -100;
 		// Alte Position ermitteln
 		for (int i : spielfiguren.keySet()) {
 			if (spielfiguren.get(i).getId() == figur.getId()) {
@@ -113,7 +119,7 @@ public class Spielfeld extends Observable implements Observer {
 		}
 		
 		// Nur eine Figur entfernen, wenn diese auch schon auf dem Spielfeld ist 
-		if (altePosition != 0) {
+		if (altePosition != -100) {
 			// Alte Position entfernen
 			spielfiguren.remove(altePosition);
 		}
@@ -125,6 +131,6 @@ public class Spielfeld extends Observable implements Observer {
 		notifyObservers(this);
 	}
 
-
+	
 
 }

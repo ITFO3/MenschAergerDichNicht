@@ -25,10 +25,24 @@ public class TestRun {
 		Figur figur = new Figur("Test", Color.RED, -1 , 0, 39);
 		figur.addObserver(model);
 		figur.setPosition(-1);
-		
-		String figurId = figur.getId();
-		
 		ClientController controller = new ClientController();
+		String figurId = figur.getId();
+		for (int i = 1; i < 41; i++) {
+			controller.aktualisiereSpielfeld(figurId, null, i);
+			figur.setPosition(i);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			ServerController.getInstanz().bewegeFigur(figur, 1);
+		}
+		
+		
+//		String figurId = figur.getId();
+		
+//		ClientController controller = new ClientController();
 		
 		//Figur figur2 = new Figur("Test2", Color.blue, 10);
 		//figur2.addObserver(model);
@@ -51,19 +65,19 @@ public class TestRun {
 //			}
 //		}
 		
-		Figur figur2 = new Figur("Test2", Color.BLUE, -2 , 0, 39);
-		figur2.addObserver(model);
-		figur2.setPosition(-2);
-		Figur figur3 = new Figur("Test3", Color.YELLOW, -3 , 0, 39);
-		figur3.addObserver(model);
-		figur3.setPosition(-3);
+//		Figur figur2 = new Figur("Test2", Color.BLUE, -2 , 0, 39);
+//		figur2.addObserver(model);
+//		figur2.setPosition(-2);
+//		Figur figur3 = new Figur("Test3", Color.YELLOW, -3 , 0, 39);
+//		figur3.addObserver(model);
+//		figur3.setPosition(-3);
+//		
+//		ArrayList<String> moeglichkeiten = new ArrayList<String>();
+//		moeglichkeiten.add(figurId);
+//		moeglichkeiten.add(figur2.getId());
+//		moeglichkeiten.add(figur3.getId());
 		
-		ArrayList<String> moeglichkeiten = new ArrayList<String>();
-		moeglichkeiten.add(figurId);
-		moeglichkeiten.add(figur2.getId());
-		moeglichkeiten.add(figur3.getId());
-		
-		controller.zeigeMoeglichkeiten(moeglichkeiten, 4);
+//		controller.zeigeMoeglichkeiten(moeglichkeiten, 4);
 	}
 
 }
