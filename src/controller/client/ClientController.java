@@ -1,18 +1,15 @@
 package controller.client;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.SpielfeldView;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
-import controller.server.ServerController;
 
 public class ClientController {
-	
-	private List<Spieler> spieler;
-	// muss noch initialisiert werden
-	private ServerController server;
 
 	private static ClientController instance;
 	
@@ -22,6 +19,15 @@ public class ClientController {
 		}
 		
 		return instance;
+	}
+	
+	public void start(String spielerName) {
+		// Erstellt ein neues Spielfeld Model
+		Spielfeld model = Spielfeld.getInstanz();
+		
+		// Erstellt das Hauptfenster
+		SpielfeldView view = new SpielfeldView(model, 250, 150);
+		view.setVisible(true);
 	}
 	
 	/**

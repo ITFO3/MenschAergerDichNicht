@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -45,8 +46,8 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	/**
 	 * Array fuer die X-Positionen der Figuren
 	 */
-	private static final int[] xPositionen = { 546, 546, 494, 494, // Startfelder
-																	// Spieler 4
+	private static final int[] xPositionen = { 
+			546, 546, 494, 494, // Startfelder Spieler 4
 			66, 66, 13, 13, // Startfelder Spieler 3
 			548, 548, 494, 494, // Startfelder Spieler 2
 			66, 66, 13, 13, // Startfelder Spieler 1
@@ -62,13 +63,17 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 			544, // 30
 			544, 491, 438, 385, 332, // 31-35
 			332, 332, 332, 332, // 36-39
-			279 // 40
+			279, // 40
+			279, 279, 279, 279, // Endfelder Spieler 1
+			67, 120, 173, 226,  // Endfelder Spieler 2
+			279, 279, 279, 279, // Endfelder Spieler 3
+			491, 438, 385, 332, // Endfelder Spieler 4
 	};
 	/**
 	 * Array fuer die Y-Positionen der Figuren
 	 */
-	private static final int[] yPositionen = { 546, 494, 546, 494, // Startfelder
-																	// Spieler 4
+	private static final int[] yPositionen = { 
+			546, 494, 546, 494, // Startfelder  Spieler 4
 			546, 494, 546, 494, // Startfelder Spieler 3
 			66, 13, 66, 13, // Startfelder Spieler 2
 			66, 13, 66, 13, // Startfelder Spieler 1
@@ -84,24 +89,31 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 			281, // 30
 			334, 334, 334, 334, 334, // 31-35
 			387, 440, 493, 546, // 36-39
-			546 // 40
+			546, // 40
+			493, 440, 387, 334, // Endfelder Spieler 1
+			281, 281, 281, 281, // Endfelder Spieler 2
+			69, 122, 175, 228, // Endfelder Spieler 3
+			281, 281, 281, 281, // Endfelder Spieler 4
 	};
 
 	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D)g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		// Hintergrund laden
-		Image image = new ImageIcon(this.getClass().getResource(
-				"pachisi-4er-blanco.jpg")).getImage();
-		// Image image = new
-		// ImageIcon("J:/Workspace/MenschAergerDichNicht/src/view/pachisi-4er-blanco.jpg").getImage();
+//		Image image = new ImageIcon(this.getClass().getResource(
+//				"pachisi-4er-blanco.jpg")).getImage();
+		Image image = new ImageIcon("J:/MenschAergerDichNicht/src/view/pachisi-4er-blanco.jpg").getImage();
 		g.drawImage(image, 0, 0, height, width, this);
 
 		// Spielfiguren zeichnen
 		for (Figur figur : model.getSpielfiguren().values()) {
 			DrawSpielfigur(g, figur);
 		}
+		
 		highlightSpielfiguren(g, model.getMoeglichkeiten());
 		g.finalize();
-		getSelectedFigur();
+		//getSelectedFigur();
 	}
 
 	/**
@@ -112,14 +124,13 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	 */
 	public void DrawSpielfigur(Graphics g, Figur figur) {
 		int position = figur.getPosition() + 16;
-		Spielfigur oberflaechenFigur = new Spielfigur(figur, xPositionen[position], yPositionen[position]);
+//		Spielfigur oberflaechenFigur = new Spielfigur(figur, xPositionen[position], yPositionen[position]);
+//		
+//		Graphics2D g2d = (Graphics2D) g;
+//		g2d.fill(oberflaechenFigur.getGrafischeSpielfigur());
 		
-		Graphics2D g2d = (Graphics2D) g;
 		g.setColor(figur.getColor());
-		g2d.fill(oberflaechenFigur.getGrafischeSpielfigur());
-		
-		
-		//g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+		g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 	}
 
 	public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
