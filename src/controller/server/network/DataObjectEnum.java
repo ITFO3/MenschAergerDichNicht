@@ -16,7 +16,7 @@ public enum DataObjectEnum {
 	/*
 	 * Spiel wird gestartet
 	 * 
-	 * Bsp: STARTGAME=true
+	 * Bsp: STARTGAME=true,SPIELER={Test,Chris,Daniel}
 	 */
 	STARTGAME,
 	/*

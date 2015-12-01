@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Figur;
+import model.Spieler;
+import model.Spielfeld;
 import controller.NetworkService;
 import controller.client.ClientController;
 import controller.server.network.DataObjectEnum;
@@ -74,7 +76,7 @@ public class ClientNetworkService {
 		
 		String[] seperated = daten.split("}");
 		String figuren = seperated[0].substring(1);
-		int wuerfelAnzahl = Integer.valueOf(seperated[1]);
+		int wuerfelAnzahl = Integer.valueOf(seperated[1].substring(1));
 		
 		List<String> figurenListe = new ArrayList<String>();
 		
@@ -85,6 +87,16 @@ public class ClientNetworkService {
 		}
 		
 		ClientController.getInstance().zeigeMoeglichkeiten(figurenListe, wuerfelAnzahl);
+	}
+	
+	private void empfangeSpieler(String daten) {
+		
+		Spieler spieler = new Spieler(null);
+		
+		for (Figur figur : spieler.getFiguren()) {
+			figur.addObserver(Spielfeld.getInstanz());
+			figur.setPosition(figur.getPosition());
+		}
 	}
 	
 }

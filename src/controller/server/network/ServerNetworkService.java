@@ -101,9 +101,8 @@ public class ServerNetworkService {
 	}
 
 	private void processSpielernameInput(ClientHandler client, String spielerName) {
-		int[] zielFelder = new int[] { 41, 42, 43, 44 };
 		
-		Spieler spieler = new Spieler(spielerName, Color.RED, -1, 1, 40, zielFelder);
+		Spieler spieler = new Spieler(spielerName);
 		client.setSpielerName(spielerName);
 		connectedPlayer.add(spieler);
 		ServerAdminPanel.instance

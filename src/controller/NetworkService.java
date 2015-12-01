@@ -100,7 +100,7 @@ public class NetworkService {
 				data += figur.getId() + ",";
 			}
 			
-			data = data.substring(0, -1);
+			data = data.substring(0, data.length() - 1);
 			data += "}," + wurfanzahl;
 			
 			client.sendeDaten(data);

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -96,6 +97,9 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	};
 
 	public void paint(Graphics g) {
+		Graphics2D g2d = (Graphics2D)g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		// Hintergrund laden
 //		Image image = new ImageIcon(this.getClass().getResource(
 //				"pachisi-4er-blanco.jpg")).getImage();
@@ -109,7 +113,7 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 		
 		highlightSpielfiguren(g, model.getMoeglichkeiten());
 		g.finalize();
-		getSelectedFigur();
+		//getSelectedFigur();
 	}
 
 	/**
@@ -120,14 +124,13 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
 	 */
 	public void DrawSpielfigur(Graphics g, Figur figur) {
 		int position = figur.getPosition() + 16;
-		Spielfigur oberflaechenFigur = new Spielfigur(figur, xPositionen[position], yPositionen[position]);
+//		Spielfigur oberflaechenFigur = new Spielfigur(figur, xPositionen[position], yPositionen[position]);
+//		
+//		Graphics2D g2d = (Graphics2D) g;
+//		g2d.fill(oberflaechenFigur.getGrafischeSpielfigur());
 		
-		Graphics2D g2d = (Graphics2D) g;
 		g.setColor(figur.getColor());
-		g2d.fill(oberflaechenFigur.getGrafischeSpielfigur());
-		
-		
-		//g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
+		g.fillOval(xPositionen[position], yPositionen[position], 40, 40);
 	}
 
 	public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
