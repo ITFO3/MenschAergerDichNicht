@@ -23,9 +23,9 @@ public class ClientNetworkService {
 	}
 
 	public void sendeFigur(Figur figur) {
-//		Client client = networkService.getClient();
-//		PrintStream os = client.getOutputStream();
-//		os.print("FIGURGEANDERT;" + figur.getId() + ";");
+		Client client = networkService.getClient();
+		PrintStream os = client.getOutputStream();
+		os.print("FIGURGEANDERT;" + figur.getId() + ";");
 	}
 
 	public static ClientNetworkService getInstance() {

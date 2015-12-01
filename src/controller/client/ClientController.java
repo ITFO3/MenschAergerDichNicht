@@ -4,15 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Figur;
-import model.Spieler;
 import model.Spielfeld;
-import controller.server.ServerController;
 
 public class ClientController {
-	
-	private List<Spieler> spieler;
-	// muss noch initialisiert werden
-	private ServerController server;
 
 	private static ClientController instance;
 	
