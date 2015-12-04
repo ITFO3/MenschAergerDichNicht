@@ -18,7 +18,7 @@ public class ServerNetworkServiceTest {
 
 	ServerNetworkService serverNetworkService = ServerNetworkService
 			.getInstance();
-
+	
 	@Test
 	public void testFigurGeaendert() throws Exception {
 		// Erstellt ein neues Spielfeld Model
@@ -33,15 +33,11 @@ public class ServerNetworkServiceTest {
 		figur.addObserver(model);
 		figur.setPosition(-1);
 		
-		
-		
 		for (int i = 0; i < 40; i++) {
 			figur.setPosition(i);
 //			ServerController.getInstanz().bewegeFigur(figur, 1);
 		}
 		
-		
-
 //		networkService.startServer(8181, null);
 //		Thread.sleep(1000);
 //		networkService.connectToServer("localhost", 8181);
@@ -50,24 +46,21 @@ public class ServerNetworkServiceTest {
 //		PrintStream os = client.getOutputStream();
 
 		// Positionen verschieben
-//		int j = 10;
-//		for (int i = 0; i <= 40; i++) {
-//			try {
-//				String data = DataObjectEnum.FIGURGEAENDERT.toString() + "="
-//						+ figur.getId() + "," + i;
-//
-//				os.println(data);
-//				os.flush();
-//				j++;
-//
-//				if (j > 40) {
-//					j = 1;
-//				}
-//
-//				Thread.sleep(1000);
-//			} catch (InterruptedException ex) {
-//				Thread.currentThread().interrupt();
-//			}
-//		}
+		int j = 10;
+		for (int i = 0; i <= 40; i++) {
+			try {
+				figur.setPosition(i);
+				networkService.sendeFigurenAnClients(figur);
+				j++;
+
+				if (j > 40) {
+					j = 1;
+				}
+
+				Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 }

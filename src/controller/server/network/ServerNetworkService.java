@@ -54,6 +54,14 @@ public class ServerNetworkService {
 	public void setServerStatus(ServerStatus serverStatus) {
 		this.serverStatus = serverStatus;
 	}
+	
+	public List<ClientHandler> getClients() {
+		return this.clients;
+	}
+	
+	public List<Spieler> getConnectedPlayers() {
+		return this.connectedPlayer;
+	}
 
 	public void startServer(int port) throws IOException {
 		serverSocket = new ServerSocket(port);
@@ -63,7 +71,7 @@ public class ServerNetworkService {
 		serverStatus = ServerStatus.RUNNING;
 	}
 
-	public void processInputData(String input) {
+	public void processInputData(ClientHandler client, String input) {
 		String keyValuePairs[] = input.split(";");
 		Map<String, String> orderedKeyValues = new HashMap<String, String>();
 
@@ -73,17 +81,17 @@ public class ServerNetworkService {
 					keyValuePairSeperated[1]);
 		}
 
-		processInput(orderedKeyValues);
+		processInput(client, orderedKeyValues);
 	}
 
-	private void processInput(Map<String, String> orderedKeyValues) {
+	private void processInput(ClientHandler client, Map<String, String> orderedKeyValues) {
 		Set<String> keySet = orderedKeyValues.keySet();
 
 		for (String key : keySet) {
 			DataObjectEnum dataObject = DataObjectEnum.valueOf(key);
 			switch (dataObject) {
 			case SPIELERNAME:
-				processSpielernameInput(orderedKeyValues.get(key));
+				processSpielernameInput(client, orderedKeyValues.get(key));
 				break;
 			default:
 				// Sollte nicht auftreten
@@ -92,10 +100,12 @@ public class ServerNetworkService {
 		}
 	}
 
-	private void processSpielernameInput(String spielerName) {
-		//Spieler spieler = new Spieler(spielerName, Color.red, -1, 0, 40, {1, 2});
-		//connectedPlayer.add(spieler);
-		//ServerAdminPanel.instance
-		//		.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
+	private void processSpielernameInput(ClientHandler client, String spielerName) {
+		
+		Spieler spieler = new Spieler(spielerName);
+		client.setSpielerName(spielerName);
+		connectedPlayer.add(spieler);
+		ServerAdminPanel.instance
+				.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
 	}
 }

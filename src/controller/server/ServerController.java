@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import view.SpielfeldCanvas;
+import controller.NetworkService;
+import controller.server.network.ClientHandler;
+import controller.server.network.ServerNetworkService;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
@@ -12,15 +15,26 @@ import model.Wuerfel;
 
 public class ServerController {
 
-	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
+	
+	private static ServerController instance;
 	private static int spielerZaehler = 0;
 	private static ServerController instanz;
-	private int wurfAnzahl;
 	
-	private ServerController() {
+	private int wurfAnzahl;
+	private List<Spieler> spieler;
+	
+	public static ServerController getInstance() {
+		if (instance == null) {
+			instance = new ServerController();
+		}
 		
-		Spielfeld model = Spielfeld.getInstanz();
-		instanz = this;
+		return instance;
+	}
+	
+	private ServerController() { }
+
+	public void beendeSpiel() {
+		spielerZaehler = 0;
 	}
 	
 	public int gibAnzahl() {
@@ -38,12 +52,9 @@ public class ServerController {
 			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
 			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
 			
-			
-			
+		
 			if(beginner > spieler.size()) beginner -=  spieler.size();
 		}
-		
-		
 	}
 
 	public void setSpieler(ArrayList<Spieler> spieler){
@@ -78,6 +89,52 @@ public class ServerController {
 		return bewegbareFiguren;
 	}
 
+	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren, int wurfanzahl) {
+		List<ClientHandler> clients = ServerNetworkService.getInstance().getClients();
+		ClientHandler client = null;
+		
+		for (ClientHandler c : clients) {
+			if (c.getSpielerName().equals(s.getName())) {
+				client = c;
+			}
+		}
+		
+		NetworkService.getInstance().sendeMoeglichkeitenAnClient(client, figuren, wurfanzahl);
+	}
+
+	/**
+	 * Ueberprueft ob das Spielende erreicht wurde Aeussere Schleife:
+	 * Ueberprueft jeden Spieler Innere Schleife: Ueberprueft ob alle Figuren
+	 * vom aktuellen Spieler im Ziel sind
+	 * 
+	 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
+	 */
+	public Spieler ueberpruefeSpielende() {
+//		boolean ende = true;
+//		boolean gewonnen = true;
+//		
+//		
+//		for (int i = 0; i < spieler.size(); i++) {
+//			Spieler s = spieler.get(i);
+//			ArrayList<Figur> figuren = s.getFiguren();
+//			gewonnen = true;
+//			
+//			for (int j = 0; j < figuren.size(); j++) {
+//				if(figuren.get(j).getPosition() < f.getEndFeld()) {
+//					gewonnen = false;
+//					break;
+//				}
+////				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
+////					ende = false;
+////					break;
+////				}
+//			}
+//			
+//			if (gewonnen) return s;
+//		}
+		return null;
+	}
+
 	/**
 	 * Sucht zunaechst die ausgewaehlte Figur aus und bewegt sie um die
 	 * angegebene Anzahl vor
@@ -106,44 +163,6 @@ public class ServerController {
 		}	
 	}
 
-	/**
-		 * Ueberprueft ob das Spielende erreicht wurde Aeussere Schleife:
-		 * Ueberprueft jeden Spieler Innere Schleife: Ueberprueft ob alle Figuren
-		 * vom aktuellen Spieler im Ziel sind
-		 * 
-		 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
-		 */
-		public Spieler ueberpruefeSpielende() {
-	//		boolean ende = true;
-	//		boolean gewonnen = true;
-	//		
-	//		
-	//		for (int i = 0; i < spieler.size(); i++) {
-	//			Spieler s = spieler.get(i);
-	//			ArrayList<Figur> figuren = s.getFiguren();
-	//			gewonnen = true;
-	//			
-	//			for (int j = 0; j < figuren.size(); j++) {
-	//				if(figuren.get(j).getPosition() < f.getEndFeld()) {
-	//					gewonnen = false;
-	//					break;
-	//				}
-	////				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
-	////					ende = false;
-	////					break;
-	////				}
-	//			}
-	//			
-	//			if (gewonnen) return s;
-	//		}
-			return null;
-		}
-
-	public void beendeSpiel() {
-		
-		spielerZaehler = 0;
-	}
-
 	private Figur testePosition(int position) {
 		
 		Figur returnObject = null;;
@@ -165,6 +184,23 @@ public class ServerController {
 	
 	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
 		// TODO
+	}
+
+	public void starteSpiel(List<Spieler> spieler) {
+		this.spieler = spieler;
+		
+		int beginner = Wuerfel.ermittleBeginner(spieler.size()) -1;
+		
+		while(ueberpruefeSpielende() == null) {
+			int wurfAnzahl = Wuerfel.wuerfel();
+			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
+			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten, wurfAnzahl);
+			
+			if (beginner < spieler.size())
+				beginner++;
+			else
+				beginner = 0;
+		}
 	}
 
 	/**
