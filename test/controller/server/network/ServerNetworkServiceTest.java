@@ -2,12 +2,14 @@ package controller.server.network;
 
 import java.awt.Color;
 import java.io.PrintStream;
+
 import model.Figur;
 import model.Spielfeld;
 
 import org.junit.Test;
 
 import controller.NetworkService;
+import controller.server.ServerController;
 import view.SpielfeldView;
 
 public class ServerNetworkServiceTest {
@@ -16,8 +18,6 @@ public class ServerNetworkServiceTest {
 
 	ServerNetworkService serverNetworkService = ServerNetworkService
 			.getInstance();
-
-	
 	
 	@Test
 	public void testFigurGeaendert() throws Exception {
@@ -32,13 +32,18 @@ public class ServerNetworkServiceTest {
 		Figur figur = new Figur("Test", Color.RED, -1, 0, 39);
 		figur.addObserver(model);
 		figur.setPosition(-1);
-
-		networkService.startServer(8181, null);
-		Thread.sleep(1000);
-		networkService.connectToServer("localhost", 8181);
-		Thread.sleep(1000);
-		ClientHandler client = serverNetworkService.clients.get(0);
-		PrintStream os = client.getOutputStream();
+		
+		for (int i = 0; i < 40; i++) {
+			figur.setPosition(i);
+//			ServerController.getInstanz().bewegeFigur(figur, 1);
+		}
+		
+//		networkService.startServer(8181, null);
+//		Thread.sleep(1000);
+//		networkService.connectToServer("localhost", 8181);
+//		Thread.sleep(1000);
+//		ClientHandler client = serverNetworkService.clients.get(0);
+//		PrintStream os = client.getOutputStream();
 
 		// Positionen verschieben
 		int j = 10;
