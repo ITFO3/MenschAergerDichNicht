@@ -20,6 +20,15 @@ public class ClientHandler extends Thread {
 	private PrintStream os;
 	private Socket clientSocket;
 	private ServerNetworkService serverService;
+	private String spielerName;
+	
+	public String getSpielerName() {
+		return this.spielerName;
+	}
+	
+	public void setSpielerName(String name) {
+		this.spielerName = name;
+	}
 
 	public ClientHandler(Socket clientSocket) {
 		try {
@@ -38,7 +47,7 @@ public class ClientHandler extends Thread {
 		while (true) {
 			try {
 				String input = is.readLine();
-				serverService.processInputData(input);
+				serverService.processInputData(this, input);
 				
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -49,4 +58,10 @@ public class ClientHandler extends Thread {
 	public PrintStream getOutputStream() {
 		return os;
 	}
+
+	public void sendeDaten(String data) {
+		this.os.println(data);
+		this.os.flush();
+	}
+
 }
