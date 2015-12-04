@@ -2,12 +2,16 @@ package controller.server.network;
 
 import java.awt.Color;
 import java.io.PrintStream;
+
 import model.Figur;
+import model.Spieler;
 import model.Spielfeld;
 
 import org.junit.Test;
 
 import controller.NetworkService;
+import controller.client.network.ClientNetworkService;
+import controller.server.ServerController;
 import view.SpielfeldView;
 
 public class ServerNetworkServiceTest {
@@ -16,8 +20,6 @@ public class ServerNetworkServiceTest {
 
 	ServerNetworkService serverNetworkService = ServerNetworkService
 			.getInstance();
-
-	
 	
 	@Test
 	public void testFigurGeaendert() throws Exception {
@@ -27,25 +29,38 @@ public class ServerNetworkServiceTest {
 		// Erstellt das Hauptfenster
 		SpielfeldView view = new SpielfeldView(model, 250, 150);
 		view.setVisible(true);
-
-		// Erstellen von neuen Figuren
-		Figur figur = new Figur("Test", Color.RED, -1, 0, 39);
-		figur.addObserver(model);
-		figur.setPosition(-1);
-
-		networkService.startServer(8181, null);
-		Thread.sleep(1000);
+		
+		serverNetworkService.startServer(8181);
+		
+		try {
+			// 2 Sekunden auf den server warten
+			Thread.sleep(2000);
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+		
 		networkService.connectToServer("localhost", 8181);
-		Thread.sleep(1000);
-		ClientHandler client = serverNetworkService.clients.get(0);
-		PrintStream os = client.getOutputStream();
+		
+		try {
+			// 2 Sekunden auf den server warten
+			Thread.sleep(2000);
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+
+		Spieler spieler = new Spieler("Test");
+		
+		for (Figur figur : spieler.getFiguren()) {
+			figur.addObserver(model);
+			figur.setPosition(figur.getPosition());
+		}
 
 		// Positionen verschieben
 		int j = 10;
 		for (int i = 0; i <= 40; i++) {
-			try {
-				figur.setPosition(i);
-				networkService.sendeFigurenAnClients(figur);
+			try {								
+				spieler.getFiguren().get(0).setPosition(i);
+				networkService.sendeFigurenAnClients(spieler.getFiguren().get(0));
 				j++;
 
 				if (j > 40) {

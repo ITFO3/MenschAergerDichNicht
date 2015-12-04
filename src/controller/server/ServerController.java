@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.SpielfeldCanvas;
 import controller.NetworkService;
 import controller.server.network.ClientHandler;
 import controller.server.network.ServerNetworkService;
@@ -14,9 +15,12 @@ import model.Wuerfel;
 
 public class ServerController {
 
+	
 	private static ServerController instance;
 	private static int spielerZaehler = 0;
+	private static ServerController instanz;
 	
+	private int wurfAnzahl;
 	private List<Spieler> spieler;
 	
 	public static ServerController getInstance() {
@@ -27,22 +31,58 @@ public class ServerController {
 		return instance;
 	}
 	
-	private ServerController() {
-		
-	}
+	private ServerController() { }
 
 	public void beendeSpiel() {
 		spielerZaehler = 0;
 	}
+	
+	public int gibAnzahl() {
+		return wurfAnzahl;
+	}
+
+	public void starteSpiel() {
+		
+		int beginner = Wuerfel.ermittleBeginner(spieler.size());
+		
+		
+		while(ueberpruefeSpielende() == null) {
+			
+			wurfAnzahl = Wuerfel.wuerfel();
+			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
+			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
+			
+		
+			if(beginner > spieler.size()) beginner -=  spieler.size();
+		}
+	}
+
+	public void setSpieler(ArrayList<Spieler> spieler){
+		this.spieler = spieler;
+	}
+
+	public void initialisiereSpieler(String name) 
+		{
+	//		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
+	//		Color c = farben.get(zufallsZahl);
+	//		farben.remove(zufallsZahl);
+	//
+	//		int zielfeld = zielFelder.get(spielerZaehler);
+	//		
+	//		int[] startfelder = startFelder.get(spielerZaehler);
+	//		
+	//		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
+	//		spielerZaehler++;
+		}
 
 	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
-
+	
 		ArrayList<Figur> figuren = spieler.getFiguren();
 		ArrayList<Figur> bewegbareFiguren = new ArrayList<Figur>();
 		
 		for (Figur figur : figuren) {
 			
-			//ueberpruefe Figur
+			//TODO: ueberpruefe Figur
 			bewegbareFiguren.add(figur);
 		} 
 		
@@ -102,8 +142,8 @@ public class ServerController {
 	 * @param figur
 	 * @param anzahl
 	 */
-	public void bewegeFigur(Figur figur, int anzahl) {
-
+	public void bewegeFigur(Figur figur) {
+	
 	
 		//Die Regeln wurden einen Schritt vorhere �berpr�ft. Es wird nur eine Figur �bergeben, die bewegt werden kann.
 		//Jetzt muss nur noch die Figur gesetzt werden
@@ -113,7 +153,7 @@ public class ServerController {
 		}
 		else {
 			
-			int newPosition = figur.getPosition() + anzahl;
+			int newPosition = figur.getPosition() + wurfAnzahl;
 			figur.setPosition(newPosition);
 			
 			Figur betroffenePositionFigur = testePosition(newPosition);
@@ -123,7 +163,6 @@ public class ServerController {
 		}	
 	}
 
-	
 	private Figur testePosition(int position) {
 		
 		Figur returnObject = null;;
@@ -143,6 +182,10 @@ public class ServerController {
 		return returnObject;
 	}
 	
+	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
+		// TODO
+	}
+
 	public void starteSpiel(List<Spieler> spieler) {
 		this.spieler = spieler;
 		
@@ -160,17 +203,16 @@ public class ServerController {
 		}
 	}
 
-//	public void erstelleSpiel(int anzahl, String name) {
-//		//Server braucht keine IP, Anzahl wie viele Spieler mitspielen duerfen noch einrichten
-//		Controller c = new Controller(name, null);
-//	}
-//
-//	public boolean treteSpielBei(String name, String ip) {
-//		
-//		if(spieler.size() < 4) initialisiereSpieler(name, ip);
-//		else return false;
-//		
-//		return true;
-//	}
+	/**
+	 * Gibt die aktuelle Instanz des Spielfeldes zurueck
+	 * 
+	 * @return
+	 */
+	public static ServerController getInstanz() {
+		if (instanz == null) {
+			instanz = new ServerController();
+		}
 
+		return instanz;
+	}
 }
