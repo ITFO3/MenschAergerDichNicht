@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.NetworkService;
+import controller.client.ClientController;
 import controller.client.network.ClientNetworkService;
 
 /**
@@ -91,6 +92,8 @@ public class ClientAdminPanel extends JPanel {
 			ClientNetworkService.getInstance().sendeSpielerName(
 					clientSpielernameTextField.getText());
 			createAndAddConnectionStatusLabel(result);
+			
+			ClientController.getInstance().start(clientSpielernameTextField.getText());
 		}
 
 		/**
