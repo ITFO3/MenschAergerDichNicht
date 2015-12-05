@@ -26,58 +26,13 @@ import controller.server.network.ServerNetworkService;
  */
 public class ServerAdminPanel extends JPanel {
 
-	JTextField serverServerPortTextField;
+	private class StartGameButtonListener implements ActionListener {
 
-	JTextField spielerNameTextField;
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			serverController.starteSpiel(serverService.getConnectedPlayers());
+		}
 
-	NetworkService networkService = NetworkService.getInstance();
-
-	ServerNetworkService serverService = ServerNetworkService.getInstance();
-
-	JLabel connectionStatusLabel;
-
-	JList<String> connectedSpielerList;
-
-	JButton startGameButton;
-	
-	ClientNetworkService clientNetworkService = ClientNetworkService.getInstance();
-
-	public static ServerAdminPanel instance;
-
-	public ServerAdminPanel() {
-		/*
-		 * Port
-		 */
-		JPanel serverPortPanel = new JPanel();
-		JLabel serverPortLabel = new JLabel("Port:");
-		serverServerPortTextField = new JTextField(5);
-		serverPortPanel.add(serverPortLabel);
-		serverPortPanel.add(serverServerPortTextField);
-		add(serverPortPanel);
-		serverPortPanel.setBounds(150, 0, 100, 30);
-
-		/*
-		 * Spielername
-		 */
-		JPanel spielerNamePanel = new JPanel();
-		JLabel spielerNameLabel = new JLabel("Spielername");
-		spielerNameTextField = new JTextField(10);
-		spielerNamePanel.add(spielerNameLabel);
-		spielerNamePanel.add(spielerNameTextField);
-		add(spielerNamePanel);
-		spielerNamePanel.setBounds(150,40,200,30);
-
-		/*
-		 * Startbutton
-		 */
-		JButton startServerButton = new JButton("Start Server");
-		startServerButton.addActionListener(new StartServerButtonListener());
-		add(startServerButton);
-		startServerButton.setBounds(125, 80, 150, 30);
-
-		setLayout(null);
-
-		instance = this;
 	}
 
 	private class StartServerButtonListener implements ActionListener {
@@ -126,13 +81,60 @@ public class ServerAdminPanel extends JPanel {
 		}
 	}
 
-	private class StartGameButtonListener implements ActionListener {
+	public static ServerAdminPanel instance;
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			ServerController.getInstance().starteSpiel(serverService.getConnectedPlayers());
-		}
+	private ClientNetworkService clientNetworkService = ClientNetworkService.getInstance();
 
+	private JList<String> connectedSpielerList;
+
+	private JLabel connectionStatusLabel;
+
+	private NetworkService networkService = NetworkService.getInstance();
+	
+	ServerController  serverController = ServerController.getInstance();
+
+	private JTextField serverServerPortTextField;
+	
+	private ServerNetworkService serverService = ServerNetworkService.getInstance();
+
+	private JTextField spielerNameTextField;
+
+	private JButton startGameButton;
+
+	public ServerAdminPanel() {
+		/*
+		 * Port
+		 */
+		JPanel serverPortPanel = new JPanel();
+		JLabel serverPortLabel = new JLabel("Port:");
+		serverServerPortTextField = new JTextField(5);
+		serverPortPanel.add(serverPortLabel);
+		serverPortPanel.add(serverServerPortTextField);
+		add(serverPortPanel);
+		serverPortPanel.setBounds(150, 0, 100, 30);
+
+		/*
+		 * Spielername
+		 */
+		JPanel spielerNamePanel = new JPanel();
+		JLabel spielerNameLabel = new JLabel("Spielername");
+		spielerNameTextField = new JTextField(10);
+		spielerNamePanel.add(spielerNameLabel);
+		spielerNamePanel.add(spielerNameTextField);
+		add(spielerNamePanel);
+		spielerNamePanel.setBounds(150,40,200,30);
+
+		/*
+		 * Startbutton
+		 */
+		JButton startServerButton = new JButton("Start Server");
+		startServerButton.addActionListener(new StartServerButtonListener());
+		add(startServerButton);
+		startServerButton.setBounds(125, 80, 150, 30);
+
+		setLayout(null);
+
+		instance = this;
 	}
 
 	public void updateConnectedSpielerAndStartServerPanel(List<Spieler> spieler) {
