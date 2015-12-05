@@ -15,90 +15,90 @@ import model.Wuerfel;
 
 public class ServerController {
 
-	
 	private static ServerController instance;
 	private static int spielerZaehler = 0;
 	private static ServerController instanz;
-	
+	private ServerNetworkService serverNetworkService = ServerNetworkService.getInstance();
+
 	private int wurfAnzahl;
 	private List<Spieler> spieler;
-	
+
 	public static ServerController getInstance() {
 		if (instance == null) {
 			instance = new ServerController();
 		}
-		
+
 		return instance;
 	}
-	
-	private ServerController() { }
+
+	private ServerController() {
+	}
 
 	public void beendeSpiel() {
 		spielerZaehler = 0;
 	}
-	
+
 	public int gibAnzahl() {
 		return wurfAnzahl;
 	}
 
 	public void starteSpiel() {
-		
+
 		int beginner = Wuerfel.ermittleBeginner(spieler.size());
-		
-		
-		while(ueberpruefeSpielende() == null) {
-			
+
+		while (ueberpruefeSpielende() == null) {
+
 			wurfAnzahl = Wuerfel.wuerfel();
 			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
 			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
-			
-		
-			if(beginner > spieler.size()) beginner -=  spieler.size();
+
+			if (beginner > spieler.size())
+				beginner -= spieler.size();
 		}
 	}
 
-	public void setSpieler(ArrayList<Spieler> spieler){
+	public void setSpieler(ArrayList<Spieler> spieler) {
 		this.spieler = spieler;
 	}
 
-	public void initialisiereSpieler(String name) 
-		{
-	//		int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) - 1.0) + 1.0);
-	//		Color c = farben.get(zufallsZahl);
-	//		farben.remove(zufallsZahl);
-	//
-	//		int zielfeld = zielFelder.get(spielerZaehler);
-	//		
-	//		int[] startfelder = startFelder.get(spielerZaehler);
-	//		
-	//		spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
-	//		spielerZaehler++;
-		}
+	public void initialisiereSpieler(String name) {
+		// int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) -
+		// 1.0) + 1.0);
+		// Color c = farben.get(zufallsZahl);
+		// farben.remove(zufallsZahl);
+		//
+		// int zielfeld = zielFelder.get(spielerZaehler);
+		//
+		// int[] startfelder = startFelder.get(spielerZaehler);
+		//
+		// spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
+		// spielerZaehler++;
+	}
 
 	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
-	
+
 		ArrayList<Figur> figuren = spieler.getFiguren();
 		ArrayList<Figur> bewegbareFiguren = new ArrayList<Figur>();
-		
+
 		for (Figur figur : figuren) {
-			
-			//TODO: ueberpruefe Figur
+
+			// TODO: ueberpruefe Figur
 			bewegbareFiguren.add(figur);
-		} 
-		
+		}
+
 		return bewegbareFiguren;
 	}
 
 	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren, int wurfanzahl) {
 		List<ClientHandler> clients = ServerNetworkService.getInstance().getClients();
 		ClientHandler client = null;
-		
+
 		for (ClientHandler c : clients) {
 			if (c.getSpielerName().equals(s.getName())) {
 				client = c;
 			}
 		}
-		
+
 		NetworkService.getInstance().sendeMoeglichkeitenAnClient(client, figuren, wurfanzahl);
 	}
 
@@ -110,28 +110,28 @@ public class ServerController {
 	 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
 	 */
 	public Spieler ueberpruefeSpielende() {
-//		boolean ende = true;
-//		boolean gewonnen = true;
-//		
-//		
-//		for (int i = 0; i < spieler.size(); i++) {
-//			Spieler s = spieler.get(i);
-//			ArrayList<Figur> figuren = s.getFiguren();
-//			gewonnen = true;
-//			
-//			for (int j = 0; j < figuren.size(); j++) {
-//				if(figuren.get(j).getPosition() < f.getEndFeld()) {
-//					gewonnen = false;
-//					break;
-//				}
-////				if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
-////					ende = false;
-////					break;
-////				}
-//			}
-//			
-//			if (gewonnen) return s;
-//		}
+		// boolean ende = true;
+		// boolean gewonnen = true;
+		//
+		//
+		// for (int i = 0; i < spieler.size(); i++) {
+		// Spieler s = spieler.get(i);
+		// ArrayList<Figur> figuren = s.getFiguren();
+		// gewonnen = true;
+		//
+		// for (int j = 0; j < figuren.size(); j++) {
+		// if(figuren.get(j).getPosition() < f.getEndFeld()) {
+		// gewonnen = false;
+		// break;
+		// }
+		//// if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
+		//// ende = false;
+		//// break;
+		//// }
+		// }
+		//
+		// if (gewonnen) return s;
+		// }
 		return null;
 	}
 
@@ -143,30 +143,28 @@ public class ServerController {
 	 * @param anzahl
 	 */
 	public void bewegeFigur(Figur figur) {
-	
-	
-		//Die Regeln wurden einen Schritt vorhere �berpr�ft. Es wird nur eine Figur �bergeben, die bewegt werden kann.
-		//Jetzt muss nur noch die Figur gesetzt werden
-		if(figur.getPosition() == figur.getHausFeld()) {
-			
+
+		// Die Regeln wurden einen Schritt vorhere �berpr�ft. Es wird nur
+		// eine Figur �bergeben, die bewegt werden kann.
+		// Jetzt muss nur noch die Figur gesetzt werden
+		if (figur.getPosition() == figur.getHausFeld()) {
+
 			figur.setPosition(figur.getStartFeld());
-		}
-		else {
-			
+		} else {
+
 			int newPosition = figur.getPosition() + wurfAnzahl;
 			figur.setPosition(newPosition);
-			
+
 			Figur betroffenePositionFigur = testePosition(newPosition);
-			if(betroffenePositionFigur != null) {
+			if (betroffenePositionFigur != null) {
 				betroffenePositionFigur.setPosition(betroffenePositionFigur.getHausFeld());
 			}
-		}	
+		}
 	}
 
 	private Figur testePosition(int position) {
-		
-		Figur returnObject = null;;
-		
+		Figur returnObject = null;
+
 		for (int i = 0; i < spieler.size(); i++) {
 
 			for (int j = 0; j < 4; j++) {
@@ -176,31 +174,36 @@ public class ServerController {
 					break;
 				}
 			}
-			if(returnObject != null) break;
+			if (returnObject != null)
+				break;
 		}
-		
+
 		return returnObject;
 	}
-	
+
 	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
 		// TODO
 	}
 
 	public void starteSpiel(List<Spieler> spieler) {
+		serverNetworkService.sendeStarteSpielSignalAnAlleClients();
+
 		this.spieler = spieler;
+
+		int beginner = Wuerfel.ermittleBeginner(spieler.size());
 		
-		int beginner = Wuerfel.ermittleBeginner(spieler.size()) -1;
-		
-		while(ueberpruefeSpielende() == null) {
+
+//		while (ueberpruefeSpielende() == null) {
 			int wurfAnzahl = Wuerfel.wuerfel();
 			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
-			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten, wurfAnzahl);
-			
-			if (beginner < spieler.size())
+			sendeMoeglichkeitenAnClienten(spieler.get(beginner), moeglichkeiten, wurfAnzahl);
+
+			if (beginner < spieler.size()) {
 				beginner++;
-			else
+			} else {
 				beginner = 0;
-		}
+			}
+//		}
 	}
 
 	/**

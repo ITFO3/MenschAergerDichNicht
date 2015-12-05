@@ -108,4 +108,12 @@ public class ServerNetworkService {
 		ServerAdminPanel.instance
 				.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
 	}
+
+	public void sendeStarteSpielSignalAnAlleClients() {
+		String data = DataObjectEnum.STARTGAME.toString() + "=true";
+		
+		for(ClientHandler client : clients){
+			client.sendeDaten(data);
+		}
+	}
 }

@@ -50,12 +50,23 @@ public class ClientNetworkService {
 				figurGeaendert(value[1]);
 			} else if (aenderungsTyp.equals(DataObjectEnum.MOEGLICHKEITEN.toString())) {
 				zeigeMoeglichkeiten(value[1]);
+			} else if (aenderungsTyp.equals(DataObjectEnum.STARTGAME.toString())){
+				starteSpiel(value[1]);
 			}
 		}
 	}
 
+	/*
+	 * Im String steht "true". Wird für keine weiteren Auswertungen benötigt.
+	 */
+	private void starteSpiel(String string) {
+		Client client = networkService.getClient();
+		ClientController.getInstance().start(client.getSpielerName());
+	}
+
 	public void sendeSpielerName(String text) {
 		Client client = networkService.getClient();
+		client.setSpielerName(text);
 		PrintStream os = client.getOutputStream();
 		os.println(DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";");
 		os.flush();

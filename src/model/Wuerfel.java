@@ -13,7 +13,7 @@ public class Wuerfel {
 	}
 	
 	public static int ermittleBeginner(int spielerAnzahl) {
-		return (int)(Math.random() * spielerAnzahl + 1.0);
+		return (int)(Math.random() * spielerAnzahl);
 	}
 	
 	

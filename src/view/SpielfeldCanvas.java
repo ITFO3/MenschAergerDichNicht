@@ -242,9 +242,9 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// Hintergrund laden
-//		Image image = new ImageIcon(this.getClass().getResource(
-//				"pachisi-4er-blanco.jpg")).getImage();
-		Image image = new ImageIcon("J:/MenschAergerDichNicht/src/view/pachisi-4er-blanco.jpg").getImage();
+		Image image = new ImageIcon(this.getClass().getResource(
+				"pachisi-4er-blanco.jpg")).getImage();
+//		Image image = new ImageIcon("J:/MenschAergerDichNicht/src/view/pachisi-4er-blanco.jpg").getImage();
 		g.drawImage(image, 0, 0, height, width, this);
 
 		// Spielfiguren zeichnen
