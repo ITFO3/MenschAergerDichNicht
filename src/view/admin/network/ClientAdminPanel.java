@@ -22,15 +22,55 @@ import controller.client.network.ClientNetworkService;
  */
 public class ClientAdminPanel extends JPanel {
 
-	JTextField clientServerIpTextfield;
+	private class ConnectButtonListener implements ActionListener {
 
-	JTextField clientServerPortTextField;
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			boolean result = networkService.connectToServer(
+					clientServerIpTextfield.getText(),
+					Integer.valueOf(clientServerPortTextField.getText()));
+			ClientNetworkService.getInstance().sendeSpielerName(
+					clientSpielernameTextField.getText());
+			createAndAddConnectionStatusLabel(result);
+			
+			ClientController.getInstance().start(clientSpielernameTextField.getText());
+		}
 
-	JTextField clientSpielernameTextField;
+		/**
+		 * Erstellt und fuegt ein Label zur Anzeige hinzu, ob der Server
+		 * erfolgreich oder nicht erfolgreich gestartet wurde.
+		 */
+		private void createAndAddConnectionStatusLabel(boolean result) {
+			if (connectionStatusLabel == null) {
+				connectionStatusLabel = new JLabel();
+			}
+			if (result) {
+				connectionStatusLabel
+						.setText("Verbindung zum Server erfolgreich");
+				connectionStatusLabel.setForeground(Color.GREEN);
+			} else {
+				connectionStatusLabel
+						.setText("Verbindung zum Server fehlgeschlagen");
+				connectionStatusLabel.setForeground(Color.RED);
+			}
+			connectionStatusLabel.setBounds(110, 130, 230, 20);
+			connectionStatusLabel.setVisible(true);
+			add(connectionStatusLabel);
+			revalidate();
+			repaint();
+		}
 
-	NetworkService networkService = NetworkService.getInstance();
+	}
 
-	JLabel connectionStatusLabel;
+	private JTextField clientServerIpTextfield;
+
+	private JTextField clientServerPortTextField;
+
+	private JTextField clientSpielernameTextField;
+
+	private JLabel connectionStatusLabel;
+
+	private NetworkService networkService = NetworkService.getInstance();
 
 	public ClientAdminPanel() {
 		/*
@@ -80,45 +120,5 @@ public class ClientAdminPanel extends JPanel {
 		add(serverPortPanel);
 		add(spielerNamePanel);
 		add(connectButton);
-	}
-
-	private class ConnectButtonListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			boolean result = networkService.connectToServer(
-					clientServerIpTextfield.getText(),
-					Integer.valueOf(clientServerPortTextField.getText()));
-			ClientNetworkService.getInstance().sendeSpielerName(
-					clientSpielernameTextField.getText());
-			createAndAddConnectionStatusLabel(result);
-			
-			ClientController.getInstance().start(clientSpielernameTextField.getText());
-		}
-
-		/**
-		 * Erstellt und fuegt ein Label zur Anzeige hinzu, ob der Server
-		 * erfolgreich oder nicht erfolgreich gestartet wurde.
-		 */
-		private void createAndAddConnectionStatusLabel(boolean result) {
-			if (connectionStatusLabel == null) {
-				connectionStatusLabel = new JLabel();
-			}
-			if (result) {
-				connectionStatusLabel
-						.setText("Verbindung zum Server erfolgreich");
-				connectionStatusLabel.setForeground(Color.GREEN);
-			} else {
-				connectionStatusLabel
-						.setText("Verbindung zum Server fehlgeschlagen");
-				connectionStatusLabel.setForeground(Color.RED);
-			}
-			connectionStatusLabel.setBounds(110, 130, 230, 20);
-			connectionStatusLabel.setVisible(true);
-			add(connectionStatusLabel);
-			revalidate();
-			repaint();
-		}
-
 	}
 }
