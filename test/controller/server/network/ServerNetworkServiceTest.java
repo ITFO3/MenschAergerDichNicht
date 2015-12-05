@@ -48,7 +48,7 @@ public class ServerNetworkServiceTest {
 			Thread.currentThread().interrupt();
 		}
 
-		Spieler spieler = new Spieler("Test");
+		Spieler spieler = serverNetworkService.createNewSpieler("Test");
 		
 		for (Figur figur : spieler.getFiguren()) {
 			figur.addObserver(model);

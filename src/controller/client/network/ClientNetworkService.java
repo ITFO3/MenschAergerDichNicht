@@ -17,6 +17,8 @@ import controller.server.network.DataObjectEnum;
 public class ClientNetworkService {
 
 	private NetworkService networkService;
+	
+	private ClientController clientController;
 
 	private static ClientNetworkService clientNetworkService;
 
@@ -102,12 +104,12 @@ public class ClientNetworkService {
 	
 	private void empfangeSpieler(String daten) {
 		
-		Spieler spieler = new Spieler(null);
-		
-		for (Figur figur : spieler.getFiguren()) {
-			figur.addObserver(Spielfeld.getInstanz());
-			figur.setPosition(figur.getPosition());
-		}
+//		Spieler spieler = clientController.createNewSpieler;
+//		
+//		for (Figur figur : spieler.getFiguren()) {
+//			figur.addObserver(Spielfeld.getInstanz());
+//			figur.setPosition(figur.getPosition());
+//		}
 	}
 	
 }
