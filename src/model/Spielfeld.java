@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import view.SpielfeldCanvas;
-
 /**
  * Das Spielfeld, auf dem sich die Figuren befinden
  * @author Dominik Bittner
@@ -17,20 +15,13 @@ public class Spielfeld extends Observable implements Observer {
 	 */
 	private static Spielfeld instanz;
 	
-	ArrayList<Integer> zielFelder = new ArrayList<Integer>();
-	ArrayList<int[]> homeFelder = new ArrayList<int[]>();
+	private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
 	
-	ArrayList<Figur> moeglichkeiten = new ArrayList<Figur>();
-
-	public ArrayList<Figur> getMoeglichkeiten() {
-		return moeglichkeiten;
-	}
-
-
-	public void setMoeglichkeiten(ArrayList<Figur> moeglichkeiten) {
-		this.moeglichkeiten = moeglichkeiten;
-	}
-
+	private ArrayList<Integer> zielFelder = new ArrayList<Integer>();
+	private ArrayList<int[]> homeFelder = new ArrayList<int[]>();
+	
+	private ArrayList<Figur> moeglichkeiten = new ArrayList<Figur>();
+	int wurfAnzahl = 0;
 
 	/**
 	 * HashMap mit den Spielfiguren
@@ -46,6 +37,7 @@ public class Spielfeld extends Observable implements Observer {
 		spielfiguren = new HashMap<Integer, Figur>();
 		initialisiereHomefelder();
 		initialisiereZielfelder();
+		instanz = this;
 	}
 	
 	
@@ -64,44 +56,6 @@ public class Spielfeld extends Observable implements Observer {
 		zielFelder.add(10);
 		zielFelder.add(20);
 		zielFelder.add(30);
-	}
-	
-	public int[] gibHomefelder(){
-		
-		int[] homefeld = homeFelder.get(0);
-		homeFelder.remove(0);
-		return homefeld;
-	}
-	
-	public int gibZielfeld(){
-		
-		int zielfeld = zielFelder.get(0);
-		zielFelder.remove(0);
-		return zielfeld;
-	}
-	
-	public Figur sucheFigur(int position) {
-		return spielfiguren.get(position);
-	}
-	
-	/**
-	 * Gibt die aktuelle Instanz des Spielfeldes zurueck
-	 * @return
-	 */
-	public static Spielfeld getInstanz() {
-		if (instanz == null) {
-			instanz = new Spielfeld();
-		}
-		
-		return instanz;
-	}
-	
-	/**
-	 * Gibt die HashMap mit den Spielfiguren zurueck
-	 * @return
-	 */
-	public HashMap<Integer, Figur> getSpielfiguren() {
-		return this.spielfiguren;
 	}
 	
 	@Override
@@ -129,6 +83,79 @@ public class Spielfeld extends Observable implements Observer {
 		
 		// View benachrichtigen
 		notifyObservers(this);
+	}
+
+
+	public Figur sucheFigur(int position) {
+		Figur f = spielfiguren.get(position);
+		
+		return f;
+	}
+
+
+	public int[] gibHomefelder(){
+		
+		int[] homefeld = homeFelder.get(0);
+		homeFelder.remove(0);
+		return homefeld;
+	}
+	
+	public int gibZielfeld(){
+		
+		int zielfeld = zielFelder.get(0);
+		zielFelder.remove(0);
+		return zielfeld;
+	}
+	
+	public ArrayList<Figur> getMoeglichkeiten() {
+		return moeglichkeiten;
+	}
+
+
+	public ArrayList<Spieler> getSpieler() {
+		return spieler;
+	}
+
+
+	public void setSpieler(ArrayList<Spieler> spieler) {
+		this.spieler = spieler;
+	}
+
+
+	public void setMoeglichkeiten(ArrayList<Figur> moeglichkeiten) {
+		this.moeglichkeiten = moeglichkeiten;
+	}
+
+
+	public int getWurfAnzahl() {
+		return wurfAnzahl;
+	}
+
+
+	public void setWurfAnzahl(int wurfAnzahl) {
+		this.wurfAnzahl = wurfAnzahl;
+	}
+
+
+	/**
+	 * Gibt die aktuelle Instanz des Spielfeldes zurueck
+	 * @return
+	 */
+	public static Spielfeld getInstanz() {
+		if (instanz == null) {
+			instanz = new Spielfeld();
+		}
+		
+		return instanz;
+	}
+
+
+	/**
+	 * Gibt die HashMap mit den Spielfiguren zurueck
+	 * @return
+	 */
+	public HashMap<Integer, Figur> getSpielfiguren() {
+		return this.spielfiguren;
 	}
 
 	
