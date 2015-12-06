@@ -113,7 +113,7 @@ public class ServerAdminPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// Do stuff here.
-			ServerController.getInstance().starteSpiel(serverService.getConnectedPlayers());
+			ServerController.getInstanz().starteSpiel(serverService.getConnectedPlayers());
 		}
 
 	}

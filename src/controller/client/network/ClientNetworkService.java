@@ -67,8 +67,7 @@ public class ClientNetworkService {
 		String[] seperated = daten.split(",");
 		String id = seperated[0];
 		Integer neuePosition = Integer.valueOf(seperated[1]);
-		
-		ClientController.getInstance().aktualisiereSpielfeld(id, null, neuePosition);
+		ClientController.getInstance().aktualisiereSpielfeld(id, neuePosition);
 	}
 	
 	private void zeigeMoeglichkeiten(String daten) {

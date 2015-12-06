@@ -21,32 +21,34 @@ public class TestRun {
 		view.setVisible(true);
 		
 		// Erstellen von neuen Figuren
-		Figur figur = new Figur("Test", Color.RED, -1 , 0, 39);
+		Figur figur = new Figur("Test", Color.RED, -16 , 1, 40, new int[]{41,42,43,44});
 		figur.addObserver(model);
-		figur.setPosition(-1);
+		figur.setPosition(-16);
 		String figurId = figur.getId();
 		ClientController controller = ClientController.getInstance();
+		
+		Spielfeld.getInstanz().setWurfAnzahl(5);
 	
 		//Figur figur2 = new Figur("Test2", Color.blue, 10);
 		//figur2.addObserver(model);
 		
 		// Positionen verschieben
-		int j = 10;
-		for (int i = 0; i <= 56; i++) {
-			try {
-				controller.aktualisiereSpielfeld(figurId, null, i);
-//				figur2.setPosition(j);
-				j++;
-				
-				if (j > 56) {
-					j = 1;
-				}
-				
-				Thread.sleep(1000);
-			} catch(InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-		}
+//		int j = 10;
+//		for (int i = 1; i <= 56; i++) {
+//			try {
+//				controller.aktualisiereSpielfeld(figurId, null, i);
+////				figur2.setPosition(j);
+//				j++;
+//				
+//				if (j > 56) {
+//					j = 1;
+//				}
+//				
+//				Thread.sleep(1000);
+//			} catch(InterruptedException ex) {
+//				Thread.currentThread().interrupt();
+//			}
+//		}
 		
 //		Figur figur2 = new Figur("Test2", Color.BLUE, -2 , 0, 39);
 //		figur2.addObserver(model);
