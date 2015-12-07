@@ -15,12 +15,6 @@ public class ServerController {
 
     private static ServerController instance;
 
-    private boolean _figurGewaehlt;
-
-    private ServerController() {
-        // Keine normale Initialisierung ermoeglichen
-    }
-
     /**
      * Gibt die aktuelle Instanz des Spielfeldes zurueck
      *
@@ -34,14 +28,22 @@ public class ServerController {
         return instance;
     }
 
+
+    private boolean _figurGewaehlt;
+    private ServerNetworkService serverNetworkService = ServerNetworkService.getInstance();
+
+    private ServerController() {
+        // Keine normale Initialisierung ermoeglichen
+    }
+
     /**
      * Startet das Spiel
      *
      * @param spieler   Eine Liste von Spielern, die an diesem Spiel teilnehmen
      */
-    public void starteSpiel(ArrayList<Spieler> spieler) {
+    public void starteSpiel(List<Spieler> spieler) {
         Spielfeld.getInstance().setSpieler(spieler);
-        sendeSpielerAnClients();
+        sendeSpielerAnClients(spieler);
 
         int beginner = Wuerfel.ermittleBeginner(spieler.size());
 
@@ -132,9 +134,9 @@ public class ServerController {
                 figuren, wurfanzahl);
     }
 
-    private void sendeSpielerAnClients() {
-        for (Spieler spieler : Spielfeld.getInstance().getSpieler()) {
-            NetworkService.getInstance().sendeSpielerAnClients(spieler);
+    private void sendeSpielerAnClients(List<Spieler> spieler) {
+        for (Spieler s : spieler) {
+            NetworkService.getInstance().sendeSpielerAnClients(s);
         }
     }
 
@@ -147,7 +149,7 @@ public class ServerController {
      */
     public Spieler ueberpruefeSpielende() {
 
-        ArrayList<Spieler> spieler = Spielfeld.getInstance().getSpieler();
+        ArrayList<Spieler> spieler = (ArrayList<Spieler>) Spielfeld.getInstance().getSpieler();
 
         boolean figurHatEndpositionErreicht = false;
         boolean alleFigurenHabenDieEndpositionenErreicht = true;

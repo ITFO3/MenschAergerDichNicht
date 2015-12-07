@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -15,8 +16,7 @@ public class Spielfeld extends Observable implements Observer {
      */
     private static Spielfeld instance;
 
-    private ArrayList<Spieler> spieler = new ArrayList<Spieler>();
-
+    private List<Spieler> spieler = new ArrayList<Spieler>();
     private ArrayList<Integer> zielFelder = new ArrayList<Integer>();
     private ArrayList<int[]> homeFelder = new ArrayList<int[]>();
 
@@ -61,16 +61,6 @@ public class Spielfeld extends Observable implements Observer {
     }
 
 
-    public ArrayList<Spieler> getSpieler() {
-        return spieler;
-    }
-
-
-    public void setSpieler(ArrayList<Spieler> spieler) {
-        this.spieler = spieler;
-    }
-
-
     public void setMoeglichkeiten(ArrayList<Figur> moeglichkeiten) {
         this.moeglichkeiten = moeglichkeiten;
     }
@@ -85,6 +75,14 @@ public class Spielfeld extends Observable implements Observer {
         this.wurfAnzahl = wurfAnzahl;
     }
 
+
+    public List<Spieler> getSpieler() {
+        return this.spieler;
+    }
+
+    public void setSpieler(List<Spieler> spieler) {
+        this.spieler = spieler;
+    }
 
     /**
      * Gibt die HashMap mit den Spielfiguren zurueck
