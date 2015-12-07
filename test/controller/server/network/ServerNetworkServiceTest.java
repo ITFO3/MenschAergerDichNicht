@@ -1,17 +1,11 @@
 package controller.server.network;
 
-import java.awt.Color;
-import java.io.PrintStream;
-
-import model.Figur;
-import model.Spieler;
-import model.Spielfeld;
-
 import org.junit.Test;
 
 import controller.NetworkService;
-import controller.client.network.ClientNetworkService;
-import controller.server.ServerController;
+import model.Figur;
+import model.Spieler;
+import model.Spielfeld;
 import view.SpielfeldView;
 
 public class ServerNetworkServiceTest {
@@ -24,7 +18,8 @@ public class ServerNetworkServiceTest {
 	@Test
 	public void testFigurGeaendert() throws Exception {
 		// Erstellt ein neues Spielfeld Model
-		Spielfeld model = Spielfeld.getInstanz();
+		Spielfeld model = Spielfeld.getInstance();
+		
 
 		// Erstellt das Hauptfenster
 		SpielfeldView view = new SpielfeldView(model, 250, 150);
@@ -48,7 +43,7 @@ public class ServerNetworkServiceTest {
 			Thread.currentThread().interrupt();
 		}
 
-		Spieler spieler = new Spieler("Test");
+		Spieler spieler = serverNetworkService.createNewSpieler("Test");
 		
 		for (Figur figur : spieler.getFiguren()) {
 			figur.addObserver(model);
@@ -60,7 +55,7 @@ public class ServerNetworkServiceTest {
 		for (int i = 0; i <= 40; i++) {
 			try {								
 				spieler.getFiguren().get(0).setPosition(i);
-				networkService.sendeFigurenAnClients(spieler.getFiguren().get(0));
+				networkService.sendeFigurAnClients(spieler.getFiguren().get(0));
 				j++;
 
 				if (j > 40) {

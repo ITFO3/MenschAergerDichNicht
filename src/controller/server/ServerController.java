@@ -15,12 +15,6 @@ public class ServerController {
 
     private static ServerController instance;
 
-    private boolean _figurGewaehlt;
-
-    private ServerController() {
-        // Keine normale Initialisierung ermoeglichen
-    }
-
     /**
      * Gibt die aktuelle Instanz des Spielfeldes zurueck
      *
@@ -34,32 +28,47 @@ public class ServerController {
         return instance;
     }
 
+
+    private boolean _figurGewaehlt;
+    private ServerNetworkService serverNetworkService = ServerNetworkService.getInstance();
+
+    private ServerController() {
+        // Keine normale Initialisierung ermoeglichen
+    }
+
     /**
      * Startet das Spiel
      *
      * @param spieler   Eine Liste von Spielern, die an diesem Spiel teilnehmen
      */
-    public void starteSpiel(ArrayList<Spieler> spieler) {
+    public void starteSpiel(List<Spieler> spieler) {
         Spielfeld.getInstance().setSpieler(spieler);
-        sendeSpielerAnClients();
+        sendeSpielerAnClients(spieler);
+        ServerNetworkService.getInstance().sendeStarteSpielSignalAnAlleClients();
 
         int beginner = Wuerfel.ermittleBeginner(spieler.size());
 
         Spieler sieger = null;
 
         while (sieger == null) {
-            _figurGewaehlt = false;
+        	Spieler aktuellerSpieler = spieler.get(beginner++);
+        	
             int wurfAnzahl = Wuerfel.wuerfel();
             Spielfeld.getInstance().setWurfAnzahl(wurfAnzahl);
 
             ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(
-                    spieler.get(beginner), wurfAnzahl);
+            		aktuellerSpieler, wurfAnzahl);
 
-            sendeMoeglichkeitenAnClient(spieler.get(beginner++),
+            sendeMoeglichkeitenAnClient(aktuellerSpieler,
                     moeglichkeiten, wurfAnzahl);
 
-            while (!_figurGewaehlt) {
-                // Warten, bis eine Figur ausgewaehlt wurde
+            while (aktuellerSpieler.getState() != Spieler.State.VOID) {
+            	// Ne schleife zum warte.
+            	try {
+					Thread.sleep(500l);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
             }
 
             //TODO warte auf die Eingabe vom Spieler, welche Figur bewegt werden soll
@@ -135,11 +144,12 @@ public class ServerController {
 
         NetworkService.getInstance().sendeMoeglichkeitenAnClient(client,
                 figuren, wurfanzahl);
+        s.setState(Spieler.State.WATING_FOR_SELECTION);
     }
 
-    private void sendeSpielerAnClients() {
-        for (Spieler spieler : Spielfeld.getInstance().getSpieler()) {
-            NetworkService.getInstance().sendeSpielerAnClients(spieler);
+    private void sendeSpielerAnClients(List<Spieler> spieler) {
+        for (Spieler s : spieler) {
+            NetworkService.getInstance().sendeSpielerAnClients(s);
         }
     }
 
@@ -152,7 +162,7 @@ public class ServerController {
      */
     public Spieler ueberpruefeSpielende() {
 
-        ArrayList<Spieler> spieler = Spielfeld.getInstance().getSpieler();
+        ArrayList<Spieler> spieler = (ArrayList<Spieler>) Spielfeld.getInstance().getSpieler();
 
         boolean figurHatEndpositionErreicht = false;
         boolean alleFigurenHabenDieEndpositionenErreicht = true;

@@ -10,34 +10,48 @@ import model.Spielfeld;
 import controller.NetworkService;
 import controller.client.ClientController;
 import controller.server.network.DataObjectEnum;
+import controller.server.network.ServerNetworkService;
 
 /**
  * @author ChrisWun
  */
 public class ClientNetworkService {
 
-    private NetworkService networkService;
-
     private static ClientNetworkService clientNetworkService;
 
-    public ClientNetworkService() {
-        this.networkService = NetworkService.getInstance();
-    }
-
-    public void sendeFigur(Figur figur) {
-        Client client = networkService.getClient();
-        String nachricht = "FIGURGEANDERT=" + figur.getId() + "," + figur.getPosition();
-        System.out.println("Client an Server: " + nachricht);
-        PrintStream os = client.getOutputStream();
-        os.print(nachricht);
-        os.flush();
-    }
 
     public static ClientNetworkService getInstance() {
         if (clientNetworkService == null) {
             clientNetworkService = new ClientNetworkService();
         }
+
         return clientNetworkService;
+    }
+
+    private ClientController clientController;
+    private NetworkService networkService;
+
+    private ClientNetworkService() {
+        this.networkService = NetworkService.getInstance();
+        this.clientController = ClientController.getInstance();
+    }
+
+    public void sendeDaten(String data) {
+        Client client = networkService.getClient();
+        PrintStream os = client.getOutputStream();
+        os.println(data);
+        System.out.println("Client an Server: " + data);
+        os.flush();
+    }
+
+    public void sendeFigur(Figur figur) {
+        String nachricht = "FIGURGEANDERT=" + figur.getId() + "," + figur.getPosition();
+        sendeDaten(nachricht);
+    }
+
+    public void sendeSpielerName(String text) {
+        String nachricht = DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";";
+        sendeDaten(nachricht);
     }
 
     // FIGURGEAENDERT=Test:1,2;FIGURGEAENDERT=Test:2,4
@@ -54,17 +68,10 @@ public class ClientNetworkService {
                 zeigeMoeglichkeiten(value[1]);
             } else if (aenderungsTyp.equals(DataObjectEnum.SPIELERNAME.toString())) {
                 empfangeSpieler(value[1]);
+            } else if (aenderungsTyp.equals(DataObjectEnum.STARTGAME.toString())) {
+                starteSpiel(value[1]);
             }
         }
-    }
-
-    public void sendeSpielerName(String text) {
-        Client client = networkService.getClient();
-        PrintStream os = client.getOutputStream();
-        String nachricht = DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";";
-        System.out.println("Client sendet: " + nachricht);
-        os.println(nachricht);
-        os.flush();
     }
 
     private void figurGeaendert(String daten) {
@@ -73,7 +80,7 @@ public class ClientNetworkService {
         String[] seperated = daten.split(",");
         String id = seperated[0];
         Integer neuePosition = Integer.valueOf(seperated[1]);
-        ClientController.getInstance().aktualisiereSpielfeld(id, neuePosition);
+        clientController.aktualisiereSpielfeld(id, neuePosition);
     }
 
     private void zeigeMoeglichkeiten(String daten) {
@@ -91,16 +98,21 @@ public class ClientNetworkService {
             figurenListe.add(figur);
         }
 
-        ClientController.getInstance().zeigeMoeglichkeiten(figurenListe, wuerfelAnzahl);
+        clientController.zeigeMoeglichkeiten(figurenListe, wuerfelAnzahl);
     }
 
     private void empfangeSpieler(String daten) {
-        Spieler spieler = new Spieler(daten);
+        Spieler spieler = ServerNetworkService.getInstance().createNewSpieler(daten);
 
         for (Figur figur : spieler.getFiguren()) {
             figur.addObserver(Spielfeld.getInstance());
             figur.setPosition(figur.getPosition());
         }
+    }
+
+    private void starteSpiel(String string) {
+        Client client = networkService.getClient();
+        clientController.start(client.getSpielerName());
     }
 
 }

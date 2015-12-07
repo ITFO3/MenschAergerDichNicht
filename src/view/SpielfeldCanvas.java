@@ -27,24 +27,19 @@ import controller.server.ServerController;
 /**
  * Das Canvas auf dem JFrame
  */
-public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
+public class SpielfeldCanvas extends Canvas implements Observer, MouseListener {
     private static final int height = 600;
     private static final int width = 600;
     int click_X_Position = 0;
     int click_Y_Position = 0;
-    List<Figur> moeglichkeiten;
-    static Spielfeld model;
-    private HashMap<Integer, int[]> feldZuKoordinate;
+    private static HashMap<Integer, int[]> feldZuKoordinate;
     private static HashMap<int[], Integer> koordinateZuFeld;
 
     /**
      * Das Canvas auf dem JFrame
-     *
-     * @param model Das Model von dem Spielfeld
      */
-    public SpielfeldCanvas(Spielfeld model) {
-        SpielfeldCanvas.model = model;
-        SpielfeldCanvas.model.addObserver(this);
+    public SpielfeldCanvas() {
+        Spielfeld.getInstance().addObserver(this);
         this.initializeFZK();
         this.addMouseListener(this);
     }
@@ -149,11 +144,11 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
         }
 
         // Spielfiguren zeichnen
-        for (Figur figur : model.getSpielfiguren().values()) {
+        for (Figur figur : Spielfeld.getInstance().getSpielfiguren().values()) {
             drawSpielfigur(g, figur);
         }
 
-        highlightSpielfiguren(g, model.getMoeglichkeiten());
+        highlightSpielfiguren(g, Spielfeld.getInstance().getMoeglichkeiten());
         g.finalize();
     }
 
@@ -167,15 +162,15 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
 
         int position = figur.getPosition();
         g.setColor(figur.getColor());
-        g.fillOval(feldZuKoordinate.get(position)[0],feldZuKoordinate.get(position)[1], 40, 40);
-
+        g.fillOval(feldZuKoordinate.get(position)[0],
+                   feldZuKoordinate.get(position)[1],
+                   40,
+                   40);
     }
 
     public void highlightSpielfiguren(Graphics g, List<Figur> figuren) {
-        moeglichkeiten = new ArrayList<Figur>();
-        moeglichkeiten.addAll(figuren);
         for (Figur figur : figuren) {
-            int position = figur.getPosition();// + 16;
+            int position = figur.getPosition();
             g.setColor(Color.GREEN);
             g.fillOval(feldZuKoordinate.get(position)[0] + 8,
                     feldZuKoordinate.get(position)[1] + 8,

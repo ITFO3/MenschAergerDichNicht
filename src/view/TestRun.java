@@ -29,7 +29,7 @@ public class TestRun {
         Spielfeld.getInstanz().setWurfAnzahl(5);
         */
 
-        Spieler s = new Spieler("TestSpieler");
+        Spieler s = new Spieler("TestSpieler", Color.RED, new int[] {41,42,43,44}, -1, 1, 40);
         ArrayList<Spieler> al = new ArrayList<Spieler>();
         al.add(s);
         model.setSpieler(al);

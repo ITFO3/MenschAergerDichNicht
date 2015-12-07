@@ -17,18 +17,29 @@ import java.net.UnknownHostException;
  */
 public class Client extends Thread implements Runnable {
 
-	private static Socket clientSocket;
-	private static PrintStream os;
-	private static BufferedReader is;
-	
 	private ClientNetworkService clientNetworkService;
+	
+	private Socket clientSocket;
+	
+	private BufferedReader is;
+	
+	private PrintStream os;
 
-	public Client(String host, int port) throws UnknownHostException,
-			IOException {
+	private String spielerName;
+
+	public Client(String host, int port) throws UnknownHostException, IOException {
 		clientNetworkService = ClientNetworkService.getInstance();
 		clientSocket = new Socket(host, port);
 		os = new PrintStream(clientSocket.getOutputStream());
 		is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+	}
+
+	public PrintStream getOutputStream() {
+		return os;
+	}
+
+	public String getSpielerName() {
+		return spielerName;
 	}
 
 	@Override
@@ -43,9 +54,9 @@ public class Client extends Thread implements Runnable {
 			}
 		}
 	}
-	
-	public PrintStream getOutputStream() {
-		return os;
+
+	public void setSpielerName(String name) {
+		this.spielerName = name;
 	}
 
 }

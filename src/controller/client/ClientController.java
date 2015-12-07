@@ -41,14 +41,6 @@ public class ClientController {
     {
         Figur ausgewaehltFigur = sucheFigur(ausgewaehlteFigurId);
         ausgewaehltFigur.setPosition(neuePosition);
-
-
-        Figur geschlageneFigur = sucheFigur(neuePosition);
-
-        if(geschlageneFigur != null) {
-            geschlageneFigur.setPosition(geschlageneFigur.getHausFeld());
-        }
-
     }
 
     /**
@@ -81,21 +73,4 @@ public class ClientController {
 
         return null;
     }
-
-
-    /**
-     * Sucht eine Figur auf dem Spielfeld anhand der Position
-     * @param id
-     * @return
-     */
-    private Figur sucheFigur(int position) {
-        for(Figur f : Spielfeld.getInstance().getSpielfiguren().values()) {
-            if(f.getPosition() == position)
-                return f;
-        }
-
-        return null;
-    }
-
-
 }
