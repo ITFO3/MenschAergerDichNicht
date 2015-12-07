@@ -3,9 +3,10 @@ package view;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import controller.server.ServerController;
 import model.Figur;
+import model.Spieler;
 import model.Spielfeld;
-import controller.client.ClientController;
 
 /**
  * Test-Start-Klasse fuer die GUI
@@ -19,15 +20,32 @@ public class TestRun {
 		// Erstellt das Hauptfenster
 		SpielfeldView view = new SpielfeldView(model, 250, 150);
 		view.setVisible(true);
-		
+
+		/*
 		// Erstellen von neuen Figuren
 		Figur figur = new Figur("Test", Color.RED, -16 , 1, 40, new int[]{41,42,43,44});
 		figur.addObserver(model);
 		figur.setPosition(-16);
-		String figurId = figur.getId();
-		ClientController controller = ClientController.getInstance();
-		
 		Spielfeld.getInstanz().setWurfAnzahl(5);
+		*/
+		
+		Spieler s = new Spieler("TestSpieler");
+		ArrayList<Spieler> al = new ArrayList<Spieler>();
+		al.add(s);
+		model.setSpieler(al);
+		
+		ArrayList<Figur> figuren = s.getFiguren();
+		figuren.get(0).setPosition(41);
+		figuren.get(1).setPosition(42);
+		figuren.get(2).setPosition(43);
+		figuren.get(3).setPosition(40);
+		
+		Spieler sieger = ServerController.getInstanz().ueberpruefeSpielende();
+		if(sieger != null)
+			System.out.println(sieger.getName());
+		else
+			System.out.println("Es gibt keinen Sieger");
+		
 	
 		//Figur figur2 = new Figur("Test2", Color.blue, 10);
 		//figur2.addObserver(model);
