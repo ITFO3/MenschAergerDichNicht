@@ -30,6 +30,7 @@ public class ClientNetworkService {
         System.out.println("Client an Server: " + nachricht);
         PrintStream os = client.getOutputStream();
         os.print(nachricht);
+        os.flush();
     }
 
     public static ClientNetworkService getInstance() {

@@ -102,6 +102,11 @@ public class ServerController {
         for (Figur f : figuren) {
             neuePosition = Spielfeld.getInstance().bewegeFigur(f, wurfzahl);
 
+            if (neuePosition > f.getZielFelder()[3]) {
+                // Falls man ueber das Zielfeld springen wuerde
+                continue;
+            }
+
             Figur andereFigur = Spielfeld.getInstance().sucheFigur(neuePosition);
 
             // Wenn eine Figur von dem Spieler auf dem Zielfeld steht geht es nicht
