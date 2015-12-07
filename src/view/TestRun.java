@@ -15,7 +15,7 @@ public class TestRun {
 
     public static void main(String[] args) {
         // Erstellt ein neues Spielfeld Model
-        Spielfeld model = Spielfeld.getInstanz();
+        Spielfeld model = Spielfeld.getInstance();
 
         // Erstellt das Hauptfenster
         SpielfeldView view = new SpielfeldView(model, 250, 150);
@@ -40,7 +40,7 @@ public class TestRun {
         figuren.get(2).setPosition(43);
         figuren.get(3).setPosition(40);
 
-        Spieler sieger = ServerController.getInstanz().ueberpruefeSpielende();
+        Spieler sieger = ServerController.getInstance().ueberpruefeSpielende();
         if(sieger != null)
             System.out.println(sieger.getName());
         else
