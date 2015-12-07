@@ -223,8 +223,10 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
 	    		
 		Figur f = Spielfeld.getInstanz().sucheFigur(feld);
 		if(f != null) {
-			Spielfeld.getInstanz().setWurfAnzahl(1);
-			//ServerController.getInstanz().bewegeFigur(f); //lokale Version
+			// Hier nur die neue Position setzen und an den Server senden.
+			// Dort wird dann überprüft, ob geschmissen wird
+			int neuePosition = Spielfeld.getInstanz().bewegeFigur(f, Spielfeld.getInstanz().getWurfAnzahl());
+			f.setPosition(neuePosition);
 			ClientNetworkService.getInstance().sendeFigur(f);
 		}
 		

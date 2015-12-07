@@ -152,65 +152,35 @@ public class ServerController {
 		return null;
 	}
 
-	/**
-	 * Sucht zunaechst die ausgewaehlte Figur aus und bewegt sie um die
-	 * angegebene Anzahl vor
-	 * 
-	 * @param figur
-	 * @param anzahl
-	 */
-	public void bewegeFigur(Figur figur) {
-
-		// Die Regeln wurden einen Schritt vorhere überprüft. Es wird nur
-		// eine Figur übergeben, die bewegt werden kann.
-		// Jetzt muss nur noch die Figur gesetzt werden
-		if (figur.getPosition() == figur.getHausFeld()) {
-
-			figur.setPosition(figur.getStartFeld());
-		} 
-		else {
+	public void bewegeFigur(Figur figur, int neuePosition) 
+	{
+		Figur betroffenePositionFigur = testePosition(neuePosition);
+		if (betroffenePositionFigur != null) {
+			betroffenePositionFigur.setPosition(betroffenePositionFigur
+					.getHausFeld());
 			
-			Spielfeld.getInstanz().setWurfAnzahl(2);
-			int wurfAnzahl = Spielfeld.getInstanz().getWurfAnzahl();
-			int newPosition = figur.getPosition() + wurfAnzahl;
-			//Würde die Figur über das letzte Feld gelangen, so muss es in die Zielfelder gehen
-			if(newPosition > figur.getEndFeld()) {
-				if(newPosition - figur.getEndFeld() > 4) { //Hier wird ein Fehler erzeugt, weil man diese Figur nicht ausw�hlen konnte und der Fehelr normalerwei�e nicht auftritt
-					newPosition = 100;
-				}
-				if(figur.getPosition() > figur.getEndFeld()) {
-					newPosition = figur.getPosition() + wurfAnzahl;
-				}
-				else {
-					newPosition = figur.getZielFelder()[newPosition - figur.getEndFeld() - 1];
-				}
-			}
-			figur.setPosition(newPosition);
-
-			Figur betroffenePositionFigur = testePosition(newPosition);
-			if (betroffenePositionFigur != null) {
-				betroffenePositionFigur.setPosition(betroffenePositionFigur
-						.getHausFeld());
-			}
-			
-			NetworkService.getInstance().sendeFigurAnClients(figur);
+			NetworkService.getInstance().sendeFigurAnClients(betroffenePositionFigur);
 		}
+		
+		figur.setPosition(neuePosition);
+		NetworkService.getInstance().sendeFigurAnClients(figur);
+		
+		_figurGewaehlt = true;
 	}
-
+	
 	private Figur testePosition(int position) {
 
 		Figur returnObject = null;
 		ArrayList<Spieler> spieler = Spielfeld.getInstanz().getSpieler();
 
 		for (int i = 0; i < spieler.size(); i++) {
-
 			for (int j = 0; j < 4; j++) {
-
 				if (spieler.get(i).getFiguren().get(j).getPosition() == position) {
 					returnObject = spieler.get(i).getFiguren().get(j);
 					break;
 				}
 			}
+			
 			if (returnObject != null)
 				break;
 		}

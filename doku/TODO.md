@@ -1,22 +1,15 @@
 # TODO
 
-1. Nachdem die Möglichkeiten an den entsprechenden Spieler geschickt wurden,
- sollte diese Methode pausieren und auf die Eingabe des Spielers warten. (Fehlt noch)
-Klickt man eine mögliche Figur auf der Oberfläche an, sucht die SpielfeldCanvas 
-die passende Figur im Spielfeld und ruft im ClientNetworkService die Methode 
-"sendeFigur(f)" auf.
+1. Das Warten auf die Eingabe des Benutzers funktioniert nicht richtig. 
+Irgendwie bekommt der Server keine Daten von den Clienten, solange er wartet.
+Das Warten sollte aber in einem eigenen Thread laufen und deshalb das Empfangen
+von Nachrichten nicht behindern.
  
-2. Nun muss auf der Serverseite die Daten empfangen werden und die Methode 
-"bewegeFigur(f)" aufgerufen werden.
-In der Methode "ServerController.bewegeFigur(f) wird dann der NetworkService 
-mit der Methode "sendeFigurAnClients(figur)" aufgerufen. Die Figur sollte 
-anschließend an alle Clients verteilt werden?! Bei den Clients in der Methode 
-"aktualisiereSpielfeld(String ausgewaehlteFigurId, int neuePosition)" wird die 
-Figur auf die neue Position gesetzt. Sollte an dieser Stelle eine Figur stehen, 
-wird diese auf das entsprechende Homefield gesetzt.
-Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
+2. Die Überprüfung, ob die Figur das Ende der Zielfelder erreicht hat 
+funktioniert nicht richtig.
 
 3. Es müssen noch die Regeln implementiert werden (ServerController.ueberpruefeMoeglichkeiten)
+
 4. Der Gewinner (in der Methode ServerController.starteSpiel) sollte noch auf 
 der Oberfläche angezeigt werden.
 
@@ -24,6 +17,7 @@ der Oberfläche angezeigt werden.
 dies könnte verschönert werden
 
 
-* Christian 1,2
+* Christian 1
+* Daniel 2
 * Dominik 3
 * Max 4(,5)
