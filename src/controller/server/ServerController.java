@@ -3,7 +3,6 @@ package controller.server;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.SpielfeldCanvas;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
@@ -11,81 +10,53 @@ import model.Wuerfel;
 import controller.NetworkService;
 import controller.server.network.ClientHandler;
 import controller.server.network.ServerNetworkService;
-import controller.server.regeln.Regel;
-import controller.server.regeln.SechsRegel;
-import controller.server.regeln.Zustand;
 
 public class ServerController {
 
 	private static ServerController instanz;
 
+	private boolean _figurGewaehlt;
 
 	private ServerController() {
 		instanz = this;
 	}
 
-
-/**
- * [1] Aktuell fehlt noch der Beginn des Spiels. Hierzu sollte von der Netzwerkseite aus die Liste an Spielern an den ServerController an die Methode "starteSpiel(ArrayList<Spieler> spieler)" übergeben werden.
-
-
-[2] Nachdem die Möglichkeiten an den entsprechenden Spieler geschickt wurden, sollte diese Methode pausieren und auf die Eingabe des Spielers warten. (Fehlt noch)
-
-
-Klickt man eine mögliche Figur auf der Oberfläche an, sucht die SpielfeldCanvas die passende Figur im Spielfeld und ruft im ClientNetworkService die Methode "sendeFigur(f)" auf. 
-[3] Nun muss auf der Serverseite die Daten empfangen werden und die Methode "bewegeFigur(f)" aufgerufen werden
- 
-
-In der Methode "ServerController.bewegeFigur(f) wird dann der NetworkService mit der Methode "sendeFigurAnClients(figur)" aufgerufen. Die Figur sollte anschließend an alle Clients verteilt werden?! Bei den Clients in der Methode "aktualisiereSpielfeld(String ausgewaehlteFigurId, int neuePosition)" wird die Figur auf die neue Position gesetzt. Sollte an dieser Stelle eine Figur stehen, wird diese auf das entsprechende Homefield gesetzt.
-Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
-
-
-[4] Es müssen noch die Regeln implementiert werden (ServerController.ueberpruefeMoeglichkeiten)
-
-
-[5] Der Gewinner (in der Methode ServerController.starteSpiel) sollte noch auf der Oberfläche angezeigt werden
-
-
-([6] Es wird auf der Oberfläche die Würfelanzahl angezeigt, dies könnte verschönert werden)
-
-
-1,3 Christian
-4 Dominik
-5(,6) Max
-2 Evtl. Christian, da du schon sowas ähnliches bei dem NetworkService verbaut hast?
-
-
-  */
-	
-	
-	
-	
-
+	/**
+	 * 
+	 */
 	public void starteSpiel(ArrayList<Spieler> spieler) {
 		Spielfeld.getInstanz().setSpieler(spieler);
+		sendeSpielerAnClients();
 
 		int beginner = Wuerfel.ermittleBeginner(spieler.size());
 		
 		Spieler sieger = null;
 
 		while (sieger == null) {
-
+			_figurGewaehlt = false;
 			int wurfAnzahl = Wuerfel.wuerfel();
 			Spielfeld.getInstanz().setWurfAnzahl(wurfAnzahl);
+			
 			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(
 					spieler.get(beginner), wurfAnzahl);
-			sendeMoeglichkeitenAnClienten(spieler.get(beginner++),
+			
+			sendeMoeglichkeitenAnClient(spieler.get(beginner++),
 					moeglichkeiten, wurfAnzahl);
+			
+			while (!_figurGewaehlt) {
+				// Warten, bis eine Figur ausgewaehlt wurde
+			}
 			
 			//TODO warte auf die Eingabe vom Spieler, welche Figur bewegt werden soll
 
 			if (beginner == spieler.size()) {
 				beginner -= spieler.size();
 			}
+			
 			sieger = ueberpruefeSpielende();
 		}
 		
-		//TODO Den Gewinner auf der Oberfläche anzeigen
+		//TODO Den Gewinner auf der OberflÃ¤che anzeigen
 	}
 
 	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler,
@@ -95,20 +66,17 @@ Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
 		ArrayList<Figur> bewegbareFiguren = new ArrayList<Figur>();
 		int wurfAnzahl = Spielfeld.getInstanz().getWurfAnzahl();
 		
-		//TODO Die Regeln müssen an dieser Stelle überprüft werden
+		//TODO Die Regeln mÃ¼ssen an dieser Stelle Ã¼berprÃ¼ft werden
 		
-//		for (Figur figur : figuren) {
-//
-//			bewegbareFiguren.add(figur);
-//		}
+		for (Figur figur : figuren) {
+			bewegbareFiguren.add(figur);
+		}
 
 		return bewegbareFiguren;
 	}
 
-	private void sendeMoeglichkeitenAnClienten(Spieler s,
-			ArrayList<Figur> figuren, int wurfanzahl) {
-		List<ClientHandler> clients = ServerNetworkService.getInstance()
-				.getClients();
+	private void sendeMoeglichkeitenAnClient(Spieler s, ArrayList<Figur> figuren, int wurfanzahl) {
+		List<ClientHandler> clients = ServerNetworkService.getInstance().getClients();
 		ClientHandler client = null;
 
 		for (ClientHandler c : clients) {
@@ -119,6 +87,12 @@ Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
 
 		NetworkService.getInstance().sendeMoeglichkeitenAnClient(client,
 				figuren, wurfanzahl);
+	}
+	
+	private void sendeSpielerAnClients() {
+		for (Spieler spieler : Spielfeld.getInstanz().getSpieler()) {
+			NetworkService.getInstance().sendeSpielerAnClients(spieler);
+		}
 	}
 
 	/**
@@ -136,7 +110,7 @@ Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
 		boolean alleFigurenHabenDieEndpositionenErreicht = true;
 		int spielerAnzahl = spieler.size();
 		
-		//Überprüfe jeden Spieler
+		//ÃœberprÃ¼fe jeden Spieler
 		for (int i = 0; i < spielerAnzahl; i++) {
 			
 			Spieler s = spieler.get(i);
@@ -144,24 +118,24 @@ Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
 			alleFigurenHabenDieEndpositionenErreicht = true;
 			int figurenAnzahl = figuren.size();
 			
-			//Überprüfe jede Figur bei dem aktuellen Spieler
+			//ÃœberprÃ¼fe jede Figur bei dem aktuellen Spieler
 			for (int j = 0; j < figurenAnzahl; j++) {
 				
 				Figur f = figuren.get(j);
 				int[] zielFelder = f.getZielFelder();
 				figurHatEndpositionErreicht = false;
 				
-				//Überprüfe alle vier Zielfelder vom Spieler
+				//ÃœberprÃ¼fe alle vier Zielfelder vom Spieler
 				for (int k = 0; k < zielFelder.length; k++) {
 
 					//Ist die aktuelle Figur im Zielfeld angelangt?
 					if(f.getPosition() == zielFelder[k]) {
-						//Ja, überprüfe die nächste Figur
+						//Ja, Ã¼berprÃ¼fe die nÃ¤chste Figur
 						figurHatEndpositionErreicht = true;
 						break;
 					}
 				}
-				//Eine der Figuren ist nicht in der Endposition, überprüfe den nächsten Spieler
+				//Eine der Figuren ist nicht in der Endposition, Ã¼berprÃ¼fe den nÃ¤chsten Spieler
 				if(!figurHatEndpositionErreicht) {
 					alleFigurenHabenDieEndpositionenErreicht = false;
 					break;
@@ -187,8 +161,8 @@ Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
 	 */
 	public void bewegeFigur(Figur figur) {
 
-		// Die Regeln wurden einen Schritt vorhere ï¿½berprï¿½ft. Es wird nur
-		// eine Figur ï¿½bergeben, die bewegt werden kann.
+		// Die Regeln wurden einen Schritt vorhere Ã¼berprÃ¼ft. Es wird nur
+		// eine Figur Ã¼bergeben, die bewegt werden kann.
 		// Jetzt muss nur noch die Figur gesetzt werden
 		if (figur.getPosition() == figur.getHausFeld()) {
 
@@ -199,9 +173,9 @@ Zudem wurde eine Überprüfung des Spielendes hoffentlich richtig implementiert?!?
 			Spielfeld.getInstanz().setWurfAnzahl(2);
 			int wurfAnzahl = Spielfeld.getInstanz().getWurfAnzahl();
 			int newPosition = figur.getPosition() + wurfAnzahl;
-			//Würde die Figur über das letzte Feld gelangen, so muss es in die Zielfelder gehen
+			//WÃ¼rde die Figur Ã¼ber das letzte Feld gelangen, so muss es in die Zielfelder gehen
 			if(newPosition > figur.getEndFeld()) {
-				if(newPosition - figur.getEndFeld() > 4) { //Hier wird ein Fehler erzeugt, weil man diese Figur nicht auswählen konnte und der Fehelr normalerweiße nicht auftritt
+				if(newPosition - figur.getEndFeld() > 4) { //Hier wird ein Fehler erzeugt, weil man diese Figur nicht auswï¿½hlen konnte und der Fehelr normalerweiï¿½e nicht auftritt
 					newPosition = 100;
 				}
 				if(figur.getPosition() > figur.getEndFeld()) {

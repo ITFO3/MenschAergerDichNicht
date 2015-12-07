@@ -71,7 +71,6 @@ public class Spieler
 		Figur f;
 		
 		for (int i = 0; i < figuren.length; i++) {
-			
 			f = new Figur(name, this.farbe, hausFeld + i, startFeld, endFeld, zielFelder);
 			f.addObserver(model);
 			figuren[i] = f;

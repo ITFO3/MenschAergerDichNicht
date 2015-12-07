@@ -38,7 +38,6 @@ public class ClientNetworkService {
 	}
 
 	// FIGURGEAENDERT=1,2;FIGUR
-	
 	public void empfangeDaten(String data) {
 		String[] seperated = data.split(";");
 		
@@ -50,6 +49,8 @@ public class ClientNetworkService {
 				figurGeaendert(value[1]);
 			} else if (aenderungsTyp.equals(DataObjectEnum.MOEGLICHKEITEN.toString())) {
 				zeigeMoeglichkeiten(value[1]);
+			} else if (aenderungsTyp.equals(DataObjectEnum.SPIELERNAME.toString())) {
+				empfangeSpieler(value[1]);
 			}
 		}
 	}
@@ -57,7 +58,9 @@ public class ClientNetworkService {
 	public void sendeSpielerName(String text) {
 		Client client = networkService.getClient();
 		PrintStream os = client.getOutputStream();
-		os.println(DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";");
+		String nachricht = DataObjectEnum.SPIELERNAME.toString() + "=" + text + ";";
+		System.out.println("Client sendet: " + nachricht);
+		os.println(nachricht);
 		os.flush();
 	}
 
@@ -89,8 +92,7 @@ public class ClientNetworkService {
 	}
 	
 	private void empfangeSpieler(String daten) {
-		
-		Spieler spieler = new Spieler(null);
+		Spieler spieler = new Spieler(daten);
 		
 		for (Figur figur : spieler.getFiguren()) {
 			figur.addObserver(Spielfeld.getInstanz());

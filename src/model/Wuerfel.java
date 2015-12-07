@@ -14,7 +14,9 @@ public class Wuerfel {
 	
 	
 	/**
-	 * Ermittelt eine Zufallszahl zwischen 0 und spielerAnzahl - 1, damit die Werte direkt für einen Listenzugriff genutzt werden können
+	 * Ermittelt eine Zufallszahl zwischen 0 und spielerAnzahl - 1, 
+	 * damit die Werte direkt fÃ¼r einen Listenzugriff genutzt werden kÃ¶nnen
+	 * 
 	 * @param spielerAnzahl
 	 * @return Zufallszahl
 	 */

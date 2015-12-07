@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import controller.server.ServerController;
+import model.Figur;
 import model.Spieler;
+import model.Spielfeld;
 import view.admin.network.ServerAdminPanel;
 
 /**
@@ -81,6 +84,8 @@ public class ServerNetworkService {
 					keyValuePairSeperated[1]);
 		}
 
+		System.out.println("Server empfaengt: " + orderedKeyValues.toString());
+		
 		processInput(client, orderedKeyValues);
 	}
 
@@ -93,6 +98,9 @@ public class ServerNetworkService {
 			case SPIELERNAME:
 				processSpielernameInput(client, orderedKeyValues.get(key));
 				break;
+			case FIGURGEAENDERT:
+				processFigurGeaendertInput(client, orderedKeyValues.get(key));
+				break;
 			default:
 				// Sollte nicht auftreten
 				break;
@@ -101,11 +109,21 @@ public class ServerNetworkService {
 	}
 
 	private void processSpielernameInput(ClientHandler client, String spielerName) {
-		
 		Spieler spieler = new Spieler(spielerName);
 		client.setSpielerName(spielerName);
 		connectedPlayer.add(spieler);
 		ServerAdminPanel.instance
 				.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
+	}
+	
+	private void processFigurGeaendertInput(ClientHandler client, String figurId) {
+		Figur figur = null;
+		
+		for(Figur f : Spielfeld.getInstanz().getSpielfiguren().values()) {
+			if(f.getId().equals(figurId)) 
+				figur = f;
+		}
+		
+		ServerController.getInstanz().bewegeFigur(figur);
 	}
 }

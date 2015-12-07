@@ -110,4 +110,14 @@ public class NetworkService {
 		
 		return false;
 	}
+	
+	public boolean sendeSpielerAnClients(Spieler spieler) {
+		String data = DataObjectEnum.SPIELERNAME.toString() + "=" + spieler.getName();
+		
+		for (ClientHandler client : serverService.getClients()) {
+			client.sendeDaten(data);
+		}
+		
+		return true;
+	}
 }
