@@ -47,9 +47,10 @@ public class Spieler {
         this.state = State.VOID;
 
         this.figuren = new Figur[4];
-
+        Spielfeld model = Spielfeld.getInstance();
         for (int i = 0; i < figuren.length; i++) {
             figuren[i] = new Figur(name, this.farbe, hausFeld + i, startFeld, endFeld, zielFelder);
+            figuren[i].addObserver(model);
         }
     }
 
