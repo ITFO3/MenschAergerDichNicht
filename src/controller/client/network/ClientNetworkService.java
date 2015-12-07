@@ -26,8 +26,10 @@ public class ClientNetworkService {
 
 	public void sendeFigur(Figur figur) {
 		Client client = networkService.getClient();
+		String nachricht = "FIGURGEANDERT=" + figur.getId() + "," + figur.getPosition();
+		System.out.println("Client an Server: " + nachricht);
 		PrintStream os = client.getOutputStream();
-		os.print("FIGURGEANDERT;" + figur.getId() + ";");
+		os.print(nachricht);
 	}
 
 	public static ClientNetworkService getInstance() {
@@ -37,7 +39,7 @@ public class ClientNetworkService {
 		return clientNetworkService;
 	}
 
-	// FIGURGEAENDERT=1,2;FIGUR
+	// FIGURGEAENDERT=Test:1,2;FIGURGEAENDERT=Test:2,4
 	public void empfangeDaten(String data) {
 		String[] seperated = data.split(";");
 		

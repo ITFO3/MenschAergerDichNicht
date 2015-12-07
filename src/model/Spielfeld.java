@@ -35,56 +35,7 @@ public class Spielfeld extends Observable implements Observer {
 	 */
 	private Spielfeld() {
 		spielfiguren = new HashMap<Integer, Figur>();
-		initialisiereHomefelder();
-		initialisiereZielfelder();
-		instanz = this;
 	}
-	
-	
-	private void initialisiereHomefelder() {
-		
-		homeFelder.add(new int[]{-1,-2,-3,-4});
-		homeFelder.add(new int[]{-5,-6,-7,-8});
-		homeFelder.add(new int[]{-9,-10,-11,-12});
-		homeFelder.add(new int[]{-13,-14,-15,-16});
-	}
-	
-	private void initialisiereZielfelder() {
-
-		//Wie Homefelder aufbauen und einen besseren Namen finden
-		zielFelder.add(40);
-		zielFelder.add(10);
-		zielFelder.add(20);
-		zielFelder.add(30);
-	}
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		setChanged();
-		Figur figur = (Figur) arg;
-		
-		int altePosition = -100;
-		// Alte Position ermitteln
-		for (int i : spielfiguren.keySet()) {
-			if (spielfiguren.get(i).getId() == figur.getId()) {
-				altePosition = i;
-				break;
-			}
-		}
-		
-		// Nur eine Figur entfernen, wenn diese auch schon auf dem Spielfeld ist 
-		if (altePosition != -100) {
-			// Alte Position entfernen
-			spielfiguren.remove(altePosition);
-		}
-		
-		// Neue Position besetzen
-		spielfiguren.put(figur.getPosition(), figur);
-		
-		// View benachrichtigen
-		notifyObservers(this);
-	}
-
 
 	public Figur sucheFigur(int position) {
 		Figur f = spielfiguren.get(position);
@@ -92,20 +43,6 @@ public class Spielfeld extends Observable implements Observer {
 		return f;
 	}
 
-
-	public int[] gibHomefelder(){
-		
-		int[] homefeld = homeFelder.get(0);
-		homeFelder.remove(0);
-		return homefeld;
-	}
-	
-	public int gibZielfeld(){
-		
-		int zielfeld = zielFelder.get(0);
-		zielFelder.remove(0);
-		return zielfeld;
-	}
 	
 	public ArrayList<Figur> getMoeglichkeiten() {
 		return moeglichkeiten;
@@ -158,6 +95,77 @@ public class Spielfeld extends Observable implements Observer {
 		return this.spielfiguren;
 	}
 
+	/**
+	 * Sucht zunaechst die ausgewaehlte Figur aus und bewegt sie um die
+	 * angegebene Anzahl vor
+	 * 
+	 * @param figur
+	 * @param anzahl
+	 */
+	public int bewegeFigur(Figur figur, int wurfAnzahl) {
+		// Die Regeln wurden einen Schritt vorhere überprüft. Es wird nur
+		// eine Figur übergeben, die bewegt werden kann.
+		// Jetzt muss nur noch die Figur gesetzt werden
+		if (figur.getPosition() == figur.getHausFeld()) 
+		{
+			return figur.getStartFeld();
+		} 
+		else 
+		{
+			int newPosition = figur.getPosition() + wurfAnzahl;
+			// Würde die Figur über das letzte Feld gelangen,
+			// so muss es in die Zielfelder gehen
+			if(newPosition > figur.getEndFeld()) 
+			{
+				if(newPosition - figur.getEndFeld() > 4) 
+				{ 
+					// Hier wird ein Fehler erzeugt, weil man diese Figur nicht
+					// auswählen konnte und der Fehelr normalerweise nicht auftritt
+					newPosition = 100;
+				}
+				
+				if(figur.getPosition() > figur.getEndFeld()) 
+				{
+					newPosition = figur.getPosition() + wurfAnzahl;
+				}
+				else 
+				{
+					newPosition = figur.getZielFelder()[newPosition - figur.getEndFeld() - 1];
+				}
+			}
+			
+			return newPosition;
+			
+			//NetworkService.getInstance().sendeFigurAnClients(figur);
+		}
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		setChanged();
+		Figur figur = (Figur) arg;
+		
+		int altePosition = -100;
+		// Alte Position ermitteln
+		for (int i : spielfiguren.keySet()) {
+			if (spielfiguren.get(i).getId() == figur.getId()) {
+				altePosition = i;
+				break;
+			}
+		}
+		
+		// Nur eine Figur entfernen, wenn diese auch schon auf dem Spielfeld ist 
+		if (altePosition != -100) {
+			// Alte Position entfernen
+			spielfiguren.remove(altePosition);
+		}
+		
+		// Neue Position besetzen
+		spielfiguren.put(figur.getPosition(), figur);
+		
+		// View benachrichtigen
+		notifyObservers(this);
+	}
 	
 
 }

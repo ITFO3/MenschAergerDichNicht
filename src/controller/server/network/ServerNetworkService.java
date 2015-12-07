@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
+
 import controller.server.ServerController;
 import model.Figur;
 import model.Spieler;
@@ -95,15 +97,15 @@ public class ServerNetworkService {
 		for (String key : keySet) {
 			DataObjectEnum dataObject = DataObjectEnum.valueOf(key);
 			switch (dataObject) {
-			case SPIELERNAME:
-				processSpielernameInput(client, orderedKeyValues.get(key));
-				break;
-			case FIGURGEAENDERT:
-				processFigurGeaendertInput(client, orderedKeyValues.get(key));
-				break;
-			default:
-				// Sollte nicht auftreten
-				break;
+				case SPIELERNAME:
+					processSpielernameInput(client, orderedKeyValues.get(key));
+					break;
+				case FIGURGEAENDERT:
+					processFigurGeaendertInput(client, orderedKeyValues.get(key));
+					break;
+				default:
+					// Sollte nicht auftreten
+					break;
 			}
 		}
 	}
@@ -116,14 +118,20 @@ public class ServerNetworkService {
 				.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
 	}
 	
-	private void processFigurGeaendertInput(ClientHandler client, String figurId) {
+	private void processFigurGeaendertInput(ClientHandler client, String input) {
+		// Test:3,19
 		Figur figur = null;
+		int neuePosition = 0;
+		
+		String[] seperated = input.split(",");
+		String figurId = seperated[0];
+		neuePosition = Integer.parseInt(seperated[1]);
 		
 		for(Figur f : Spielfeld.getInstanz().getSpielfiguren().values()) {
 			if(f.getId().equals(figurId)) 
 				figur = f;
 		}
 		
-		ServerController.getInstanz().bewegeFigur(figur);
+		ServerController.getInstanz().bewegeFigur(figur, neuePosition);
 	}
 }
