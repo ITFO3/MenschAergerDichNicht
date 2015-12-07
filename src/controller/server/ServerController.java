@@ -1,221 +1,219 @@
 package controller.server;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.SpielfeldCanvas;
-import controller.NetworkService;
-import controller.server.network.ClientHandler;
-import controller.server.network.ServerNetworkService;
 import model.Figur;
 import model.Spieler;
 import model.Spielfeld;
 import model.Wuerfel;
+import controller.NetworkService;
+import controller.server.network.ClientHandler;
+import controller.server.network.ServerNetworkService;
 
 public class ServerController {
 
-	private static ServerController instance;
-	private static int spielerZaehler = 0;
-	private static ServerController instanz;
-	private ServerNetworkService serverNetworkService = ServerNetworkService.getInstance();
+    private static ServerController instance;
 
-	private int wurfAnzahl;
-	private List<Spieler> spieler;
+    /**
+     * Gibt die aktuelle Instanz des Spielfeldes zurueck
+     *
+     * @return Die aktuelle Instanz
+     */
+    public static ServerController getInstance() {
+        if (instance == null) {
+            instance = new ServerController();
+        }
 
-	public static ServerController getInstance() {
-		if (instance == null) {
-			instance = new ServerController();
-		}
+        return instance;
+    }
 
-		return instance;
-	}
 
-	private ServerController() {
-	}
+    private boolean _figurGewaehlt;
+    private ServerNetworkService serverNetworkService = ServerNetworkService.getInstance();
 
-	public void beendeSpiel() {
-		spielerZaehler = 0;
-	}
+    private ServerController() {
+        // Keine normale Initialisierung ermoeglichen
+    }
 
-	public int gibAnzahl() {
-		return wurfAnzahl;
-	}
+    /**
+     * Startet das Spiel
+     *
+     * @param spieler   Eine Liste von Spielern, die an diesem Spiel teilnehmen
+     */
+    public void starteSpiel(List<Spieler> spieler) {
+        Spielfeld.getInstance().setSpieler(spieler);
+        sendeSpielerAnClients(spieler);
 
-	public void starteSpiel() {
+        int beginner = Wuerfel.ermittleBeginner(spieler.size());
 
-		int beginner = Wuerfel.ermittleBeginner(spieler.size());
+        Spieler sieger = null;
 
-		while (ueberpruefeSpielende() == null) {
+        while (sieger == null) {
+            _figurGewaehlt = false;
+            int wurfAnzahl = Wuerfel.wuerfel();
+            Spielfeld.getInstance().setWurfAnzahl(wurfAnzahl);
 
-			wurfAnzahl = Wuerfel.wuerfel();
-			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
-			sendeMoeglichkeitenAnClienten(spieler.get(beginner++), moeglichkeiten);
+            ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(
+                    spieler.get(beginner), wurfAnzahl);
 
-			if (beginner > spieler.size())
-				beginner -= spieler.size();
-		}
-	}
+            sendeMoeglichkeitenAnClient(spieler.get(beginner++),
+                    moeglichkeiten, wurfAnzahl);
 
-	public void setSpieler(ArrayList<Spieler> spieler) {
-		this.spieler = spieler;
-	}
+            while (!_figurGewaehlt) {
+                // Warten, bis eine Figur ausgewaehlt wurde
+            }
 
-	public void initialisiereSpieler(String name) {
-		// int zufallsZahl = (int) (Math.random() * ((farben.size() * 1.0) -
-		// 1.0) + 1.0);
-		// Color c = farben.get(zufallsZahl);
-		// farben.remove(zufallsZahl);
-		//
-		// int zielfeld = zielFelder.get(spielerZaehler);
-		//
-		// int[] startfelder = startFelder.get(spielerZaehler);
-		//
-		// spieler.add(new Spieler(name, c, zielfeld, startfelder, ip));
-		// spielerZaehler++;
-	}
+            //TODO warte auf die Eingabe vom Spieler, welche Figur bewegt werden soll
 
-	public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int anzahl) {
+            if (beginner == spieler.size()) {
+                beginner -= spieler.size();
+            }
 
-		ArrayList<Figur> figuren = spieler.getFiguren();
-		ArrayList<Figur> bewegbareFiguren = new ArrayList<Figur>();
+            sieger = ueberpruefeSpielende();
+        }
 
-		for (Figur figur : figuren) {
+        //TODO Den Gewinner auf der Oberfläche anzeigen
+    }
 
-			// TODO: ueberpruefe Figur
-			bewegbareFiguren.add(figur);
-		}
+    /**
+     * Ueberprueft die Moeglichkeiten fuer den uebergebenen Spieler
+     *
+     * @param spieler 	Der Spieler, der an der Reihe ist
+     * @param wurfzahl	Die gewuerfelte Zahl
+     */
+    public ArrayList<Figur> ueberpruefeMoeglichkeiten(Spieler spieler, int wurfzahl) {
+        ArrayList<Figur> bewegbareFiguren = new ArrayList<Figur>();
+        ArrayList<Figur> figuren = spieler.getFiguren();
+        int neuePosition;
 
-		return bewegbareFiguren;
-	}
+        // Es wurde eine 6 gewuerfelt
+        if (wurfzahl == 6) {
+            Figur figurAufStartfeld = Spielfeld.getInstance().sucheFigur(figuren.get(0).getStartFeld());
+            // Wenn keine oder eine gegnerische Figur auf dem Startfeld steht
+            if (figurAufStartfeld == null ||
+                figurAufStartfeld.getStartFeld() != figuren.get(0).getStartFeld()) {
+                for (Figur f : figuren) {
+                    if (f.getHausFeld() == f.getPosition()) {
+                        bewegbareFiguren.add(f);
+                    }
+                }
+            }
+        }
 
-	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren, int wurfanzahl) {
-		List<ClientHandler> clients = ServerNetworkService.getInstance().getClients();
-		ClientHandler client = null;
+        for (Figur f : figuren) {
+            neuePosition = Spielfeld.getInstance().bewegeFigur(f, wurfzahl);
 
-		for (ClientHandler c : clients) {
-			if (c.getSpielerName().equals(s.getName())) {
-				client = c;
-			}
-		}
+            Figur andereFigur = Spielfeld.getInstance().sucheFigur(neuePosition);
 
-		NetworkService.getInstance().sendeMoeglichkeitenAnClient(client, figuren, wurfanzahl);
-	}
+            // Wenn eine Figur von dem Spieler auf dem Zielfeld steht geht es nicht
+            if (andereFigur != null && andereFigur.getStartFeld() == f.getStartFeld()) {
+                continue;
+            }
 
-	/**
-	 * Ueberprueft ob das Spielende erreicht wurde Aeussere Schleife:
-	 * Ueberprueft jeden Spieler Innere Schleife: Ueberprueft ob alle Figuren
-	 * vom aktuellen Spieler im Ziel sind
-	 * 
-	 * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
-	 */
-	public Spieler ueberpruefeSpielende() {
-		// boolean ende = true;
-		// boolean gewonnen = true;
-		//
-		//
-		// for (int i = 0; i < spieler.size(); i++) {
-		// Spieler s = spieler.get(i);
-		// ArrayList<Figur> figuren = s.getFiguren();
-		// gewonnen = true;
-		//
-		// for (int j = 0; j < figuren.size(); j++) {
-		// if(figuren.get(j).getPosition() < f.getEndFeld()) {
-		// gewonnen = false;
-		// break;
-		// }
-		//// if (figuren.get(j).getPosition() <= zielFelder.get(i)) {
-		//// ende = false;
-		//// break;
-		//// }
-		// }
-		//
-		// if (gewonnen) return s;
-		// }
-		return null;
-	}
+            // Alle anderen Figuren sind moeglich
+            if (!bewegbareFiguren.contains(f)) {
+                bewegbareFiguren.add(f);
+            }
+        }
 
-	/**
-	 * Sucht zunaechst die ausgewaehlte Figur aus und bewegt sie um die
-	 * angegebene Anzahl vor
-	 * 
-	 * @param figur
-	 * @param anzahl
-	 */
-	public void bewegeFigur(Figur figur) {
+        return bewegbareFiguren;
+    }
 
-		// Die Regeln wurden einen Schritt vorhere �berpr�ft. Es wird nur
-		// eine Figur �bergeben, die bewegt werden kann.
-		// Jetzt muss nur noch die Figur gesetzt werden
-		if (figur.getPosition() == figur.getHausFeld()) {
+    private void sendeMoeglichkeitenAnClient(Spieler s, ArrayList<Figur> figuren, int wurfanzahl) {
+        List<ClientHandler> clients = ServerNetworkService.getInstance().getClients();
+        ClientHandler client = null;
 
-			figur.setPosition(figur.getStartFeld());
-		} else {
+        for (ClientHandler c : clients) {
+            if (c.getSpielerName().equals(s.getName())) {
+                client = c;
+            }
+        }
 
-			int newPosition = figur.getPosition() + wurfAnzahl;
-			figur.setPosition(newPosition);
+        NetworkService.getInstance().sendeMoeglichkeitenAnClient(client,
+                figuren, wurfanzahl);
+    }
 
-			Figur betroffenePositionFigur = testePosition(newPosition);
-			if (betroffenePositionFigur != null) {
-				betroffenePositionFigur.setPosition(betroffenePositionFigur.getHausFeld());
-			}
-		}
-	}
+    private void sendeSpielerAnClients(List<Spieler> spieler) {
+        for (Spieler s : spieler) {
+            NetworkService.getInstance().sendeSpielerAnClients(s);
+        }
+    }
 
-	private Figur testePosition(int position) {
-		Figur returnObject = null;
+    /**
+     * Ueberprueft ob das Spielende erreicht wurde Aeussere Schleife:
+     * Ueberprueft jeden Spieler Innere Schleife: Ueberprueft ob alle Figuren
+     * vom aktuellen Spieler im Ziel sind
+     *
+     * @return true, Wenn die Figuren eines Spielers alle im Ziel sind
+     */
+    public Spieler ueberpruefeSpielende() {
 
-		for (int i = 0; i < spieler.size(); i++) {
+        ArrayList<Spieler> spieler = (ArrayList<Spieler>) Spielfeld.getInstance().getSpieler();
 
-			for (int j = 0; j < 4; j++) {
+        boolean figurHatEndpositionErreicht = false;
+        boolean alleFigurenHabenDieEndpositionenErreicht = true;
+        int spielerAnzahl = spieler.size();
 
-				if (spieler.get(i).getFiguren().get(j).getPosition() == position) {
-					returnObject = spieler.get(i).getFiguren().get(j);
-					break;
-				}
-			}
-			if (returnObject != null)
-				break;
-		}
+        //Überprüfe jeden Spieler
+        for (int i = 0; i < spielerAnzahl; i++) {
 
-		return returnObject;
-	}
+            Spieler s = spieler.get(i);
+            ArrayList<Figur> figuren = s.getFiguren();
+            alleFigurenHabenDieEndpositionenErreicht = true;
+            int figurenAnzahl = figuren.size();
 
-	private void sendeMoeglichkeitenAnClienten(Spieler s, ArrayList<Figur> figuren) {
-		// TODO
-	}
+            //Überprüfe jede Figur bei dem aktuellen Spieler
+            for (int j = 0; j < figurenAnzahl; j++) {
 
-	public void starteSpiel(List<Spieler> spieler) {
-		serverNetworkService.sendeStarteSpielSignalAnAlleClients();
+                Figur f = figuren.get(j);
+                int[] zielFelder = f.getZielFelder();
+                figurHatEndpositionErreicht = false;
 
-		this.spieler = spieler;
+                //Überprüfe alle vier Zielfelder vom Spieler
+                for (int k = 0; k < zielFelder.length; k++) {
 
-		int beginner = Wuerfel.ermittleBeginner(spieler.size());
-		
+                    //Ist die aktuelle Figur im Zielfeld angelangt?
+                    if(f.getPosition() == zielFelder[k]) {
+                        //Ja, überprüfe die nächste Figur
+                        figurHatEndpositionErreicht = true;
+                        break;
+                    }
+                }
+                //Eine der Figuren ist nicht in der Endposition, überprüfe den nächsten Spieler
+                if(!figurHatEndpositionErreicht) {
+                    alleFigurenHabenDieEndpositionenErreicht = false;
+                    break;
+                }
+            }
 
-//		while (ueberpruefeSpielende() == null) {
-			int wurfAnzahl = Wuerfel.wuerfel();
-			ArrayList<Figur> moeglichkeiten = ueberpruefeMoeglichkeiten(spieler.get(beginner), wurfAnzahl);
-			sendeMoeglichkeitenAnClienten(spieler.get(beginner), moeglichkeiten, wurfAnzahl);
 
-			if (beginner < spieler.size()) {
-				beginner++;
-			} else {
-				beginner = 0;
-			}
-//		}
-	}
+            //Alle Figuren sind im Ziel, gebe den Sieger aus
+            if(alleFigurenHabenDieEndpositionenErreicht) {
+                return s;
+            }
+        }
 
-	/**
-	 * Gibt die aktuelle Instanz des Spielfeldes zurueck
-	 * 
-	 * @return
-	 */
-	public static ServerController getInstanz() {
-		if (instanz == null) {
-			instanz = new ServerController();
-		}
+        return null;
+    }
 
-		return instanz;
-	}
+    public void bewegeFigur(Figur figur, int neuePosition)
+    {
+        Figur betroffenePositionFigur = testePosition(neuePosition);
+        if (betroffenePositionFigur != null) {
+            betroffenePositionFigur.setPosition(betroffenePositionFigur
+                    .getHausFeld());
+
+            NetworkService.getInstance().sendeFigurAnClients(betroffenePositionFigur);
+        }
+
+        figur.setPosition(neuePosition);
+        NetworkService.getInstance().sendeFigurAnClients(figur);
+
+        _figurGewaehlt = true;
+    }
+
+    private Figur testePosition(int position) {
+        return Spielfeld.getInstance().sucheFigur(position);
+    }
 }

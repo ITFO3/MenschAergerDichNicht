@@ -60,6 +60,8 @@ public class ClientHandler extends Thread {
 	}
 
 	public void sendeDaten(String data) {
+		System.out.println("Sende an Clients: " + data);
+		
 		this.os.println(data);
 		this.os.flush();
 	}
