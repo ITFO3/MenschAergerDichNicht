@@ -62,7 +62,7 @@ public class ServerNetworkService {
     public Spieler createNewSpieler(String spielerName) {
         Spieler result = null;
 
-        int spielerZahl = connectedPlayer.size();
+        int spielerZahl = connectedPlayer.size() + 1;
 
         int hausFeld = 0;
         int startFeld = 0;
@@ -156,6 +156,12 @@ public class ServerNetworkService {
         }
 
         ServerController.getInstance().bewegeFigur(figur, neuePosition);
+        List<Spieler> spielerList = Spielfeld.getInstance().getSpieler();
+        for(Spieler spieler : spielerList){
+        	if(spieler.getName().equals(client.getSpielerName())){
+        		spieler.setState(Spieler.State.VOID);
+        	}
+        }
     }
 
     public void sendeStarteSpielSignalAnAlleClients() {

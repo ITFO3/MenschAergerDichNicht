@@ -4,6 +4,12 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Spieler {
+	
+	public enum State{
+		VOID,
+		WATING_FOR_SELECTION;
+	}
+	
     public static final int[] zielFelderSpielerEins = new int[] { 41, 42, 43, 44 };
     public static final int[] zielFelderSpielerZwei = new int[] { 45, 46, 47, 48 };
     public static final int[] zielFelderSpielerDrei = new int[] { 49, 50, 51, 52 };
@@ -14,7 +20,17 @@ public class Spieler {
     private Figur[] figuren;
     private int[] zielFelder;
 
-    /**
+    private State state;
+    
+    public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	/**
      * Erstellt einen neuen Spieler inklusive der Spielfiguren
      *
      * @param name  		Der Spielername
@@ -28,6 +44,7 @@ public class Spieler {
         this.name = name;
         this.farbe = farbe;
         this.zielFelder = zielFelder;
+        this.state = State.VOID;
 
         this.figuren = new Figur[4];
 

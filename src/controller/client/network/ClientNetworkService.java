@@ -38,7 +38,7 @@ public class ClientNetworkService {
     public void sendeDaten(String data) {
         Client client = networkService.getClient();
         PrintStream os = client.getOutputStream();
-        os.print(data);
+        os.println(data);
         System.out.println("Client an Server: " + data);
         os.flush();
     }
