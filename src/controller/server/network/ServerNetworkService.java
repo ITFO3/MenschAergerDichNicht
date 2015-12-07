@@ -20,118 +20,118 @@ import view.admin.network.ServerAdminPanel;
 /**
  * Stellt die Grundlegenden Funktionalitaeten zum erstellen eines Servers
  * bereit.
- * 
+ *
  * @author ChrisWun
- * 
+ *
  */
 public class ServerNetworkService {
 
-	ArrayList<Spieler> connectedPlayer = new ArrayList<Spieler>();
+    ArrayList<Spieler> connectedPlayer = new ArrayList<Spieler>();
 
-	public enum ServerStatus {
-		NOT_RUNNING, RUNNING;
-	}
+    public enum ServerStatus {
+        NOT_RUNNING, RUNNING;
+    }
 
-	private static ServerNetworkService instance;
+    private static ServerNetworkService instance;
 
-	public static ServerNetworkService getInstance() {
-		if (ServerNetworkService.instance == null) {
-			ServerNetworkService.instance = new ServerNetworkService();
-		}
-		return ServerNetworkService.instance;
-	}
+    public static ServerNetworkService getInstance() {
+        if (ServerNetworkService.instance == null) {
+            ServerNetworkService.instance = new ServerNetworkService();
+        }
+        return ServerNetworkService.instance;
+    }
 
-	List<ClientHandler> clients;
+    List<ClientHandler> clients;
 
-	ServerSocket serverSocket;
+    ServerSocket serverSocket;
 
-	ServerStatus serverStatus;
+    ServerStatus serverStatus;
 
-	public ServerNetworkService() {
-		clients = new ArrayList<ClientHandler>();
-		serverStatus = ServerStatus.NOT_RUNNING;
-	}
+    public ServerNetworkService() {
+        clients = new ArrayList<ClientHandler>();
+        serverStatus = ServerStatus.NOT_RUNNING;
+    }
 
-	public ServerStatus getServerStatus() {
-		return serverStatus;
-	}
+    public ServerStatus getServerStatus() {
+        return serverStatus;
+    }
 
-	public void setServerStatus(ServerStatus serverStatus) {
-		this.serverStatus = serverStatus;
-	}
-	
-	public List<ClientHandler> getClients() {
-		return this.clients;
-	}
-	
-	public ArrayList<Spieler> getConnectedPlayers() {
-		return this.connectedPlayer;
-	}
+    public void setServerStatus(ServerStatus serverStatus) {
+        this.serverStatus = serverStatus;
+    }
 
-	public void startServer(int port) throws IOException {
-		serverSocket = new ServerSocket(port);
-		ClientAcceptor clientAcceptor = new ClientAcceptor(serverSocket,
-				clients);
-		clientAcceptor.start();
-		serverStatus = ServerStatus.RUNNING;
-	}
+    public List<ClientHandler> getClients() {
+        return this.clients;
+    }
 
-	public void processInputData(ClientHandler client, String input) {
-		String keyValuePairs[] = input.split(";");
-		Map<String, String> orderedKeyValues = new HashMap<String, String>();
+    public ArrayList<Spieler> getConnectedPlayers() {
+        return this.connectedPlayer;
+    }
 
-		for (String keyValuePair : keyValuePairs) {
-			String keyValuePairSeperated[] = keyValuePair.split("=");
-			orderedKeyValues.put(keyValuePairSeperated[0],
-					keyValuePairSeperated[1]);
-		}
+    public void startServer(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+        ClientAcceptor clientAcceptor = new ClientAcceptor(serverSocket,
+                clients);
+        clientAcceptor.start();
+        serverStatus = ServerStatus.RUNNING;
+    }
 
-		System.out.println("Server empfaengt: " + orderedKeyValues.toString());
-		
-		processInput(client, orderedKeyValues);
-	}
+    public void processInputData(ClientHandler client, String input) {
+        String keyValuePairs[] = input.split(";");
+        Map<String, String> orderedKeyValues = new HashMap<String, String>();
 
-	private void processInput(ClientHandler client, Map<String, String> orderedKeyValues) {
-		Set<String> keySet = orderedKeyValues.keySet();
+        for (String keyValuePair : keyValuePairs) {
+            String keyValuePairSeperated[] = keyValuePair.split("=");
+            orderedKeyValues.put(keyValuePairSeperated[0],
+                    keyValuePairSeperated[1]);
+        }
 
-		for (String key : keySet) {
-			DataObjectEnum dataObject = DataObjectEnum.valueOf(key);
-			switch (dataObject) {
-				case SPIELERNAME:
-					processSpielernameInput(client, orderedKeyValues.get(key));
-					break;
-				case FIGURGEAENDERT:
-					processFigurGeaendertInput(client, orderedKeyValues.get(key));
-					break;
-				default:
-					// Sollte nicht auftreten
-					break;
-			}
-		}
-	}
+        System.out.println("Server empfaengt: " + orderedKeyValues.toString());
 
-	private void processSpielernameInput(ClientHandler client, String spielerName) {
-		Spieler spieler = new Spieler(spielerName);
-		client.setSpielerName(spielerName);
-		connectedPlayer.add(spieler);
-		ServerAdminPanel.instance
-				.updateConnectedSpielerAndStartServerPanel(connectedPlayer);
-	}
-	
-	private void processFigurGeaendertInput(ClientHandler client, String input) {
-		// Test:3,19
-		Figur figur = null;
-		int neuePosition = 0;
-		
-		String[] seperated = input.split(",");
-		String figurId = seperated[0];
-		neuePosition = Integer.parseInt(seperated[1]);
-		
-		for(Figur f : Spielfeld.getInstanz().getSpielfiguren().values()) {
-			if(f.getId().equals(figurId)) 
-				figur = f;
-		}
-		
-		ServerController.getInstanz().bewegeFigur(figur, neuePosition);
-	}
+        processInput(client, orderedKeyValues);
+    }
+
+    private void processInput(ClientHandler client, Map<String, String> orderedKeyValues) {
+        Set<String> keySet = orderedKeyValues.keySet();
+
+        for (String key : keySet) {
+            DataObjectEnum dataObject = DataObjectEnum.valueOf(key);
+            switch (dataObject) {
+                case SPIELERNAME:
+                    processSpielernameInput(client, orderedKeyValues.get(key));
+                    break;
+                case FIGURGEAENDERT:
+                    processFigurGeaendertInput(client, orderedKeyValues.get(key));
+                    break;
+                default:
+                    // Sollte nicht auftreten
+                    break;
+            }
+        }
+    }
+
+    private void processSpielernameInput(ClientHandler client, String spielerName) {
+        Spieler spieler = new Spieler(spielerName);
+        client.setSpielerName(spielerName);
+        connectedPlayer.add(spieler);
+        ServerAdminPanel.instance
+                .updateConnectedSpielerAndStartServerPanel(connectedPlayer);
+    }
+
+    private void processFigurGeaendertInput(ClientHandler client, String input) {
+        // Test:3,19
+        Figur figur = null;
+        int neuePosition = 0;
+
+        String[] seperated = input.split(",");
+        String figurId = seperated[0];
+        neuePosition = Integer.parseInt(seperated[1]);
+
+        for(Figur f : Spielfeld.getInstance().getSpielfiguren().values()) {
+            if(f.getId().equals(figurId))
+                figur = f;
+        }
+
+        ServerController.getInstance().bewegeFigur(figur, neuePosition);
+    }
 }
