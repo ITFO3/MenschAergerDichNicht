@@ -177,9 +177,10 @@ public class SpielfeldCanvas extends Canvas implements Observer, MouseListener{
 		moeglichkeiten = new ArrayList<Figur>();
 		moeglichkeiten.addAll(figuren);
 		for (Figur figur : figuren) {
-			int position = figur.getPosition() + 16;
+			int position = figur.getPosition();// + 16;
 			g.setColor(Color.GREEN);
-			g.fillOval(feldZuKoordinate.get(position)[0] + 8, feldZuKoordinate.get(position)[1] + 8,
+			g.fillOval(feldZuKoordinate.get(position)[0] + 8,
+					feldZuKoordinate.get(position)[1] + 8,
 					25, 25);
 		}
 	}
