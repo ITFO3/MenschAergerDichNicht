@@ -5,17 +5,16 @@ import java.util.ArrayList;
 
 public class Spieler 
 {
-	private static int[] zielFelderSpielerEins = new int[] { 41, 42, 43, 44 };
-	private static int[] zielFelderSpielerZwei = new int[] { 45, 46, 47, 48 };
-	private static int[] zielFelderSpielerDrei = new int[] { 49, 50, 51, 52 };
-	private static int[] zielFelderSpielerVier = new int[] { 53, 54, 55, 56 };
+	private int[] zielFelderSpielerEins = new int[] { 41, 42, 43, 44 };
+	private int[] zielFelderSpielerZwei = new int[] { 45, 46, 47, 48 };
+	private int[] zielFelderSpielerDrei = new int[] { 49, 50, 51, 52 };
+	private int[] zielFelderSpielerVier = new int[] { 53, 54, 55, 56 };
 	
 	private static int spielerZahl = 0;
 	
 	private String name;
 	private Color farbe;
 	private Figur[] figuren;
-	private int[] zielFelder;
 
 	/**
 	 * Erstellt einen neuen Spieler inklusive der Spielfiguren
@@ -33,43 +32,49 @@ public class Spieler
 		int hausFeld = 0;
 		int startFeld = 0;
 		int endFeld = 0;
+		int[] zielFelder = new int[4];
 		
 		switch (spielerZahl) {
 			case 1:
-				hausFeld = -4;
+				hausFeld = -16;
 				startFeld = 1;
 				endFeld = 40;
 				this.farbe = Color.RED;
-				this.zielFelder = zielFelderSpielerEins;
+				zielFelder = zielFelderSpielerEins;
 				break;
 			case 2:
-				hausFeld = -8;
+				hausFeld = -4;
 				startFeld = 11;
-				endFeld = 30;
+				endFeld = 10;
 				this.farbe = Color.BLUE;
-				this.zielFelder = zielFelderSpielerZwei;
+				zielFelder = zielFelderSpielerZwei;
 				break;
 			case 3:
-				hausFeld = -12;
+				hausFeld = -8;
 				startFeld = 21;
 				endFeld = 20;
 				this.farbe = Color.GREEN;
-				this.zielFelder = zielFelderSpielerDrei;
+				zielFelder = zielFelderSpielerDrei;
 				break;
 			case 4:
-				hausFeld = -16;
+				hausFeld = -12;
 				startFeld = 31;
-				endFeld = 10;
+				endFeld = 30;
 				this.farbe = Color.ORANGE;
-				this.zielFelder = zielFelderSpielerVier;
+				zielFelder = zielFelderSpielerVier;
 				break;
 		}
 		
 		this.name = name;
 		this.figuren = new Figur[4];
+		Spielfeld model = Spielfeld.getInstanz();
+		Figur f;
 		
 		for (int i = 0; i < figuren.length; i++) {
-			figuren[i] = new Figur(name, this.farbe, hausFeld + i, startFeld, endFeld);
+			
+			f = new Figur(name, this.farbe, hausFeld + i, startFeld, endFeld, zielFelder);
+			f.addObserver(model);
+			figuren[i] = f;
 		}
 	}
 
@@ -102,9 +107,5 @@ public class Spieler
 		}
 		
 		return figuren;
-	}
-	
-	public int[] getZielfelder() {
-		return this.zielFelder;
 	}
 }

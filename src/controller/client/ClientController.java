@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import view.SpielfeldCanvas;
 import view.SpielfeldView;
 import model.Figur;
 import model.Spieler;
@@ -36,19 +37,18 @@ public class ClientController {
 	 * @param geschlageneFigurId 	optional
 	 * @param neuePosition
 	 */
-	public void aktualisiereSpielfeld(String ausgewaehlteFigurId, String geschlageneFigurId, int neuePosition) 
+	public void aktualisiereSpielfeld(String ausgewaehlteFigurId, int neuePosition) 
 	{
 		Figur ausgewaehltFigur = sucheFigur(ausgewaehlteFigurId);
-		
-		Figur geschlageneFigur = null;
-		if(geschlageneFigurId != null) {
-			geschlageneFigur = sucheFigur(geschlageneFigurId);
-		}
-		
 		ausgewaehltFigur.setPosition(neuePosition);
+		
+		
+		Figur geschlageneFigur = sucheFigur(neuePosition);
+		
 		if(geschlageneFigur != null) {
 			geschlageneFigur.setPosition(geschlageneFigur.getHausFeld());
 		}
+		
 	}
 	
 	/**
@@ -63,11 +63,13 @@ public class ClientController {
 			figuren.add(sucheFigur(figurId));
 		}
 
-		Spielfeld.getInstanz().setMoeglichkeiten(figuren);
+		Spielfeld spielFeld = Spielfeld.getInstanz();
+		spielFeld.setMoeglichkeiten(figuren);
+		spielFeld.setWurfAnzahl(wurfAnzahl);
 	}
 	
 	/**
-	 * Sucht eine Figur auf dem Spielfeld
+	 * Sucht eine Figur auf dem Spielfeld anhand der ID
 	 * @param id
 	 * @return
 	 */
@@ -79,5 +81,21 @@ public class ClientController {
 		
 		return null;
 	}
+	
+	
+	/**
+	 * Sucht eine Figur auf dem Spielfeld anhand der Position
+	 * @param id
+	 * @return
+	 */
+	private Figur sucheFigur(int position) {
+		for(Figur f : Spielfeld.getInstanz().getSpielfiguren().values()) {
+			if(f.getPosition() == position) 
+				return f;
+		}
+		
+		return null;
+	}
+	
 	
 }

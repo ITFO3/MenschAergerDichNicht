@@ -21,7 +21,7 @@ import view.admin.network.ServerAdminPanel;
  */
 public class ServerNetworkService {
 
-	List<Spieler> connectedPlayer = new ArrayList<Spieler>();
+	ArrayList<Spieler> connectedPlayer = new ArrayList<Spieler>();
 
 	public enum ServerStatus {
 		NOT_RUNNING, RUNNING;
@@ -59,7 +59,7 @@ public class ServerNetworkService {
 		return this.clients;
 	}
 	
-	public List<Spieler> getConnectedPlayers() {
+	public ArrayList<Spieler> getConnectedPlayers() {
 		return this.connectedPlayer;
 	}
 

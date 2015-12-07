@@ -20,7 +20,11 @@ public class FeldFreiRegel extends Regel {
 			}
 		}
 		
-		return (figuren.get(position + this.zustand.getWuerfelzahl()) == null);
+		if(figuren.get(position + this.zustand.getWuerfelzahl()) == null) {
+			
+		}
+		
+		return (true);
 	}
 
 	@Override

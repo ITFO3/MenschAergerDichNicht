@@ -81,7 +81,7 @@ public class NetworkService {
 		return true;
 	}
 	
-	public boolean sendeFigurenAnClients(Figur figur) {
+	public boolean sendeFigurAnClients(Figur figur) {
 		String data = DataObjectEnum.FIGURGEAENDERT.toString() + "="
 				+ figur.getId() + "," + figur.getPosition();
 		
