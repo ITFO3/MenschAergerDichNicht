@@ -18,3 +18,8 @@ hs_err_pid*
 .classpath
 .settings/
 .externalToolBuilders/
+
+# Vagrant
+Vagrantfile
+bootstrap.sh
+.vagrant/
