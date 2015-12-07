@@ -1,26 +1,19 @@
 package controller.server.network;
 
-import java.awt.Color;
-import java.io.PrintStream;
-
-import model.Figur;
-import model.Spieler;
-import model.Spielfeld;
-
 import org.junit.Test;
 
 import controller.NetworkService;
-import controller.client.network.ClientNetworkService;
-import controller.server.ServerController;
+import model.Figur;
+import model.Spieler;
+import model.Spielfeld;
 import view.SpielfeldView;
 
 public class ServerNetworkServiceTest {
 
 	NetworkService networkService = NetworkService.getInstance();
 
-	ServerNetworkService serverNetworkService = ServerNetworkService
-			.getInstance();
-	
+	ServerNetworkService serverNetworkService = ServerNetworkService.getInstance();
+
 	@Test
 	public void testFigurGeaendert() throws Exception {
 		// Erstellt ein neues Spielfeld Model
@@ -29,18 +22,18 @@ public class ServerNetworkServiceTest {
 		// Erstellt das Hauptfenster
 		SpielfeldView view = new SpielfeldView(model, 250, 150);
 		view.setVisible(true);
-		
+
 		serverNetworkService.startServer(8181);
-		
+
 		try {
 			// 2 Sekunden auf den server warten
 			Thread.sleep(2000);
 		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
-		
+
 		networkService.connectToServer("localhost", 8181);
-		
+
 		try {
 			// 2 Sekunden auf den server warten
 			Thread.sleep(2000);
@@ -49,7 +42,7 @@ public class ServerNetworkServiceTest {
 		}
 
 		Spieler spieler = new Spieler("Test");
-		
+
 		for (Figur figur : spieler.getFiguren()) {
 			figur.addObserver(model);
 			figur.setPosition(figur.getPosition());
@@ -58,9 +51,9 @@ public class ServerNetworkServiceTest {
 		// Positionen verschieben
 		int j = 10;
 		for (int i = 0; i <= 40; i++) {
-			try {								
+			try {
 				spieler.getFiguren().get(0).setPosition(i);
-				networkService.sendeFigurenAnClients(spieler.getFiguren().get(0));
+				networkService.sendeFigurAnClients(spieler.getFiguren().get(0));
 				j++;
 
 				if (j > 40) {
